@@ -1,0 +1,49 @@
+# Week 1
+
+- Formed a team with 5 members. Named HighFive
+- Picked P13 as the project.
+
+# Week 2
+
+- Work on project proposal.
+- Volunteer as team lead in terms of communication with the project client
+- Taking background and 1 user story
+
+Questions for the client
+
+<aside>
+💡 Explanation of metrics and frameworks
+
+</aside>
+
+<aside>
+💡 Clarify on Sprint 2: Design Metrics Analysis and visualization align with portfolio management.
+
+</aside>
+
+- Work on the proposal:
+
+Background
+
+The "ESG Management System for the FinTech Industry" project highlights the increasing global focus on sustainable development, leading to a surge in green finance and the adoption of sustainable business ethics by corporations. It underscores the influence of global initiatives such as The Paris Agreement, the United Nations Environment Programme (UNEP),  International Financial Reporting Standards IFRS, and others in driving this shift towards sustainability. While there are existing solutions on the market, they are not all suitable for different types of investors.
+
+For instance, The Bloomberg ESG Data Service is known for its comprehensive coverage of environmental, social, and governance data, offering detailed analytics that are invaluable for investors focusing on sustainability. However, its high subscription cost and the complex nature of its data interpretation pose significant barriers, especially for smaller entities or individual investors.
+
+MSCI ESG Research provides robust insights into ESG risks and performance metrics, contributing to informed investment decisions. Despite its depth, limitations include a lack of real-time data, which is crucial for responsive investment strategies, and limited customization, which could hinder its utility for investors with specific analysis needs or those operating in niche markets. These platforms illustrate the trade-offs between depth of analysis and accessibility, highlighting the need for solutions that balance comprehensive, actionable ESG insights with user-friendly interfaces and cost-effectiveness.
+
+This project itself aims to develop a web application that assists users in managing Environmental, Social, and Governance (ESG) data for sustainable investing, enabling them to analyze companies' ESG performance through a comprehensive platform.
+
+Sprint 1 User Stories:
+
+- User Registration:
+- As a new user, I want to register for an account, so that I can access the ESG Management System and manage my sustainable investments.
+- As an investor, I want to log in to my account, so that I can securely access my ESG data and investment analysis tools.
+- Framework selection:
+- As a sustainability-focused investor, I want to select a preferred ESG framework (e.g., IFRS, TCFD, TNFD, APRA-CPG) from a list, so that I can align my investment analysis with specific sustainability standards.
+- Metric selection:
+- As a user, I want to browse default ESG metrics related to my selected framework, so that I can understand what metrics are considered standard for each ESG pillar.
+- As an advanced user, I want to add custom ESG metrics to my analysis, so that I can tailor the evaluation to meet specific investment criteria or insights.
+- As a user interested in sustainability, I want to see default metrics covering Environmental, Social, and Governance aspects for each framework, ensuring a comprehensive analysis.
+- As a user, I want the ability to filter and select ESG metrics based on their relevance to my investment philosophy, so that I can focus on metrics that matter most to me.
+- As a user, I want to have more than three default metrics under each ESG pillar within my selected framework, so that I can ensure a broad and comprehensive analysis.
+- As a portfolio manager, I want to integrate selected ESG frameworks and metrics into my portfolio analysis, so that I can evaluate investments based on sustainability performance.
