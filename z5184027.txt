@@ -47,3 +47,11 @@ Sprint 1 User Stories:
 - As a user, I want the ability to filter and select ESG metrics based on their relevance to my investment philosophy, so that I can focus on metrics that matter most to me.
 - As a user, I want to have more than three default metrics under each ESG pillar within my selected framework, so that I can ensure a broad and comprehensive analysis.
 - As a portfolio manager, I want to integrate selected ESG frameworks and metrics into my portfolio analysis, so that I can evaluate investments based on sustainability performance.
+
+# Week 3
+
+Edit the background section, added some reference for the reseach of similar platforms.
+
+Format the whole proposal document following proposal marking criteria and help on with storyboard in term of formatting.
+
+Email project client seeking clarification on Financial concepts and feedbacks on proposal.
