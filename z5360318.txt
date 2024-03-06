@@ -6,10 +6,11 @@ We also made a discord server for communication, and are planning to have weekly
 
 Week 2
 Started the proposal. Allocated members to each part of the proposal during the Wednesday lab. 
-I will be working everything to do with the user stories and sprints, including uploading them to Jira. 
+I will be working on everything to do with the user stories and sprints, including uploading them to Jira. 
 Also joined the github classroom and connected it to Jira as part of my scrum master responsibilities. 
 
 
 Week 3
-Finished off the proposal and submitted it. I made the first sprint start on Friday Week 3, so we are going to begin programming soon. 
+Finished off the proposal and submitted it. I made the sprint start and end times, created some user stories for sprint 1, 2 and 3
+I made the first sprint start on Friday Week 3, so we are going to begin programming soon. 
 During this sprint we will be implementing user registration and basic framework and metric selection. 
