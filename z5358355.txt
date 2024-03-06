@@ -1,0 +1,8 @@
+Week 1
+Formed group. Name is 3900W18BHighFive. Scrum master is Lucy. Scrum master set up Jira. Confirmed joined Jira. Decided weekly meeting and standup schedule. In the weekly meeting, we decided on the project. Chose P13. Informed mentors of project selection.
+
+Week 2
+Started proposal. In lab, allocated parts for proposal. I am in charge of 3a, which is the storyboards. Will wait for user stories to be added to work on my part and will add user stories as well. Further detail will be discussed in the meeting arranged outside of lab.
+
+Week 3
+Worked together with Offa on the storyboards. Contributed some user stories for user registration, metrics visualisation and profile personalisation. I started off the storyboards for user registration and profile personalisation, and then Offa extended on these and completed them to higher quality, then I worked mainly on the metrics visualisation. I discussed with the team about approaches for presenting the metrics. Upon near completion of the storyboards, went through with the team to address any concerns about the storyboards and made changes as needed. Once completed, the storyboards were added to the proposal for submission. I helped to check formatting of the proposal.
