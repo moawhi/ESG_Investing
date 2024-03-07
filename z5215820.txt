@@ -1,1 +1,10 @@
+Week 1
+In our first week, our team picked Project 13, which centers on developing an ESG (Environmental, Social, and Governance) management system tailored for the FinTech industry. With an aim for achieving a distinction, we commenced our journey. Establishing effective communication channels, we set up a Discord server to facilitate interaction. Furthermore, we charted our course for regular weekly meetings, scheduling them for Saturday afternoons to ensure ongoing collaboration and progress.
 
+
+Week 2
+Progressing into our second week, we initiated the groundwork for our project by drafting the proposal. With the collective expertise within our team, we assigned members to various sections of the proposal during our Wednesday lab session. Personally, I assumed responsibility for Section 3b, namely, System Architecture Design.
+
+
+Week 3
+We reached a milestone by finalizing and submitting our proposal. With the groundwork laid, we started on our first sprint, commencing activities on Friday of Week 3. Transitioning into the implementation phase, my focus shifted towards designing the database schema and implementing SQL scripts for table creation. Additionally, I started the exploration of relevant Python libraries for interfacing with our MySQL database. 
