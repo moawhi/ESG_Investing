@@ -71,7 +71,8 @@ def auth_login(email, password):
 
             if password == user_password:
                 return {
-                    "id": id
+                    "id": id,
+                    "status": "success"
                 } 
             
     except Exception as err:
