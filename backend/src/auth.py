@@ -12,12 +12,12 @@ def auth_register(first_name, last_name, email, password):
 
     """
     # First, validate the password strength
-    if not auth_check_password_strength(password):
-        raise ValueError("Password does not meet the requirements")
+    # if not auth_check_password_strength(password):
+    #     raise ValueError("Password does not meet the requirements")
 
     # Then, check if the email is already registered
-    if auth_check_registered_email(email):
-        raise ValueError("Email is already registered")
+    # if auth_check_registered_email(email):
+    #     raise ValueError("Email is already registered")
 
     # Connect to the database
     db = mysql.connector.connect(
@@ -30,13 +30,13 @@ def auth_register(first_name, last_name, email, password):
     try:
         cursor = db.cursor()
         query = """
-        INSERT INTO users (first_name, last_name, email_address, password)
+        INSERT INTO user (first_name, last_name, email_address, password)
         VALUES (%s, %s, %s, %s)
         """
         cursor.execute(query, (first_name, last_name, email, password))
         db.commit()
         return cursor.lastrowid
-    except mysql.connector.Error as err:
+    except Exception as err:
         print(f"Error: {err}")
         raise
     finally:

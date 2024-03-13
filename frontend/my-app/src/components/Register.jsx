@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -31,13 +32,47 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Register() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = React.useState('');
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    // Collect the form data
+    const first_name = data.get('firstName');
+    const last_name = data.get('lastName');
+    const email_address = data.get('email');
+    const password = data.get('password');
+
+    // Construct the POST request for registration
+    try {
+      const response = await fetch('http://localhost:12345/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          first_name,
+          last_name,
+          email_address,
+          password
+        }),
+      });
+
+      if (response.ok) {
+        const resBody = await response.json();
+        if (resBody.status === "success") {
+          navigate('/dashboard');
+        } else {
+          setErrorMessage(resBody.message);
+        }
+      } else {
+        setErrorMessage('Network or server error.');
+      }
+    } catch (error) {
+      setErrorMessage('An error occurred: ' + error.message);
+    }
   };
 
   return (
