@@ -30,7 +30,7 @@ def auth_register(first_name, last_name, email, password):
     try:
         cursor = db.cursor()
         query = """
-        INSERT INTO users (first_name, last_name, email_address, password)
+        INSERT INTO user (first_name, last_name, email_address, password)
         VALUES (%s, %s, %s, %s)
         """
         cursor.execute(query, (first_name, last_name, email, password))
