@@ -64,10 +64,16 @@ def auth_login(email, password):
             cur.execute(query, [email])
             result = cur.fetchone()
             if result is None:
-                raise Exception("Incorrect email or password")
+                return {
+                    "status": "fail",
+                    "message": "Incorrect username or password."
+                } 
             (id, user_email, user_password) = result
             if password != user_password:
-                raise Exception("Incorrect email or password")
+                return {
+                    "status": "fail",
+                    "message": "Incorrect username or password."
+                } 
 
             if password == user_password:
                 return {
