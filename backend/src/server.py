@@ -10,6 +10,20 @@ app = Flask(__name__)
 HOST = "127.0.0.1"
 PORT = 12345
 
+@app.route("/register", methods=["POST"])
+def register():
+    info = request.get_json()
+    first_name = info["first_name"]
+    last_name = info["last_name"]
+    email = info["email_address"]
+    password = info["password"]
+
+    try:
+        user_id = auth.auth_register(first_name, last_name, email, password)
+        return dumps({"status": "success", "user_id": user_id}), 200
+    except ValueError as e:
+        return dumps({"status": "error", "message": str(e)}), 400
+
 @app.route("/", methods=["POST"])
 def login():
     info = request.get_json()
