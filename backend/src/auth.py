@@ -1,7 +1,9 @@
 """
-Authentiation functions
+Authentication functions
 
 """
+
+import mysql.connector
 
 def auth_register(first_name, last_name, email, password):
     """
@@ -15,19 +17,55 @@ def auth_login(email, password):
     """
     User logs in to account using email and password
     """
-    pass
+    db = None
+    try:
+        db = mysql.connector.connect(user="esg",
+                                     password="esg",
+                                     host="127.0.0.1",
+                                     database="esg_management")
+        
+        query = """
+            SELECT id, email_address, password
+            FROM user
+            WHERE email_address = %s
+        """
+       
+        with db.cursor() as cur:
+            cur.execute(query, [email])
+            result = cur.fetchone()
+            if result is None:
+                raise Exception("Incorrect email or password")
+            (id, user_email, user_password) = result
+            if password != user_password:
+                raise Exception("Incorrect email or password")
+
+            if password == user_password:
+                return {
+                    "id": id
+                }
+            
+    except Exception as err:
+        print(f"Error: {err}")
+
+    finally:
+        if db:
+            db.close()
 
 def auth_logout():
     """
     User logs out of account
     """
-    pass
+    return {}
 
 def auth_block_account(email, password):
     """
     User is blocked from their account after multiple failed login attempts. An
-    incorrect email or password causes a failed login attempt. The user's account
-    is blocked until the user recovers it.
+    incorrect email or password causes a failed login attempt. 
+    
+    If an incorrect password is provided a certain number of times for a valid
+    registered email, the account created using that email will be blocked.
+
+    The user's account is blocked until the user recovers it.
     """
     pass
 
