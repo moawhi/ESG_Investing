@@ -19,9 +19,6 @@ def register():
     last_name = info["last_name"]
     email = info["email_address"]
     password = info["password"]
-    print(email, password)
-    response_data = auth.auth_register(first_name, last_name,email, password)
-    print("Returning response:", response_data)
 
     try:
         user_id = auth.auth_register(first_name, last_name, email, password)
