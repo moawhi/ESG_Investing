@@ -1,18 +1,25 @@
 /* eslint-disable react/react-in-jsx-scope */
 
-import { Box } from '@mui/material';
-
+import React from 'react';
+import Topbar from './Topbar';
+import Sidebar from './Sidebar';
+import Box from '@mui/material/Box';
 
 const Dashboard = () => {
   return (
-    <Box sx={{
-      display: 'flex',
-      margin: '20px 10px',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    }}>
-      Dashboard
-    </Box>
+    <div>
+      <Topbar />
+      <Box sx={{ display: 'flex', height: '90vh' }}>
+        <Box sx={{ width: '250px', bgcolor: 'background.paper' }}>
+          <Sidebar/>
+        </Box>
+        <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ padding: 2, fontSize: '2rem' }}>
+            Dashboard
+          </Box>
+        </Box>
+      </Box>
+    </div>
   )
 }
 
