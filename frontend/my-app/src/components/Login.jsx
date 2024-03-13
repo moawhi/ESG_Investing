@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
@@ -31,14 +32,37 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Login() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = React.useState('');
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+
+    const email_address = data.get('email');
+    const password = data.get('password');
+
+    const response = await fetch('http://localhost:12345', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email_address, password
+      }),
+    })
+    if (response.ok) {
+      const resBody = await response.json();
+      if (resBody.status === "success") {
+        navigate('/dashboard');
+      } else {
+        setErrorMessage(resBody.message);
+      }
+    } else {
+      setErrorMessage('Network or server error.');
+    }
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -121,6 +145,9 @@ export default function Login() {
               </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>
+            {errorMessage && (
+              <div style={{ color: 'red' }}>Error: {errorMessage}</div>
+            )}
           </Box>
         </Grid>
       </Grid>

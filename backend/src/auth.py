@@ -59,7 +59,7 @@ def auth_login(email, password):
             FROM user
             WHERE email_address = %s
         """
-       
+        
         with db.cursor() as cur:
             cur.execute(query, [email])
             result = cur.fetchone()
@@ -72,7 +72,7 @@ def auth_login(email, password):
             if password == user_password:
                 return {
                     "id": id
-                }
+                } 
             
     except Exception as err:
         print(f"Error: {err}")
@@ -80,7 +80,7 @@ def auth_login(email, password):
     finally:
         if db:
             db.close()
-
+    
 def auth_logout():
     """
     User logs out of account
