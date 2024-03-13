@@ -11,7 +11,37 @@ def auth_register(first_name, last_name, email, password):
     If email is already registered, no new account is created
 
     """
-    pass
+    # First, validate the password strength
+    if not auth_check_password_strength(password):
+        raise ValueError("Password does not meet the requirements")
+
+    # Then, check if the email is already registered
+    if auth_check_registered_email(email):
+        raise ValueError("Email is already registered")
+
+    # Connect to the database
+    db = mysql.connector.connect(
+        user="esg",
+        password="esg",
+        host="127.0.0.1",
+        database="esg_management"
+    )
+
+    try:
+        cursor = db.cursor()
+        query = """
+        INSERT INTO users (first_name, last_name, email_address, password)
+        VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(query, (first_name, last_name, email, password))
+        db.commit()
+        return cursor.lastrowid
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        raise
+    finally:
+        if db.is_connected():
+            db.close()
 
 def auth_login(email, password):
     """
