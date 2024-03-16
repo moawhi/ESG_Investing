@@ -5,6 +5,10 @@ Authentication functions
 
 import mysql.connector
 
+LOGIN_ATTEMPT_LIMIT = 3
+BAD_REQUEST = 400
+FORBIDDEN = 403
+
 def auth_register(first_name, last_name, email, password):
     """
     User creates a new account with their first name, last name, email and password
@@ -30,8 +34,8 @@ def auth_register(first_name, last_name, email, password):
     try:
         cursor = db.cursor()
         query = """
-        INSERT INTO user (first_name, last_name, email_address, password)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO user (first_name, last_name, email_address, password, blocked, login_attempts)
+        VALUES (%s, %s, %s, %s, FALSE, 0)
         """
         cursor.execute(query, (first_name, last_name, email, password))
         db.commit()
@@ -47,7 +51,6 @@ def auth_login(email, password):
     """
     User logs in to account using email and password
     """
-    db = None
     try:
         db = mysql.connector.connect(user="esg",
                                      password="esg",
@@ -55,9 +58,19 @@ def auth_login(email, password):
                                      database="esg_management")
         
         query = """
-            SELECT id, email_address, password
+            SELECT id, email_address, password, blocked, login_attempts
             FROM user
             WHERE email_address = %s
+        """
+        increase_login_attempts = """
+            UPDATE user
+            SET login_attempts = login_attempts + 1
+            WHERE id = %s
+        """
+        reset_login_attempts = """
+            UPDATE user
+            SET login_attempts = 0
+            WHERE id = %s
         """
         
         with db.cursor() as cur:
@@ -66,35 +79,52 @@ def auth_login(email, password):
             if result is None:
                 return {
                     "status": "fail",
-                    "message": "Incorrect username or password."
+                    "message": "Incorrect username or password",
+                    "code": BAD_REQUEST
                 } 
-            (id, user_email, user_password) = result
-            if password != user_password:
+            (id, user_email, user_password, blocked, login_attempts) = result
+            cur.execute(increase_login_attempts, [id])
+            db.commit()
+
+            if blocked:
                 return {
                     "status": "fail",
-                    "message": "Incorrect username or password."
+                    "message": "Your account is blocked",
+                    "code": FORBIDDEN
+                }
+
+            if password != user_password:
+                if login_attempts >= LOGIN_ATTEMPT_LIMIT:
+                    return auth_block_account(id)
+
+                return {
+                    "status": "fail",
+                    "message": "Incorrect username or password",
+                    "code": BAD_REQUEST
                 } 
 
             if password == user_password:
+                cur.execute(reset_login_attempts, [id])
+                db.commit()
                 return {
                     "id": id,
                     "status": "success"
-                } 
+                }
             
     except Exception as err:
         print(f"Error: {err}")
 
     finally:
-        if db:
+        if db.is_connected():
             db.close()
-    
+ 
 def auth_logout():
     """
     User logs out of account
     """
     return {}
 
-def auth_block_account(email, password):
+def auth_block_account(id):
     """
     User is blocked from their account after multiple failed login attempts. An
     incorrect email or password causes a failed login attempt. 
@@ -104,7 +134,33 @@ def auth_block_account(email, password):
 
     The user's account is blocked until the user recovers it.
     """
-    pass
+    try:
+        db = mysql.connector.connect(user="esg",
+                                     password="esg",
+                                     host="127.0.0.1",
+                                     database="esg_management")
+        
+        query = """
+            UPDATE user
+            SET blocked = TRUE
+            WHERE id = %s
+        """
+        
+        with db.cursor() as cur:
+            cur.execute(query, [id])
+            db.commit()
+            return {
+                "status": "fail",
+                "message": "Your account has been blocked",
+                "code": FORBIDDEN
+            } 
+            
+    except Exception as err:
+        print(f"Error: {err}")
+
+    finally:
+        if db.is_connected():
+            db.close()
 
 def auth_check_password_strength(password):
     """
