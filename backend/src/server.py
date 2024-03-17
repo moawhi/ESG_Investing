@@ -20,11 +20,10 @@ def register():
     email = info["email_address"]
     password = info["password"]
 
-    try:
-        user_id = auth.auth_register(first_name, last_name, email, password)
-        return dumps({"status": "success", "user_id": user_id}), 200
-    except ValueError as e:
-        return dumps({"status": "error", "message": str(e)}), 400
+    response = auth.auth_register(first_name, last_name, email, password)
+    if response["status"] == "fail":
+        return dumps(response), 400
+    return dumps(response), 200
 
 @app.route("/", methods=["POST"])
 def login():

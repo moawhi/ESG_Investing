@@ -12,13 +12,13 @@ def auth_register(first_name, last_name, email, password):
     If email is already registered, no new account is created
 
     """
-    # First, validate the password strength
-    # if not auth_check_password_strength(password):
-    #     raise ValueError("Password does not meet the requirements")
+    # Validate the password strength
+    if not auth_check_password_strength(password):
+        return {"status": "fail", "message": "Password does not meet the requirements"}
 
-    # Then, check if the email is already registered
-    # if auth_check_registered_email(email):
-    #     raise ValueError("Email is already registered")
+    # Check if the email is already registered
+    if auth_check_registered_email(email):
+        return {"status": "fail", "message": "Email is already registered"}
 
     # Connect to the database
     db = mysql.connector.connect(
@@ -36,10 +36,10 @@ def auth_register(first_name, last_name, email, password):
         """
         cursor.execute(query, (first_name, last_name, email, password))
         db.commit()
-        return cursor.lastrowid
+        return {"status": "success", "user_id": cursor.lastrowid}
     except Exception as err:
         print(f"Error: {err}")
-        raise
+        return {"status": "fail", "message": str(err)}
     finally:
         if db.is_connected():
             db.close()
