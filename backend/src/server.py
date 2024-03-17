@@ -30,10 +30,10 @@ def login():
     info = request.get_json()
     email = info["email_address"]
     password = info["password"]
-    #print(email, password) testing functionality, can remove later
-    #response_data = auth.auth_login(email, password)
-    #print("Returning response:", response_data)
-    return jsonify(auth.auth_login(email, password))
+    login_response = auth.auth_login(email, password)
+    if login_response.get("code"):
+        return jsonify(login_response), login_response.get("code")
+    return jsonify(login_response)
 
 @app.route("/logout", methods=["POST"])
 def logout():
