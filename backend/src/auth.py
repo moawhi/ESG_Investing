@@ -4,6 +4,7 @@ Authentication functions
 """
 
 import mysql.connector
+import re
 
 def auth_register(first_name, last_name, email, password):
     """
@@ -11,13 +12,13 @@ def auth_register(first_name, last_name, email, password):
     If email is already registered, no new account is created
 
     """
-    # First, validate the password strength
-    # if not auth_check_password_strength(password):
-    #     raise ValueError("Password does not meet the requirements")
+    # Validate the password strength
+    if not auth_check_password_strength(password):
+        return {"status": "fail", "message": "Password does not meet the requirements"}
 
-    # Then, check if the email is already registered
-    # if auth_check_registered_email(email):
-    #     raise ValueError("Email is already registered")
+    # Check if the email is already registered
+    if auth_check_registered_email(email):
+        return {"status": "fail", "message": "Email is already registered"}
 
     # Connect to the database
     db = mysql.connector.connect(
@@ -35,10 +36,10 @@ def auth_register(first_name, last_name, email, password):
         """
         cursor.execute(query, (first_name, last_name, email, password))
         db.commit()
-        return cursor.lastrowid
+        return {"status": "success", "user_id": cursor.lastrowid}
     except Exception as err:
         print(f"Error: {err}")
-        raise
+        return {"status": "fail", "message": str(err)}
     finally:
         if db.is_connected():
             db.close()
@@ -116,10 +117,27 @@ def auth_check_password_strength(password):
     - at least 1 special character
     - at least 8 characters
     """
-    pass
+    if (len(password) < 8 or
+            not re.search("[a-z]", password) or
+            not re.search("[A-Z]", password) or
+            not re.search("[0-9]", password) or
+            not re.search("[_@$]", password)):
+        return False
+    return True
 
 def auth_check_registered_email(email):
     """
     Checks that the email has not been used to register already
     """
-    pass
+    db = mysql.connector.connect(
+        user="esg",
+        password="esg",
+        host="127.0.0.1",
+        database="esg_management"
+    )
+    cursor = db.cursor()
+    query = "SELECT COUNT(*) FROM user WHERE email_address = %s"
+    cursor.execute(query, (email,))
+    (count,) = cursor.fetchone()
+    db.close()
+    return count > 0
