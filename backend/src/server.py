@@ -33,7 +33,7 @@ def login():
     login_response = auth.auth_login(email, password)
     if login_response.get("code"):
         return jsonify(login_response), login_response.get("code")
-    return jsonify(auth.auth_login(email, password))
+    return jsonify(login_response)
 
 @app.route("/logout", methods=["POST"])
 def logout():
