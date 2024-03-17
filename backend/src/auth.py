@@ -10,6 +10,10 @@ LOGIN_ATTEMPT_LIMIT = 3
 BAD_REQUEST = 400
 FORBIDDEN = 403
 
+LOGIN_ATTEMPT_LIMIT = 3
+BAD_REQUEST = 400
+FORBIDDEN = 403
+
 def auth_register(first_name, last_name, email, password):
     """
     User creates a new account with their first name, last name, email and password
