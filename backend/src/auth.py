@@ -4,6 +4,7 @@ Authentication functions
 """
 
 import mysql.connector
+import re
 
 def auth_register(first_name, last_name, email, password):
     """
@@ -116,10 +117,27 @@ def auth_check_password_strength(password):
     - at least 1 special character
     - at least 8 characters
     """
-    pass
+    if (len(password) < 8 or
+            not re.search("[a-z]", password) or
+            not re.search("[A-Z]", password) or
+            not re.search("[0-9]", password) or
+            not re.search("[_@$]", password)):
+        return False
+    return True
 
 def auth_check_registered_email(email):
     """
     Checks that the email has not been used to register already
     """
-    pass
+    db = mysql.connector.connect(
+        user="esg",
+        password="esg",
+        host="127.0.0.1",
+        database="esg_management"
+    )
+    cursor = db.cursor()
+    query = "SELECT COUNT(*) FROM user WHERE email_address = %s"
+    cursor.execute(query, (email,))
+    (count,) = cursor.fetchone()
+    db.close()
+    return count > 0
