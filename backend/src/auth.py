@@ -5,10 +5,29 @@ Authentication functions
 
 import mysql.connector
 import re
+import bcrypt
+import jwt
+import datetime
 
+SECRET_KEY = "your_secret_key"  # Generate a secure secret key
+ALGORITHM = "HS256"
 LOGIN_ATTEMPT_LIMIT = 3
 BAD_REQUEST = 400
 FORBIDDEN = 403
+
+def hash_password(password):
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+def verify_password(password, hashed):
+    return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
+
+def generate_jwt(user_id):
+    payload = {
+        "user_id": user_id,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1),
+        "iat": datetime.datetime.utcnow()
+    }
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
 def auth_register(first_name, last_name, email, password):
     """
@@ -16,6 +35,8 @@ def auth_register(first_name, last_name, email, password):
     If email is already registered, no new account is created
 
     """
+    hashed_password = hash_password(password)  # Encrypt the password using bcrypt
+
     # Validate the password strength
     if not auth_check_password_strength(password):
         return {"status": "fail", "message": "Password does not meet the requirements"}
@@ -38,9 +59,11 @@ def auth_register(first_name, last_name, email, password):
         INSERT INTO user (first_name, last_name, email_address, password, blocked, login_attempts)
         VALUES (%s, %s, %s, %s, FALSE, 0)
         """
-        cursor.execute(query, (first_name, last_name, email, password))
+        cursor.execute(query, (first_name, last_name, email, hashed_password))
         db.commit()
-        return {"status": "success", "user_id": cursor.lastrowid}
+        user_id = cursor.lastrowid
+        token = generate_jwt(user_id)
+        return {"status": "success", "user_id": user_id, "token": token}
     except Exception as err:
         print(f"Error: {err}")
         return {"status": "fail", "message": str(err)}
@@ -49,14 +72,8 @@ def auth_register(first_name, last_name, email, password):
             db.close()
 
 def auth_login(email, password):
-    """
-    User logs in to account using email and password
-    """
     try:
-        db = mysql.connector.connect(user="esg",
-                                     password="esg",
-                                     host="127.0.0.1",
-                                     database="esg_management")
+        db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
         
         query = """
             SELECT id, email_address, password, blocked, login_attempts
@@ -77,40 +94,20 @@ def auth_login(email, password):
         with db.cursor() as cur:
             cur.execute(query, [email])
             result = cur.fetchone()
-            if result is None:
-                return {
-                    "status": "fail",
-                    "message": "Incorrect username or password",
-                    "code": BAD_REQUEST
-                } 
-            (id, user_email, user_password, blocked, login_attempts) = result
-            cur.execute(increase_login_attempts, [id])
-            db.commit()
+            if result is None or not verify_password(password, result[2]):
+                cur.execute(increase_login_attempts, [result[0]])
+                db.commit()
+                return {"status": "fail", "message": "Incorrect username or password", "code": BAD_REQUEST}
+
+            (id, user_email, hashed_password, blocked, login_attempts) = result
 
             if blocked:
-                return {
-                    "status": "fail",
-                    "message": "Your account is blocked",
-                    "code": FORBIDDEN
-                }
+                return {"status": "fail", "message": "Your account is blocked", "code": FORBIDDEN}
 
-            if password != user_password:
-                if login_attempts >= LOGIN_ATTEMPT_LIMIT:
-                    return auth_block_account(id)
-
-                return {
-                    "status": "fail",
-                    "message": "Incorrect username or password",
-                    "code": BAD_REQUEST
-                } 
-
-            if password == user_password:
-                cur.execute(reset_login_attempts, [id])
-                db.commit()
-                return {
-                    "id": id,
-                    "status": "success"
-                }
+            cur.execute(reset_login_attempts, [id])
+            db.commit()
+            token = generate_jwt(id)
+            return {"id": id, "status": "success", "token": token}
             
     except Exception as err:
         print(f"Error: {err}")
