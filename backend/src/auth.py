@@ -29,6 +29,16 @@ def generate_jwt(user_id):
     }
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
+def decode_jwt(token):
+    try:
+        return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    except Exception:
+        return {
+            "status": "fail",
+            "message": "Invalid token",
+            "code": FORBIDDEN
+        }
+
 def auth_register(first_name, last_name, email, password):
     """
     User creates a new account with their first name, last name, email and password
@@ -72,6 +82,7 @@ def auth_register(first_name, last_name, email, password):
             db.close()
 
 def auth_login(email, password):
+    db = None
     try:
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
         
@@ -107,7 +118,7 @@ def auth_login(email, password):
             cur.execute(reset_login_attempts, [id])
             db.commit()
             token = generate_jwt(id)
-            return {"id": id, "status": "success", "token": token}
+            return {"user_id": id, "status": "success", "token": token}
             
     except Exception as err:
         print(f"Error: {err}")
@@ -116,11 +127,46 @@ def auth_login(email, password):
         if db.is_connected():
             db.close()
  
-def auth_logout():
+def auth_logout(token):
     """
     User logs out of account
     """
-    return {}
+    decoded_token = decode_jwt(token)
+    if decoded_token.get("status") == "fail":
+        return decoded_token
+
+    db = None
+    try:
+        db = mysql.connector.connect(user="esg",
+                                     password="esg",
+                                     host="127.0.0.1",
+                                     database="esg_management")
+        
+        query = """
+            SELECT id
+            FROM user
+            """
+        with db.cursor() as cur:
+            cur.execute(query)
+            users = cur.fetchall()
+            now = datetime.datetime.now()
+            logout_time = int(now.timestamp())
+            
+            if (decoded_token["user_id"],) in users and logout_time <= decoded_token["exp"]:
+                return {}
+            else:
+                return {
+                    "status": "fail",
+                    "message": "Invalid token",
+                    "code": FORBIDDEN
+                }
+            
+    except Exception as err:
+        print(f"Error: {err}")
+
+    finally:
+        if db.is_connected():
+            db.close()
 
 def auth_block_account(id):
     """
@@ -132,6 +178,7 @@ def auth_block_account(id):
 
     The user's account is blocked until the user recovers it.
     """
+    db = None
     try:
         db = mysql.connector.connect(user="esg",
                                      password="esg",
