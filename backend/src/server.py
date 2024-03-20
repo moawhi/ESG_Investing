@@ -31,13 +31,20 @@ def login():
     email = info["email_address"]
     password = info["password"]
     login_response = auth.auth_login(email, password)
+
     if login_response.get("code"):
         return jsonify(login_response), login_response.get("code")
     return jsonify(login_response)
 
 @app.route("/logout", methods=["POST"])
 def logout():
-    return dumps(auth.auth_logout())
+    info = request.get_json()
+    token = info["token"]
+    logout_response = auth.auth_logout(token)
+    
+    if logout_response.get("code"):
+        return jsonify(logout_response), logout_response.get("code")
+    return jsonify(logout_response)
 
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
