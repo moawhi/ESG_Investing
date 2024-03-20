@@ -23,3 +23,10 @@ Then we allocated tasks. I was in charge of login, logout and blocking the accou
 Mostly worked on the logic of it while waiting for setup of the database to store user data.
 Once the database is setup, would begin in earnest with functionality and making the routes for the server.
 Also intend to set up the server using Python Flask.
+
+Week 5
+Worked on implementing user login functionality. Discussed with team about demo and presented demo in lab.
+Worked on Retrospective A with the team.
+Aiming to finish off rest of unfinished user registration functionality as soon as possible. Then will discuss
+with Offa about framework and metric selection and discuss with Ruoxi as needed about database-related matters
+for implementation.
