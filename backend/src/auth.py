@@ -113,6 +113,7 @@ def auth_login(email, password):
             (id, user_email, hashed_password, blocked, login_attempts) = result
 
             if blocked:
+                print("blocked")
                 return {"status": "fail", "message": "Your account is blocked", "code": FORBIDDEN}
 
             cur.execute(reset_login_attempts, [id])
