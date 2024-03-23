@@ -42,10 +42,9 @@ def decode_jwt(token):
 def prompt_for_missing_field(user_inputs):
     for field in user_inputs.keys():
         if not user_inputs[field]:
-            message_field = field.replace("_", " ")
             return {
                 "status": "fail",
-                "message": f"Please enter your {message_field}",
+                "message": f"Please fill in all fields",
                 "code": BAD_REQUEST
             }
 
