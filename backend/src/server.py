@@ -22,8 +22,8 @@ def register():
 
     response = auth.auth_register(first_name, last_name, email, password)
     if response["status"] == "fail":
-        return dumps(response), 400
-    return dumps(response), 200
+        return jsonify(response), 400
+    return jsonify(response), 200
 
 @app.route("/", methods=["POST"])
 def login():

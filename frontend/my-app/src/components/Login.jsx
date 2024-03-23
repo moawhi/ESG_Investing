@@ -2,18 +2,10 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import { Paper, Box, Grid, Avatar, Button, CssBaseline, TextField, Typography} from '@mui/material/';
 
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Copyright(props) {
@@ -42,27 +34,33 @@ export default function Login() {
 
     const email_address = data.get('email');
     const password = data.get('password');
+    try {
+      const response = await fetch('http://localhost:12345', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email_address, password
+        }),
+      })
 
-    const response = await fetch('http://localhost:12345', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email_address, password
-      }),
-    })
-    if (response.ok) {
-      const resBody = await response.json();
-      if (resBody.status === "success") {
-        navigate('/dashboard');
+      if (response.ok) {
+        const resBody = await response.json();
+        if (resBody.status === "success") {
+          navigate('/dashboard');
+        } else {
+          setErrorMessage(resBody.message);
+        }
       } else {
-        setErrorMessage(resBody.message);
+        const errorBody = await response.json();
+        setErrorMessage(errorBody.message || 'Network or server error.');
       }
-    } else {
-      setErrorMessage('Network or server error.');
     }
-  }
+    catch (error) {
+      setErrorMessage('An error occurred: ' + error.message);
+    }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -85,13 +83,64 @@ export default function Login() {
         <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
-              mx: 4,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              height: '100%', 
             }}
           >
+<<<<<<< HEAD
+            <Box
+              sx={{
+                my: 8,
+                mx: 4,
+                flexGrow: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign In
+                </Button>
+                <Grid container justifyContent="flex-end">
+                  <Grid item>
+                    <Link to="/register" variant="body2">
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Grid>
+=======
             <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
@@ -139,13 +188,26 @@ export default function Login() {
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
+>>>>>>> 20764843ed7e5e272a623217c30ce22239546946
                 </Grid>
-                <Grid item>
-                  <Link to="/register" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+              </Box>
+              {errorMessage && (
+                <Box 
+                sx={{
+                  mt: 2,
+                  p: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor: "#ffdede",
+                  borderRadius: "10px",
+                  width: "100%"
+                }} 
+                > <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
+                  <Typography variant="body2">{errorMessage}</Typography>
+                </Box>
+              )}
+            </Box>
+            <Box sx={{ p: 2, textAlign: 'center' }}>
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
