@@ -38,6 +38,16 @@ def decode_jwt(token):
             "message": "Invalid token",
             "code": FORBIDDEN
         }
+    
+def prompt_for_missing_field(user_inputs):
+    for field in user_inputs.keys():
+        if not user_inputs[field]:
+            message_field = field.replace("_", " ")
+            return {
+                "status": "fail",
+                "message": f"Please enter your {message_field}",
+                "code": BAD_REQUEST
+            }
 
 def auth_register(first_name, last_name, email, password):
     """
@@ -45,6 +55,9 @@ def auth_register(first_name, last_name, email, password):
     If email is already registered, no new account is created
 
     """
+    if prompt_for_missing_field(locals()):
+        return prompt_for_missing_field(locals())
+
     hashed_password = hash_password(password)  # Encrypt the password using bcrypt
 
     # Validate the password strength
@@ -82,6 +95,9 @@ def auth_register(first_name, last_name, email, password):
             db.close()
 
 def auth_login(email, password):
+    if prompt_for_missing_field(locals()):
+        return prompt_for_missing_field(locals())
+    
     db = None
     try:
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
@@ -106,8 +122,9 @@ def auth_login(email, password):
             cur.execute(query, [email])
             result = cur.fetchone()
             if result is None or not verify_password(password, result[2]):
-                cur.execute(increase_login_attempts, [result[0]])
-                db.commit()
+                if result:
+                    cur.execute(increase_login_attempts, [result[0]])
+                    db.commit()
                 return {"status": "fail", "message": "Incorrect username or password", "code": BAD_REQUEST}
 
             (id, user_email, hashed_password, blocked, login_attempts) = result
