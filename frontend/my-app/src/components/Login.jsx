@@ -64,84 +64,41 @@ export default function Login() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={8}
-          sx={{
-            backgroundImage: 'url(https://i.ibb.co/GkPMT8f/esglogo.png)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
-          <Box
+    <Grid container component="main" sx={{ height: '100vh' }}>
+      <CssBaseline />
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={8}
+        sx={{
+          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: (t) =>
+            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
+        <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               height: '100%', 
             }}
+        >
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexGrow: 1,
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
           >
-<<<<<<< HEAD
-            <Box
-              sx={{
-                my: 8,
-                mx: 4,
-                flexGrow: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign in
-              </Typography>
-              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign In
-                </Button>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <Link to="/register" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
-                  </Grid>
-=======
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <Avatar sx={{ m: 1, backgroundColor: '#9ec28c' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -168,31 +125,27 @@ export default function Login() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              {errorMessage && (
-                <div style={{ color: 'red' }}>Error: {errorMessage}</div>
-              )}
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, backgroundColor: "#9ec28c", 
+                '&:hover': {
+                  backgroundColor: "#8aab79",
+                }}}
               >
                 Sign In
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link to="/register" variant="body2">
+                    {"Don't have an account? Sign up"}
                   </Link>
->>>>>>> 20764843ed7e5e272a623217c30ce22239546946
                 </Grid>
-              </Box>
-              {errorMessage && (
-                <Box 
+              </Grid>
+            </Box>
+            {errorMessage && (
+              <Box 
                 sx={{
                   mt: 2,
                   p: 2,
@@ -202,17 +155,17 @@ export default function Login() {
                   borderRadius: "10px",
                   width: "100%"
                 }} 
-                > <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
-                  <Typography variant="body2">{errorMessage}</Typography>
-                </Box>
+              > <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
+                <Typography variant="body2">{errorMessage}</Typography>
+              </Box>
               )}
             </Box>
             <Box sx={{ p: 2, textAlign: 'center' }}>
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
-        </Grid>
       </Grid>
-    </ThemeProvider>
+    </Grid>
+  </ThemeProvider>
   );
 }
