@@ -30,3 +30,12 @@ Worked on Retrospective A with the team.
 Aiming to finish off rest of unfinished user registration functionality as soon as possible. Then will discuss
 with Offa about framework and metric selection and discuss with Ruoxi as needed about database-related matters
 for implementation.
+
+Week 6
+Ruoxi provided a script which populates the database with data so I took some time to look through the tables
+and understand what each table contains.
+Lucy pointed out some bugs to do with login functionality and also suggested adding an error message for missing
+fields, so I worked on that. A bug was also found for the block account functionality but that will be placed at
+lower priority to complete for now.
+Main focus will be to discuss with Offa what needs to be done for metrics selection. I wrote down some tasks we may
+need to do in order to achieve the functionality for metrics selection and will discuss with Offa and refine to proceed.
