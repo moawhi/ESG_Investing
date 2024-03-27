@@ -55,3 +55,22 @@ Edit the background section, added some reference for the reseach of similar pla
 Format the whole proposal document following proposal marking criteria and help on with storyboard in term of formatting.
 
 Email project client seeking clarification on Financial concepts and feedbacks on proposal.
+
+# Week 4
+
+Got response from project client, added team to the page for project discussion.
+
+Implemented frontend of Log in and register page. Wait on backend to finalise
+
+# Week 5
+
+Implement register button using the api provided from backend
+
+Recorded Retrospective A and sent over to scum master
+
+# Week 6
+
+Attended weekly meeting and discuss on dashboard Programme
+
+Wait on backend to finalise metric selection and data
+
