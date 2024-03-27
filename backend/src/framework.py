@@ -3,12 +3,22 @@ Framework functions
 """
 
 import mysql.connector
+from backend.src.helper import verify_token
+
+FORBIDDEN = 403
 
 def framework_list(token):
     """
     Gets all available frameworks in the database.
     Provides the name and the information of each framework.
     """
+    if not verify_token(token):
+        return {
+            "status": "fail",
+            "message": "Invalid token",
+            "code": FORBIDDEN
+        }
+
     db = None
     try:
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
@@ -20,6 +30,7 @@ def framework_list(token):
         frameworks = []
         with db.cursor() as cur:
             cur.execute(query)
+
             for framework in cur.fetchall():
                 (name, info) = framework
                 framework_details = {

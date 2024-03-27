@@ -5,46 +5,19 @@ Authentication functions
 
 import mysql.connector
 import re
-import bcrypt
-import jwt
-import datetime
+from backend.src.encryption import *
+from backend.src.helper import verify_token
 
-SECRET_KEY = "your_secret_key"  # Generate a secure secret key
-ALGORITHM = "HS256"
 LOGIN_ATTEMPT_LIMIT = 3
 BAD_REQUEST = 400
 FORBIDDEN = 403
 
-def hash_password(password):
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-def verify_password(password, hashed):
-    return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
-
-def generate_jwt(user_id):
-    payload = {
-        "user_id": user_id,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1),
-        "iat": datetime.datetime.utcnow()
-    }
-    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-
-def decode_jwt(token):
-    try:
-        return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-    except Exception:
-        return {
-            "status": "fail",
-            "message": "Invalid token",
-            "code": FORBIDDEN
-        }
-    
 def prompt_for_missing_field(user_inputs):
     for field in user_inputs.keys():
         if not user_inputs[field]:
             return {
                 "status": "fail",
-                "message": f"Please fill in all fields",
+                "message": "Please fill in all fields",
                 "code": BAD_REQUEST
             }
 
@@ -147,42 +120,14 @@ def auth_logout(token):
     """
     User logs out of account
     """
-    decoded_token = decode_jwt(token)
-    if decoded_token.get("status") == "fail":
-        return decoded_token
+    if not verify_token(token):
+        return {
+            "status": "fail",
+            "message": "Invalid token",
+            "code": FORBIDDEN
+        }
 
-    db = None
-    try:
-        db = mysql.connector.connect(user="esg",
-                                     password="esg",
-                                     host="127.0.0.1",
-                                     database="esg_management")
-        
-        query = """
-            SELECT id
-            FROM user
-            """
-        with db.cursor() as cur:
-            cur.execute(query)
-            users = cur.fetchall()
-            now = datetime.datetime.now()
-            logout_time = int(now.timestamp())
-            
-            if (decoded_token["user_id"],) in users and logout_time <= decoded_token["exp"]:
-                return {}
-            else:
-                return {
-                    "status": "fail",
-                    "message": "Invalid token",
-                    "code": FORBIDDEN
-                }
-            
-    except Exception as err:
-        print(f"Error: {err}")
-
-    finally:
-        if db.is_connected():
-            db.close()
+    return {}
 
 def auth_block_account(id):
     """
