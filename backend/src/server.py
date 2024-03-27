@@ -2,7 +2,7 @@
 Server
 """
 
-from backend.src import auth
+from backend.src import auth, framework
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from json import dumps
@@ -45,6 +45,15 @@ def logout():
     if logout_response.get("code"):
         return jsonify(logout_response), logout_response.get("code")
     return jsonify(logout_response)
+
+@app.route("/framework/list", methods=["GET"])
+def framework_list():
+    token = request.args.get("token")
+
+    response = framework.framework_list(token)
+    if response.get("code"):
+        return jsonify(response), response.get("code")
+    return jsonify(response)
 
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
