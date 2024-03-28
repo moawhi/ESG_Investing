@@ -8,3 +8,15 @@ Progressing into our second week, we initiated the groundwork for our project by
 
 Week 3
 We reached a milestone by finalizing and submitting our proposal. With the groundwork laid, we started on our first sprint, commencing activities on Friday of Week 3. Transitioning into the implementation phase, my focus shifted towards designing the database schema and implementing SQL scripts for table creation. Additionally, I started the exploration of relevant Python libraries for interfacing with our MySQL database. 
+
+
+Week 4
+This week, I finalized the initial phase of database schema design and successfully integrated Python libraries for efficient MySQL database management. Additionally, we conducted a team-building session to strengthen collaboration and cohesion. 
+
+
+Week 5
+This week, my main focus was on implementing the SQL script to populate data into our database. Regular progress reviews kept us on track towards our goal of developing a comprehensive ESG management system for the FinTech industry.
+
+
+Week 6
+This week, after team discussions, I focused on modifying the SQL script for data population. Collaboratively refining our approach, we streamlined processes and improved efficiency. With rigorous testing, we ensured the integrity of our database. 
