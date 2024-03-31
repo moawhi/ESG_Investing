@@ -75,7 +75,7 @@ def auth_login(email, password):
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
         
         query = """
-            SELECT id, email_address, password, blocked, login_attempts
+            SELECT id, email_address, first_name, last_name, password, blocked, login_attempts
             FROM user
             WHERE email_address = %s
         """
@@ -93,21 +93,29 @@ def auth_login(email, password):
         with db.cursor() as cur:
             cur.execute(query, [email])
             result = cur.fetchone()
-            if result is None or not verify_password(password, result[2]):
-                if result:
-                    cur.execute(increase_login_attempts, [result[0]])
-                    db.commit()
-                return {"status": "fail", "message": "Incorrect username or password", "code": BAD_REQUEST}
+            if result is None:
+                return {"status": "fail", "message": "Incorrect email or password", "code": BAD_REQUEST}
 
-            (id, user_email, hashed_password, blocked, login_attempts) = result
-
+            (id, user_email, first_name, last_name, hashed_password, blocked, login_attempts) = result
             if blocked:
                 return {"status": "fail", "message": "Your account is blocked", "code": FORBIDDEN}
-
+            if login_attempts >= LOGIN_ATTEMPT_LIMIT:
+                return auth_block_account(id)
+            if not verify_password(password, hashed_password):
+                cur.execute(increase_login_attempts, [id])
+                db.commit()
+                return {"status": "fail", "message": "Incorrect email or password", "code": BAD_REQUEST}
+                
             cur.execute(reset_login_attempts, [id])
             db.commit()
             token = generate_jwt(id)
-            return {"user_id": id, "status": "success", "token": token}
+            return {
+                "user_id": id,
+                "status": "success",
+                "token": token,
+                "first_name": first_name,
+                "last_name": last_name
+            }
             
     except Exception as err:
         print(f"Error: {err}")
