@@ -58,7 +58,12 @@ def auth_register(first_name, last_name, email, password):
         db.commit()
         user_id = cursor.lastrowid
         token = generate_jwt(user_id)
-        return {"status": "success", "user_id": user_id, "token": token}
+        return {
+            "status": "success",
+            "user_id": user_id, 
+            "token": token,
+            "first_name": first_name,
+            "last_name": last_name}
     except Exception as err:
         print(f"Error: {err}")
         return {"status": "fail", "message": str(err)}
