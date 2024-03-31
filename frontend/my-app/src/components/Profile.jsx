@@ -1,7 +1,8 @@
 import React from 'react';
 import Topbar from './Topbar';
-import { Box, Container, Grid, Stack, Typography, Divider } from '@mui/material';
+import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import ImgMediaCard from './ImgMediaCard';
+import GeneralInformation from './GeneralInformation';
 
 const Profile = () => {
 	return (
@@ -24,7 +25,7 @@ const Profile = () => {
 							<Stack direction="row" justifyContent="space-between" spacing={4}>
 								<Stack spacing={4}>
 									<Typography variant="h4">
-										Profile
+										My Account
 									</Typography>
 								</Stack>
 							</Stack>
@@ -33,7 +34,7 @@ const Profile = () => {
 							<ImgMediaCard></ImgMediaCard>
 						</Grid>
 						<Grid xs={12} md={8}>
-							General Infor
+							<GeneralInformation></GeneralInformation>
 						</Grid>
 					</Grid>
 				</Container>
