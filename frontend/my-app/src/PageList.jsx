@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import Profile from './components/Profile';
 
 const PageList = () => {
   const [token, setToken] = React.useState(null);
@@ -22,6 +23,7 @@ const PageList = () => {
         <Route path="/" element={<Login token={token} setToken={setToken} />} />
         <Route path="/register" element={<Register token={token} setToken={setToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token} setToken={setToken} />} />
+        <Route path="/profile" element={<Profile token={token} setToken={setToken} />} />
       </Routes>
     </>
   );

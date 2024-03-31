@@ -90,7 +90,7 @@ const AccountMenu = () => {
           <Avatar /> <Typography sx={{ fontFamily: 'Montserrat' }}>{owner}</Typography>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => handleNavigate('/dashboard')}>
+        <MenuItem onClick={() => handleNavigate('/profile')}>
           <ListItemIcon>
             <HomeRoundedIcon fontSize="small" />
           </ListItemIcon>
