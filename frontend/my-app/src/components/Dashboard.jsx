@@ -1,21 +1,19 @@
 /* eslint-disable react/react-in-jsx-scope */
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Typography, List, ListItem, ListItemText } from '@mui/material';
 import Topbar from './Topbar';
-//import Sidebar from './Sidebar';
-import { Box, Button, Typography, List, ListItem, ListItemText } from '@mui/material';
-import FrameworkSelection from './FrameworkSelection';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
   const [industries, setIndustries] = useState([]);
   const [selectedIndustry, setSelectedIndustry] = useState(null);
   const [companies, setCompanies] = useState([]);
-  const [open, setOpen] = useState(false);
+
   const token = localStorage.getItem('token');
   const name = localStorage.getItem('firstName');
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   // fetch industries and companies
   const fetchIndustriesAndCompanies = async () => {
@@ -50,6 +48,10 @@ const Dashboard = () => {
     const industryCompanies = industries.find(i => i.type === industry)?.companies || [];
     setCompanies(industryCompanies);
   };
+
+  const handleSelectCompany = (company) => {
+    navigate('/company_info', { state: { company }});
+  }
 
   return (
     <div>
@@ -120,17 +122,13 @@ const Dashboard = () => {
                 }}>
                   <List>
                     {selectedIndustry && companies.map((company) => (
-                      <ListItem button key={company.company_id} onClick={() => console.log(company)}>
+                      <ListItem button key={company.company_id} onClick={() => handleSelectCompany(company)}>
                         <ListItemText primary={company.name} />
                       </ListItem>
                     ))}
                   </List>
                 </Box>
               </Box>
-            </Box>
-            <Box>
-              <Button variant="contained" onClick={handleOpen}>Select Framework</Button>
-              <FrameworkSelection open={open} onClose={handleClose} />
             </Box>
           </Box>
         </Box>
