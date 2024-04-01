@@ -59,8 +59,7 @@ export default function Login() {
         const errorBody = await response.json();
         setErrorMessage(errorBody.message || 'Network or server error.');
       }
-    }
-    catch (error) {
+    } catch (error) {
       setErrorMessage('An error occurred: ' + error.message);
     }
   };
