@@ -57,7 +57,10 @@ def framework_list():
 
 @app.route("/company/industry-company-list", methods=["GET"])
 def industry_company_list():
-    token = request.args.get("token")
+    header = request.headers.get('Authorisation')
+    token = ''
+    if header and header.startswith('Bearer '):
+        token = header.split(' ')[1]
 
     response = company.company_industry_company_list(token)
     if response.get("code"):

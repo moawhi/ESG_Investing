@@ -1,20 +1,55 @@
 /* eslint-disable react/react-in-jsx-scope */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Topbar from './Topbar';
 //import Sidebar from './Sidebar';
 import { Box, Button, Typography, List, ListItem, ListItemText } from '@mui/material';
 import FrameworkSelection from './FrameworkSelection';
 
 const Dashboard = () => {
+  const [industries, setIndustries] = useState([]);
+  const [selectedIndustry, setSelectedIndustry] = useState(null);
+  const [companies, setCompanies] = useState([]);
   const [open, setOpen] = useState(false);
+  const token = localStorage.getItem('token');
   const name = localStorage.getItem('firstName');
-
-  const industries = ['Technology', 'Finance', 'Healthcare', 'Lifestyle'];
-  const companies = ['Company A', 'Company B', 'Company C'];
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  // fetch industries and companies
+  const fetchIndustriesAndCompanies = async () => {
+    try {
+      const response = await fetch('http://localhost:12345/company/industry-company-list', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorisation': 'Bearer ' + token,
+        },
+      })
+      if (response.ok) {
+        const responseData = await response.json();
+        setIndustries(responseData.industries);
+      } else {
+        const errorBody = await response.json();
+        console.error(errorBody.message);
+      }
+    } catch (error) {
+      console.error('Error fetching industries and companies', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchIndustriesAndCompanies();
+  }, []);
+
+  // function to handle selecting industry
+  const handleSelectIndustry = (industry) => {
+    setSelectedIndustry(industry);
+    // get companies based on selected industry
+    const industryCompanies = industries.find(i => i.type === industry)?.companies || [];
+    setCompanies(industryCompanies);
+  };
 
   return (
     <div>
@@ -61,10 +96,10 @@ const Dashboard = () => {
                   border: '2px solid #000',
                 }}>
                   <List>
-                    {industries.map((industry) => (
-                      <ListItem button key={industry} onClick={() => console.log(industry)}>
-                        <ListItemText primary={industry} />
-                      </ListItem>
+                  {industries.map((industry) => (
+                    <ListItem button key={industry.type} onClick={() => handleSelectIndustry(industry.type)}>
+                      <ListItemText primary={industry.type} />
+                    </ListItem>
                     ))}
                   </List>
                   </Box>
@@ -84,9 +119,9 @@ const Dashboard = () => {
                   border: '2px solid #000',
                 }}>
                   <List>
-                    {companies.map((company) => (
-                      <ListItem button key={company} onClick={() => console.log(company)}>
-                        <ListItemText primary={company} />
+                    {selectedIndustry && companies.map((company) => (
+                      <ListItem button key={company.company_id} onClick={() => console.log(company)}>
+                        <ListItemText primary={company.name} />
                       </ListItem>
                     ))}
                   </List>

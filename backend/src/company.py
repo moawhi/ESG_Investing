@@ -12,6 +12,7 @@ def company_industry_company_list(token):
     Gets all industries and for each industry lists the companies within that
     industry
     """
+
     if not verify_token(token):
         return {
             "status": "fail",
