@@ -15,12 +15,12 @@ function Topbar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" elevation={0} sx={{ backgroundColor: '#b5d8b1' }}>
         <Toolbar>
-          <Logo></Logo>
+          <Logo />
           <TextField
             variant="outlined"
             placeholder="Search..."
-            size="small"
-            sx={{ backgroundColor: '#fff', borderRadius: 1, mr: 2 }}
+            size="small" 
+            sx={{ backgroundColor: '#fff', borderRadius: 1, mr: 2, ml: 2 }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -28,9 +28,9 @@ function Topbar() {
                 </InputAdornment>
               ),
             }}
-          />
+            />
           <Box sx={{ flexGrow: 1 }} />
-          <AccountMenu></AccountMenu>
+          <AccountMenu />
         </Toolbar>
       </AppBar>
     </Box>
