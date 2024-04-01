@@ -16,6 +16,6 @@ def get_company_details(company_id):
             if company_details:
                 return company_details
             else:
-                return {"message": "Company not found."}
+                return {"status": "fail", "message": "Company not found."}
     finally:
         db.close()
