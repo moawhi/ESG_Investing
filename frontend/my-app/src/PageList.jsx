@@ -24,7 +24,7 @@ const PageList = () => {
       <Routes>
         <Route path="/" element={isAuthenticated() ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
         <Route path="/login" element= {<NoAuth><Login/></NoAuth> } />
-        <Route path="/register" element= { <Register/> } />
+        <Route path="/register" element= { <NoAuth><Register/></NoAuth> } />
         <Route path="/dashboard" element= {<RequireAuth><Dashboard/></RequireAuth>} />
       </Routes>
     </>
