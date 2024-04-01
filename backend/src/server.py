@@ -72,4 +72,4 @@ def company_details(company_id):
     details = get_company_details(company_id)
     if "message" in details:
         return jsonify(details), 404
-    return jsonify(details)
+    return jsonify(details), 200

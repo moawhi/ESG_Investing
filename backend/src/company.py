@@ -5,12 +5,11 @@ def get_company_details(company_id):
     db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
     try:
         with db.cursor(dictionary=True) as cursor:
-            # Fetch company details and ESG score
+            # Fetch company details, ESG rating, and industry
             cursor.execute("""
-                SELECT c.name, c.general_info, c.esg_score, i.name as industry
-                FROM company c
-                JOIN industry i ON c.industry_id = i.id
-                WHERE c.id = %s
+                SELECT name, info, esg_rating, industry
+                FROM company
+                WHERE perm_id = %s
             """, (company_id,))
             company_details = cursor.fetchone()
 
@@ -19,8 +18,8 @@ def get_company_details(company_id):
                 cursor.execute("""
                     SELECT COUNT(*) + 1 AS rank
                     FROM company
-                    WHERE esg_score > %s AND industry_id = %s
-                """, (company_details['esg_score'], company_details['industry_id']))
+                    WHERE esg_rating > %s AND industry = %s
+                """, (company_details['esg_rating'], company_details['industry']))
                 rank = cursor.fetchone()
                 company_details['esg_rank'] = rank['rank']
                 return company_details
