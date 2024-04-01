@@ -39,3 +39,14 @@ fields, so I worked on that. A bug was also found for the block account function
 lower priority to complete for now.
 Main focus will be to discuss with Offa what needs to be done for metrics selection. I wrote down some tasks we may
 need to do in order to achieve the functionality for metrics selection and will discuss with Offa and refine to proceed.
+
+Week 7
+Together with Offa, went through tasks that needed to be done for sprint 2. Went through user stories together with Offa and
+created subtasks and allocated them between us. I would be doing getting the list of frameworks from the database, getting the
+default metrics for a selected framework, calculating the new ESG score for a company after the user adjusts weighting and
+selection of metrics and allow users be able to change the weighting of metrics.
+However, after some review, it turned out that my task of getting the default metrics may overlap with Offa's task, in which case
+it becomes unneeded.
+In response to Lucy's request for additional returns of first and last name for login and register responses, I worked on those.
+I also fixed the block account functionality and completed implementation of getting the list of frameworks.
+Briefly discussed with Ruoxi some minor adjustments to the SQL scripts for better clarity of naming and to have more data added.
