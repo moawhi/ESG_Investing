@@ -24,7 +24,7 @@ def company_industry_company_list(token):
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
         
         query = """
-            SELECT industry, name
+            SELECT industry, name, perm_id
             FROM company
         """
         industries = []
@@ -32,7 +32,7 @@ def company_industry_company_list(token):
             cur.execute(query)
 
             for company in cur.fetchall():
-                (industry, name) = company
+                (industry, name, id) = company
                 industry_companies = {
                     "type": industry,
                     "companies": []
@@ -42,7 +42,8 @@ def company_industry_company_list(token):
 
                 index = get_dictionary_index_in_list(industries, "type", industry)
                 company_name = {
-                    "name": name
+                    "name": name,
+                    "company_id": id
                 }
                 industries[index]["companies"].append(company_name)
 
