@@ -25,7 +25,7 @@ def register():
         return jsonify(response), 400
     return jsonify(response), 200
 
-@app.route("/", methods=["POST"])
+@app.route("/login", methods=["POST"])
 def login():
     info = request.get_json()
     email = info["email_address"]

@@ -35,7 +35,7 @@ export default function Login() {
     const email_address = data.get('email');
     const password = data.get('password');
     try {
-      const response = await fetch('http://localhost:12345', {
+      const response = await fetch('http://localhost:12345/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,6 +48,9 @@ export default function Login() {
       if (response.ok) {
         const resBody = await response.json();
         if (resBody.status === "success") {
+          localStorage.setItem('token', resBody.token);
+          localStorage.setItem('firstName', resBody.first_name);
+          localStorage.setItem('lastName', resBody.last_name);
           navigate('/dashboard');
         } else {
           setErrorMessage(resBody.message);
