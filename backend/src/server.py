@@ -47,10 +47,13 @@ def logout():
 
 @app.route("/framework/list", methods=["GET"])
 def framework_list():
-    token = request.args.get("token")
-    company = request.args.get("company")
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    company_id = request.args.get("company_id")
 
-    response = framework.framework_list(token, company)
+    response = framework.framework_list(token, company_id)
     if response.get("code"):
         return jsonify(response), response.get("code")
     return jsonify(response)
