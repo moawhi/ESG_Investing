@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import CompanyInfo from './components/CompanyInfo';
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('token');
@@ -26,6 +27,7 @@ const PageList = () => {
         <Route path="/login" element= {<NoAuth><Login/></NoAuth> } />
         <Route path="/register" element= { <NoAuth><Register/></NoAuth> } />
         <Route path="/dashboard" element= {<RequireAuth><Dashboard/></RequireAuth>} />
+        <Route path="/company_info" element={<RequireAuth><CompanyInfo/></RequireAuth>} />
       </Routes>
     </>
   );
