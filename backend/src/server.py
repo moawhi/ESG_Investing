@@ -52,9 +52,9 @@ def framework_list():
     token = ""
     if header and header.startswith("Bearer "):
         token = header.split(" ")[1]
-    company = request.args.get("company")
+    company_id = request.args.get("company_id")
 
-    response = framework.framework_list(token, company)
+    response = framework.framework_list(token, company_id)
     if response.get("code"):
         return jsonify(response), response.get("code")
     return jsonify(response)
