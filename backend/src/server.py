@@ -48,7 +48,7 @@ def logout():
 
 @app.route("/framework/list", methods=["GET"])
 def framework_list():
-    header = request.header.get("Authorisation")
+    header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
         token = header.split(" ")[1]
