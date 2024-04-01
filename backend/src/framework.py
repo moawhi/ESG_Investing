@@ -60,6 +60,7 @@ def get_esg_data_for_company_and_framework(company_id, framework_id):
     Fetch ESG data for a specific company within a selected framework.
     Aggregate the data based on the framework's metric weights.
     """
+    import mysql.connector
     db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
     esg_data = []
     try:
@@ -72,6 +73,7 @@ def get_esg_data_for_company_and_framework(company_id, framework_id):
             if cursor.fetchone() is None:
                 return {"status": "fail", "message": "Company is not mapped to the requested framework."}
 
+            # Adjusted SQL query to fetch data based on the indicators as defined in the schema
             cursor.execute("""
                 SELECT fm.name AS framework_metric_name, fm.description, fm.weight AS framework_metric_weight,
                        ced.metric_name, ced.metric_score, ind.description AS indicator_description,
@@ -84,9 +86,7 @@ def get_esg_data_for_company_and_framework(company_id, framework_id):
             """, (company_id, framework_id))
             
             for row in cursor.fetchall():
-                # Adjust calculation based on actual data relationships and available columns
-                # Example calculation, adjust as necessary
-                weighted_score = row['metric_score'] * row['framework_metric_weight'] * row.get('indicator_weight', 1)
+                weighted_score = row['metric_score'] * row['framework_metric_weight'] * row['indicator_weight']
                 esg_data.append({
                     "framework_metric_name": row['framework_metric_name'],
                     "indicator_description": row['indicator_description'],
@@ -101,4 +101,3 @@ def get_esg_data_for_company_and_framework(company_id, framework_id):
         db.close()
 
     return {"esg_data": esg_data}
-
