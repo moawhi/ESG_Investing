@@ -2,10 +2,9 @@
 Server
 """
 
-from backend.src import auth, framework
+from backend.src import auth, framework, company
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from json import dumps
 
 app = Flask(__name__)
 CORS(app)
@@ -52,6 +51,15 @@ def framework_list():
     company = request.args.get("company")
 
     response = framework.framework_list(token, company)
+    if response.get("code"):
+        return jsonify(response), response.get("code")
+    return jsonify(response)
+
+@app.route("/company/industry-company-list", methods=["GET"])
+def industry_company_list():
+    token = request.args.get("token")
+
+    response = company.company_industry_company_list(token)
     if response.get("code"):
         return jsonify(response), response.get("code")
     return jsonify(response)
