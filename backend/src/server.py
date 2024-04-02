@@ -7,7 +7,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from backend.src.company import get_company_details
 from backend.src.helper import verify_token
-from json import dumps
 
 app = Flask(__name__)
 CORS(app)
@@ -92,8 +91,10 @@ def company_details(company_id):
 
 @app.route("/company/esg", methods=["GET"])
 def company_esg():
-    header = request.headers.get('Authorisation')
-    token = header.split(" ")[1] if header and " " in header else ""
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
     company_id = request.args.get("company_id", type=int)
     framework_id = request.args.get("framework_id", type=int)
 
