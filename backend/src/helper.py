@@ -44,3 +44,11 @@ def verify_token(token):
     finally:
         if db.is_connected():
             db.close()
+
+def get_dictionary_index_in_list(dict_list, key, value):
+    """
+    Get the index of a dictionary in a list given a key-value pairing
+    """
+    for dictionary in dict_list:
+        if dictionary.get(key) == value:
+            return dict_list.index(dictionary)
