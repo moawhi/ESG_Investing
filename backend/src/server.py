@@ -78,7 +78,8 @@ def company_details(company_id):
     """
     Endpoint to retrieve details of a specific company.
     """
-    token = request.args.get("token")
+    header = request.headers.get('Authorisation')
+    token = ''
     if not verify_token(token):
         return jsonify({"status": "fail", "message": "Invalid token"}), 403
 
@@ -89,7 +90,8 @@ def company_details(company_id):
 
 @app.route("/company/esg", methods=["GET"])
 def company_esg():
-    token = request.args.get("token")
+    header = request.headers.get('Authorisation')
+    token = ''
     company_id = request.args.get("company_id", type=int)
     framework_id = request.args.get("framework_id", type=int)
 
