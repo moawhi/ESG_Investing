@@ -5,6 +5,7 @@ Company functions
 import mysql.connector
 from backend.src.helper import verify_token, get_dictionary_index_in_list
 
+BAD_REQUEST = 400
 FORBIDDEN = 403
 
 def company_industry_company_list(token):
@@ -80,3 +81,40 @@ def get_company_details(company_id):
                 return {"status": "fail", "message": "Company not found."}
     finally:
         db.close()
+
+def company_calculate_esg_score(token, esg_data):
+    """
+    Calculates the ESG score for a company for selected metrics and indicators
+    """
+    if not verify_token(token):
+        return {
+            "status": "fail",
+            "message": "Invalid token",
+            "code": FORBIDDEN
+        }
+    if not esg_data:
+        return {
+            "status": "fail",
+            "message": "There was an error handling the ESG data",
+            "code": BAD_REQUEST
+        }
+    
+    weighted_scores_by_year = []
+    for indicator in esg_data:
+        year_weighted_scores = {
+            "year": indicator["metric_year"],
+            "weighted_scores": []
+        }
+        if not any(score.get("year") == indicator["metric_year"] for score in weighted_scores_by_year):
+            weighted_scores_by_year.append(year_weighted_scores)
+
+        index = get_dictionary_index_in_list(weighted_scores_by_year, "year", indicator["metric_year"])
+        weighted_score = indicator["metric_score"] * indicator["framework_metric_weight"] * indicator["indicator_weight"]
+        weighted_scores_by_year[index]["weighted_scores"].append(weighted_score)
+    
+    weighted_score_totals = [sum(scores["weighted_scores"]) for scores in weighted_scores_by_year]
+    esg_score = sum(weighted_score_totals) / len(weighted_score_totals)
+
+    return {
+        "esg_score": esg_score
+    }
