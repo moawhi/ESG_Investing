@@ -5,6 +5,8 @@ Server
 from backend.src import auth, framework, company
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from backend.src.company import get_company_details
+from backend.src.helper import verify_token
 
 app = Flask(__name__)
 CORS(app)
@@ -69,6 +71,23 @@ def industry_company_list():
     if response.get("code"):
         return jsonify(response), response.get("code")
     return jsonify(response)
+
+@app.route("/company/<int:company_id>", methods=["GET"])
+def company_details(company_id):
+    """
+    Endpoint to retrieve details of a specific company.
+    """
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    if not verify_token(token):
+        return jsonify({"status": "fail", "message": "Invalid token"}), 403
+
+    details = get_company_details(company_id)
+    if "message" in details:
+        return jsonify(details), 404
+    return jsonify(details), 200
 
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
