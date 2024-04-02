@@ -5,12 +5,9 @@ Server
 from backend.src import auth, framework, company
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-<<<<<<< HEAD
 from json import dumps
 from backend.src.company import get_company_details
 from backend.src.helper import verify_token
-=======
->>>>>>> master
 
 app = Flask(__name__)
 CORS(app)
@@ -76,9 +73,6 @@ def industry_company_list():
         return jsonify(response), response.get("code")
     return jsonify(response)
 
-if __name__ == "__main__":
-    app.run(host=HOST, port=PORT, debug=True)
-
 @app.route("/company/<int:company_id>", methods=["GET"])
 def company_details(company_id):
     """
@@ -110,3 +104,6 @@ def company_esg():
         return jsonify(esg_data), 404
 
     return jsonify(esg_data), 200
+
+if __name__ == "__main__":
+    app.run(host=HOST, port=PORT, debug=True)

@@ -63,9 +63,9 @@ def framework_default_metrics(token, framework):
 def get_esg_data_for_company_and_framework(company_id, framework_id):
     """
     Fetch ESG data for a specific company within a selected framework.
-    Aggregate the data based on the framework's metric weights.
+    The function now returns data including the year, framework metric weight, indicator weight,
+    and ESG score of the indicator, leaving the calculation of the weighted score for later processing.
     """
-    import mysql.connector
     db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
     esg_data = []
     try:
@@ -78,10 +78,10 @@ def get_esg_data_for_company_and_framework(company_id, framework_id):
             if cursor.fetchone() is None:
                 return {"status": "fail", "message": "Company is not mapped to the requested framework."}
 
-            # Adjusted SQL query to fetch data based on the indicators as defined in the schema
+            # Fetching ESG data with year, framework metric weight, indicator weight, and ESG score
             cursor.execute("""
                 SELECT fm.name AS framework_metric_name, fm.description, fm.weight AS framework_metric_weight,
-                       ced.metric_name, ced.metric_score, ind.description AS indicator_description,
+                       ced.metric_name, ced.metric_score, ced.metric_year, ind.description AS indicator_description,
                        fmi.weight AS indicator_weight
                 FROM framework_metric fm
                 JOIN framework_metric_indicator_mapping fmi ON fm.id = fmi.framework_metric_id
@@ -91,12 +91,14 @@ def get_esg_data_for_company_and_framework(company_id, framework_id):
             """, (company_id, framework_id))
             
             for row in cursor.fetchall():
-                weighted_score = row['metric_score'] * row['framework_metric_weight'] * row['indicator_weight']
                 esg_data.append({
                     "framework_metric_name": row['framework_metric_name'],
+                    "framework_metric_weight": row['framework_metric_weight'],
                     "indicator_description": row['indicator_description'],
                     "metric_name": row['metric_name'],
-                    "weighted_score": weighted_score
+                    "metric_year": row['metric_year'],
+                    "indicator_weight": row['indicator_weight'],
+                    "metric_score": row['metric_score']  # This is the ESG score of the indicator
                 })
 
             if not esg_data:
