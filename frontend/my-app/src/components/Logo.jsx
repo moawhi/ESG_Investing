@@ -1,6 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Button, Box } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import SpaIcon from '@mui/icons-material/Spa';
 
 const Logo = () => {
   const navigate = useNavigate();
@@ -9,22 +10,19 @@ const Logo = () => {
     navigate('/');
   };
   return (
-    <Button onClick={handleLogoClick}>
-      <Box
-        component='img'
-        alt='esg-logo'
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmpBQKAqzONFKoY_UAM9kFAfUllZl1yFkmtrAo00AWSuJZ9LHVIyQa4CNMxLZAo7z2VHk&usqp=CAU"
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginRight: '10px',
-          width: 'auto',
-          height: '60px',
-          mixBlendMode: 'color-burn',
-        }}
-      >
-      </Box>
-    </Button>
+    <IconButton onClick={handleLogoClick} 
+    sx={{ 
+      m: 1, 
+      color: '#779c73',
+      backgroundColor: "#b5d8b1",
+      color: '#b5d8b1', 
+      backgroundColor: '#779c73', 
+    '&:hover': {
+      color: '#779c73',
+      backgroundColor: "#b5d8b1",
+    }}}>
+        <SpaIcon />
+    </IconButton>
   )
 }
 

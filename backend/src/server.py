@@ -2,10 +2,9 @@
 Server
 """
 
-from backend.src import auth, framework
+from backend.src import auth, framework, company
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from json import dumps
 
 app = Flask(__name__)
 CORS(app)
@@ -25,7 +24,7 @@ def register():
         return jsonify(response), 400
     return jsonify(response), 200
 
-@app.route("/", methods=["POST"])
+@app.route("/login", methods=["POST"])
 def login():
     info = request.get_json()
     email = info["email_address"]
@@ -48,9 +47,25 @@ def logout():
 
 @app.route("/framework/list", methods=["GET"])
 def framework_list():
-    token = request.args.get("token")
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    company_id = request.args.get("company_id")
 
-    response = framework.framework_list(token)
+    response = framework.framework_list(token, company_id)
+    if response.get("code"):
+        return jsonify(response), response.get("code")
+    return jsonify(response)
+
+@app.route("/company/industry-company-list", methods=["GET"])
+def industry_company_list():
+    header = request.headers.get('Authorisation')
+    token = ''
+    if header and header.startswith('Bearer '):
+        token = header.split(' ')[1]
+
+    response = company.company_industry_company_list(token)
     if response.get("code"):
         return jsonify(response), response.get("code")
     return jsonify(response)
