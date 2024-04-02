@@ -56,6 +56,9 @@ export default function Register() {
       if (response.ok) {
         const resBody = await response.json();
         if (resBody.status === "success") {
+          localStorage.setItem('token', resBody.token);
+          localStorage.setItem('firstName', resBody.first_name);
+          localStorage.setItem('lastName', resBody.last_name);
           navigate('/dashboard');
         } 
       } else {
