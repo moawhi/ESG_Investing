@@ -55,11 +55,6 @@ def framework_list(token, company_id):
         if db.is_connected():
             db.close()
 
-def framework_default_metrics(token, framework):
-    """
-    Gets the default metrics for a selected framework
-    """
-
 def get_esg_data_for_company_and_framework(company_id, framework_id):
     """
     Fetch ESG data for a specific company within a selected framework.
