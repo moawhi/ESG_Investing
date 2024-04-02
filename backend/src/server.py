@@ -5,9 +5,9 @@ Server
 from backend.src import auth, framework, company
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from json import dumps
 from backend.src.company import get_company_details
 from backend.src.helper import verify_token
+from json import dumps
 
 app = Flask(__name__)
 CORS(app)
