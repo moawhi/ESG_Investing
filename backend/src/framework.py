@@ -59,3 +59,52 @@ def framework_default_metrics(token, framework):
     """
     Gets the default metrics for a selected framework
     """
+
+def get_esg_data_for_company_and_framework(company_id, framework_id):
+    """
+    Fetch ESG data for a specific company within a selected framework.
+    The function now returns data including the year, framework metric weight, indicator weight,
+    and ESG score of the indicator, leaving the calculation of the weighted score for later processing.
+    """
+    db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
+    esg_data = []
+    try:
+        with db.cursor(dictionary=True) as cursor:
+            # Verify the company is mapped to the framework
+            cursor.execute("""
+                SELECT * FROM framework_company_mapping
+                WHERE company_id = %s AND framework_id = %s
+            """, (company_id, framework_id))
+            if cursor.fetchone() is None:
+                return {"status": "fail", "message": "Company is not mapped to the requested framework."}
+
+            # Fetching ESG data with year, framework metric weight, indicator weight, and ESG score
+            cursor.execute("""
+                SELECT fm.name AS framework_metric_name, fm.description, fm.weight AS framework_metric_weight,
+                       ced.metric_name, ced.metric_score, ced.metric_year, ind.description AS indicator_description,
+                       fmi.weight AS indicator_weight
+                FROM framework_metric fm
+                JOIN framework_metric_indicator_mapping fmi ON fm.id = fmi.framework_metric_id
+                JOIN indicator ind ON fmi.indicator_id = ind.id
+                JOIN company_esg_raw_data ced ON ind.id = ced.metric_id AND ced.company_id = %s
+                WHERE fm.framework_id = %s
+            """, (company_id, framework_id))
+            
+            for row in cursor.fetchall():
+                esg_data.append({
+                    "framework_metric_name": row['framework_metric_name'],
+                    "framework_metric_weight": row['framework_metric_weight'],
+                    "indicator_description": row['indicator_description'],
+                    "metric_name": row['metric_name'],
+                    "metric_year": row['metric_year'],
+                    "indicator_weight": row['indicator_weight'],
+                    "metric_score": row['metric_score']  # This is the ESG score of the indicator
+                })
+
+            if not esg_data:
+                return {"status": "fail", "message": "No ESG data found for the specified company and framework."}
+
+    finally:
+        db.close()
+
+    return {"esg_data": esg_data}
