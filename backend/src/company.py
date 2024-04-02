@@ -84,7 +84,13 @@ def get_company_details(company_id):
 
 def company_calculate_esg_score(token, esg_data):
     """
-    Calculates the ESG score for a company for selected metrics and indicators
+    Calculates the ESG score for a company for selected metrics and indicators.
+    The weighted score for each indicator is calculated using:
+    weighted score = indicator ESG score * framework metric weight * indicator weight.
+    The sum of these weighted scores is obtained for each year to give the ESG score
+    for that year.
+    When multiple years are selected, the average of the ESG scores for all selected years
+    is calculated to give the final total ESG score.
     """
     if not verify_token(token):
         return {
