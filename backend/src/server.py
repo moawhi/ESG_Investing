@@ -80,6 +80,8 @@ def company_details(company_id):
     """
     header = request.headers.get('Authorisation')
     token = ''
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
     if not verify_token(token):
         return jsonify({"status": "fail", "message": "Invalid token"}), 403
 
@@ -91,7 +93,7 @@ def company_details(company_id):
 @app.route("/company/esg", methods=["GET"])
 def company_esg():
     header = request.headers.get('Authorisation')
-    token = ''
+    token = header.split(" ")[1] if header and " " in header else ""
     company_id = request.args.get("company_id", type=int)
     framework_id = request.args.get("framework_id", type=int)
 

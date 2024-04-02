@@ -60,7 +60,9 @@ def company_industry_company_list(token):
             db.close()
 
 def get_company_details(company_id):
-    # Fetches details of a specific company, including its ESG score, ranking within its industry, and other details.
+    """
+    Fetches details of a specific company, including its ESG score, ranking within its industry, and other details.
+    """
     db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
     try:
         with db.cursor(dictionary=True) as cursor:
