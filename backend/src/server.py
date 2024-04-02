@@ -78,8 +78,8 @@ def company_details(company_id):
     """
     Endpoint to retrieve details of a specific company.
     """
-    header = request.headers.get('Authorisation')
-    token = ''
+    header = request.headers.get("Authorisation")
+    token = ""
     if header and header.startswith("Bearer "):
         token = header.split(" ")[1]
     if not verify_token(token):
