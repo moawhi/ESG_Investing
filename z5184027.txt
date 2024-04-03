@@ -76,3 +76,10 @@ Attended weekly meeting and discuss on dashboard page.
 
 Wait on backend to finalise metric selection and data.
 
+# Week 7
+
+Attended weekly meeting
+
+Change account menu.
+
+Complete Profile page, frontend component.
