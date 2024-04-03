@@ -73,7 +73,7 @@ def get_company_details(company_id):
                 WHERE perm_id = %s
             """, (company_id,))
             company_details = cursor.fetchone()
-
+            
             if company_details:
                 return company_details
             else:

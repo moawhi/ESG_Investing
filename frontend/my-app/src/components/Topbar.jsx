@@ -2,9 +2,7 @@ import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import TextField from '@mui/material/TextField';
-import SearchIcon from '@mui/icons-material/Search';
-import InputAdornment from '@mui/material/InputAdornment';
+import { Typography } from '@mui/material';
 
 import Logo from './Logo';
 import AccountMenu from './AccountMenu';
@@ -16,19 +14,7 @@ function Topbar() {
       <AppBar position="static" elevation={0} sx={{ backgroundColor: '#b5d8b1' }}>
         <Toolbar>
           <Logo />
-          <TextField
-            variant="outlined"
-            placeholder="Search..."
-            size="small" 
-            sx={{ backgroundColor: '#fff', borderRadius: 1, mr: 2, ml: 2 }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-            />
+          <Typography variant='h4' sx={{ ml: 1, color: '#779c73', fontWeight: 'bold' }}>HF ESG Management</Typography>
           <Box sx={{ flexGrow: 1 }} />
           <AccountMenu />
         </Toolbar>
