@@ -19,7 +19,6 @@ def framework_list(token, company_id):
             "message": "Invalid token",
             "code": FORBIDDEN
         }
-    print(company_id)
     db = None
     try:
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
@@ -43,7 +42,6 @@ def framework_list(token, company_id):
                     "info": info
                 }
                 frameworks.append(framework_details)
-            print(frameworks)
             return {
                 "frameworks": frameworks
             }
