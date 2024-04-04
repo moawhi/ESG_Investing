@@ -20,3 +20,11 @@ This week, my main focus was on implementing the SQL script to populate data int
 
 Week 6
 This week, after team discussions, I focused on modifying the SQL script for data population. Collaboratively refining our approach, we streamlined processes and improved efficiency. With rigorous testing, we ensured the integrity of our database. 
+
+
+Week 7
+This week, I achieved a milestone by developing 105 comprehensive ESG indicators, designed to assess the sustainability practices within the FinTech industry. Additionally, I integrated data from three companies.
+
+
+Week 8
+Building on our progress, I constructed two robust frameworks tailored to analyze and report on the ESG performance of companies in the FinTech sector. These frameworks are instrumental in operationalizing our indicators, facilitating a systematic approach to ESG evaluation and reporting.
