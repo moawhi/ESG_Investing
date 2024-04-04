@@ -3,7 +3,7 @@ Framework functions
 """
 
 import mysql.connector
-from backend.src.helper import verify_token
+from backend.src.helper import verify_token, get_dictionary_index_in_list
 
 FORBIDDEN = 403
 
@@ -89,16 +89,29 @@ def get_esg_data_for_company_and_framework(company_id, framework_id):
             """, (company_id, framework_id))
             
             for row in cursor.fetchall():
-                esg_data.append({
-                    "framework_metric_name": row['framework_metric_name'],
-                    "framework_metric_weight": row['framework_metric_weight'],
-                    "indicator_description": row['indicator_description'],
-                    "metric_name": row['metric_name'],
-                    "metric_year": row['metric_year'],
-                    "indicator_weight": row['indicator_weight'],
-                    "metric_score": row['metric_score']  # This is the ESG score of the indicator
-                })
+                framework_metric_details = {
+                    "framework_metric_name": row["framework_metric_name"],
+                    "framework_metric_weight": row["framework_metric_weight"],
+                    "indicators": []
+                }
+                if not any(metric.get("framework_metric_name") == row["framework_metric_name"] for metric in esg_data):
+                    esg_data.append(framework_metric_details)
 
+                metric_year = row["metric_year"]
+                indicator_details = {
+                    "indicator_name": row["metric_name"],
+                    "indicator_weight": row["indicator_weight"],
+                    f"indicator_score_{metric_year}": row["metric_score"],
+                    "indicator_description": row["indicator_description"]
+                }
+                framework_metric_idx = get_dictionary_index_in_list(esg_data, "framework_metric_name", row["framework_metric_name"])
+                indicators = esg_data[framework_metric_idx]["indicators"]
+                if not any(indicator.get("indicator_name") == row["metric_name"] for indicator in indicators):
+                    indicators.append(indicator_details)
+                else:
+                    indicator_idx = get_dictionary_index_in_list(indicators, "indicator_name", row["metric_name"])
+                    indicators[indicator_idx].update(indicator_details)
+            
             if not esg_data:
                 return {"status": "fail", "message": "No ESG data found for the specified company and framework."}
 
