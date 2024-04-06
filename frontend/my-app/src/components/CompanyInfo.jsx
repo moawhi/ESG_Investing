@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Accordion, AccordionSummary, AccordionDetails, Box, Button, Typography, Grid } from '@mui/material';
-//import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Accordion, AccordionSummary, AccordionDetails, Box, FormControlLabel, Checkbox, Typography, Grid } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
+import DevicesIcon from '@mui/icons-material/Devices';
+import FactoryIcon from '@mui/icons-material/Factory';
 import FrameworkSelection from './FrameworkSelection';
 import Topbar from './Topbar';
 
 const CompanyInfo = () => {
   const location = useLocation();
-
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const { company } = location.state;
 
@@ -103,6 +103,13 @@ const CompanyInfo = () => {
       console.error('Error fetching esg details:', error);
     }
   };
+
+  const industryIcons = {
+    Technology: DevicesIcon,
+    Energy: EnergySavingsLeafIcon,
+    Finance: AttachMoneyIcon,
+    Manufacturing: FactoryIcon
+  };
   
 
   return (
@@ -110,30 +117,133 @@ const CompanyInfo = () => {
       <Topbar />
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <Box>
-            <Typography variant="h5">{companyDetails.name}</Typography>
-            <Typography>{companyDetails.info}</Typography>
-            <Typography>ESG Rating: {companyDetails.esg_rating}</Typography>
-            <Typography>Industry: {companyDetails.industry}</Typography>
-            <Typography>Industry Ranking: {companyDetails.industry_ranking}</Typography>
+          <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              height: '100%',
+            }}>
+            <Box sx={{ 
+                display: 'flex', 
+                flexDirection: 'row', 
+                overflow: 'auto'
+              }}> 
+                <Box sx={{
+                  flex: 1,
+                  padding: 4,
+                  mr: 2
+                }}>
+                  <Grid container alignItems="center" spacing={1}>
+                  <Grid item>
+                    {industryIcons[companyDetails.industry] ? React.createElement(industryIcons[companyDetails.industry], 
+                      { sx: { verticalAlign: 'middle', mr: 2, color: '#779c73', fontSize: '4rem' }}) : null}
+                  </Grid>
+                  <Grid item>
+                    <Typography sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>{companyDetails.name}</Typography>
+                    <Typography>{companyDetails.industry}</Typography>
+                  </Grid>
+                  <Box sx={{ padding: 1, mt: 1 }}>
+                    <Typography>{companyDetails.info}</Typography>
+                  </Box>
+                  </Grid>
+                </Box>
+                <Box sx={{ 
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center', 
+                  mt: 2,
+                  mr: 6
+                }}>
+                  <Box sx={{ textAlign: 'center', mt: 2 }}>
+                    <Typography variant="h2" component="span" sx={{ fontWeight: 'bold' }}>
+                      {companyDetails.esg_rating}
+                    </Typography>
+                    <Typography variant="subtitle1" sx={{ display: 'block' }}>
+                      ESG Rating
+                    </Typography>
+                  </Box>
+                  <Box sx={{ 
+                    textAlign: 'center',
+                    mt: 2
+                  }}>
+                    <Typography variant="h2" component="span" sx={{ fontWeight: 'bold' }}>
+                      {companyDetails.industry_ranking}
+                    </Typography>
+                    <Typography variant="subtitle1" sx={{ display: 'block' }}>
+                    Industry Ranking
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            <Box sx={{ 
+              flex: 1
+            }}> 
+              <FrameworkSelection
+              frameworks={frameworks}
+              onSelectFramework={handleFrameworkSelection}
+              />
+            </Box>
           </Box>
-          <Button variant="contained" onClick={handleOpen}>Select Framework</Button>
-          <FrameworkSelection open={open} onClose={handleClose} frameworks={frameworks} onSelectFramework={handleFrameworkSelection}/>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Box sx={{ maxHeight: 'calc(100vh - 100px)', overflow: 'auto' }}>
-            {metricDetails.map((detail, index) => (
-              <Box key={index} sx={{ borderBottom: 1, borderColor: 'divider', padding: 2 }}>
-                <Typography variant="h6">{detail.framework_metric_name}</Typography>
-                <Typography variant="body2">Weight: {detail.framework_metric_weight}</Typography>
-                <Typography variant="body2">Indicator Name: {detail.metric_name}</Typography>
-                <Typography variant="body2">Year: {detail.metric_year}</Typography>
-                <Typography variant="body2">Indicator Weight: {detail.indicator_weight}</Typography>
-                <Typography variant="body2">Metric Score: {detail.metric_score}</Typography>
-                <Typography variant="body2" sx={{ marginBottom: 2 }}>
-                  Indicator Description: {detail.indicator_description}
-                </Typography>
-              </Box>
+          <Grid container sx={{ pt: 4, pl: 1, mb: 1, alignItems: 'center' }}>
+            <Grid item xs={6.9}>
+            <Typography sx={{ fontSize: '1.5rem', fontWeight:'bold' }}>Metrics and Indicators</Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Typography sx={{ fontWeight: 'bold' }}>Weight</Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <Typography sx={{ fontWeight: 'bold' }}>2022</Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Typography sx={{ fontWeight: 'bold' }}>2023</Typography>
+            </Grid>
+          </Grid>
+          <Box sx={{ 
+            maxHeight: '84vh', 
+            overflow: 'auto',
+            scrollbarWidth: 'none' 
+            }}>
+            {metricDetails.map((metric) => (
+            <Accordion sx={{ border: '1px solid #e0e0e0' }}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Grid container>
+                <Grid item xs={7.25}>
+                  <Typography variant="h6">{metric.framework_metric_name}</Typography>
+                </Grid>
+                <Grid item xs={3}>
+                <Typography variant="h6">{metric.framework_metric_weight}</Typography>
+                </Grid>
+              </Grid>
+            </AccordionSummary>
+            <AccordionDetails>
+              {metric.indicators.map((indicator) => (
+                <Grid container alignItems="center" spacing={2}>
+                  <Grid item xs={1}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          // handle checkbox functionality later
+                        />
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={6} sx={{ borderRight: '1px solid #e0e0e0' }}>
+                    <Typography>{indicator.indicator_name}</Typography>
+                  </Grid>
+                  <Grid item xs={2} sx={{ borderRight: '1px solid #e0e0e0' }}>
+                    <Typography>{indicator.indicator_weight}</Typography>
+                  </Grid>
+                  <Grid item xs={1} sx={{ borderRight: '1px solid #e0e0e0' }}>
+                    <Typography>{indicator.indicator_score_2022}</Typography>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <Typography>{indicator.indicator_score_2023}</Typography>
+                  </Grid>
+                </Grid>
+              ))}
+            </AccordionDetails>
+            </Accordion>
             ))}
           </Box>
         </Grid>
