@@ -84,13 +84,14 @@ def get_company_details(company_id):
 
 def company_calculate_esg_score(token, esg_data):
     """
-    Calculates the ESG score for a company for selected metrics and indicators.
+    Calculates the ESG score for a company for currently selected metrics, indicators,
+    weights and years.
     The weighted score for each indicator is calculated using:
     weighted score = indicator ESG score * framework metric weight * indicator weight.
-    The sum of these weighted scores is obtained for each year to give the ESG score
-    for that year.
-    When multiple years are selected, the average of the ESG scores for all selected years
-    is calculated to give the final total ESG score.
+    If multiple years are selected, the weighted score for each year for an indicator
+    is calculated, and all the weighted scores for the indicator are averaged.
+    The final ESG score is the sum of all the averaged weighted scores, i.e.
+    the final ESG score is the average of all ESG scores for selected years.
     """
     if not verify_token(token):
         return {
@@ -105,21 +106,17 @@ def company_calculate_esg_score(token, esg_data):
             "code": BAD_REQUEST
         }
     
-    weighted_scores_by_year = []
-    for indicator in esg_data:
-        year_weighted_scores = {
-            "year": indicator["metric_year"],
-            "weighted_scores": []
-        }
-        if not any(score.get("year") == indicator["metric_year"] for score in weighted_scores_by_year):
-            weighted_scores_by_year.append(year_weighted_scores)
+    averaged_weighted_scores = []
+    for framework_metric in esg_data:
+        for indicator in framework_metric["indicators"]:
+            scores = [score[1] for score in indicator.items() if "indicator_score" in score[0]]
+            fm_weight = framework_metric["framework_metric_weight"]
+            i_weight = indicator["indicator_weight"]
+            scores = [score * fm_weight * i_weight for score in scores]
+            average_weighted_score = sum(scores) / len(scores)
+            averaged_weighted_scores.append(average_weighted_score)
 
-        index = get_dictionary_index_in_list(weighted_scores_by_year, "year", indicator["metric_year"])
-        weighted_score = indicator["metric_score"] * indicator["framework_metric_weight"] * indicator["indicator_weight"]
-        weighted_scores_by_year[index]["weighted_scores"].append(weighted_score)
-    
-    weighted_score_totals = [sum(scores["weighted_scores"]) for scores in weighted_scores_by_year]
-    esg_score = sum(weighted_score_totals) / len(weighted_score_totals)
+    esg_score = sum(averaged_weighted_scores)
 
     return {
         "esg_score": esg_score
