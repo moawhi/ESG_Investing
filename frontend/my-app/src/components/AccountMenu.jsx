@@ -88,7 +88,7 @@ const AccountMenu = () => {
           <Avatar /> <Typography >{first} {last}</Typography>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => handleNavigate('/dashboard')}>
+        <MenuItem onClick={() => handleNavigate('/profile')}>
           <ListItemIcon>
             <HomeRoundedIcon />
           </ListItemIcon>
