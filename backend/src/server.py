@@ -111,5 +111,19 @@ def company_esg():
 
     return jsonify(esg_data), 200
 
+@app.route("/company/calculate-esg-score", methods=["POST"])
+def calculate_esg_score():
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    info = request.get_json()
+    esg_data = info["esg_data"]
+
+    response = company.company_calculate_esg_score(token, esg_data)
+    if response.get("code"):
+        return jsonify(response), response.get("code")
+    return jsonify(response)
+
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
