@@ -2,8 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { Box, Typography, List, ListItem, ListItemText, Divider, Button, Stack, Grid } from '@mui/material';
 import Topbar from './Topbar';
+import { fetchCompanyDetails } from './helper';
+
+import CompanyCard from './CompanyCard';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -11,6 +14,7 @@ const Dashboard = () => {
   const [industries, setIndustries] = useState([]);
   const [selectedIndustry, setSelectedIndustry] = useState(null);
   const [companies, setCompanies] = useState([]);
+  const [companyDetails, setCompanyDetails] = useState([]);
 
   const token = localStorage.getItem('token');
   const name = localStorage.getItem('firstName');
@@ -41,6 +45,15 @@ const Dashboard = () => {
     fetchIndustriesAndCompanies();
   }, []);
 
+  useEffect(() => {
+    const fetchDataDetails = async () => {
+      const details = await fetchCompanyDetails(companies);
+      console.log(details);
+      setCompanyDetails(details);
+    }
+    fetchDataDetails();
+  }, [companies]);
+
   // function to handle selecting industry
   const handleSelectIndustry = (industry) => {
     setSelectedIndustry(industry);
@@ -50,26 +63,26 @@ const Dashboard = () => {
   };
 
   const handleSelectCompany = (company) => {
-    navigate('/company_info', { state: { company }});
+    navigate('/company_info', { state: { company } });
   }
 
   return (
     <div>
       <Topbar />
       <Box sx={{ display: 'flex', height: '90vh', ml: 3, mr: 3 }}>
-        <Box sx={{ 
+        <Box sx={{
           flexGrow: 1,
           display: 'flex',
           flexDirection: 'column',
-          }}>
-          <Box sx={{ 
-            padding: 2, 
-            fontSize: '1rem', 
+        }}>
+          <Box sx={{
+            padding: 2,
+            fontSize: '1rem',
             flex: '1',
             display: 'flex',
             flexDirection: 'column',
             gap: 1,
-            }}>
+          }}>
             <Box>
               <Typography variant="h4" sx={{ mb: 1, mt: 1 }}>Welcome, {name}.</Typography>
               <Typography variant="h5" gutterBottom>Get Started</Typography>
@@ -78,56 +91,63 @@ const Dashboard = () => {
             <Box sx={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'center',
               alignItems: 'center',
               flex: '1',
               gap: 10,
             }}>
               <Box sx={{
-                width: '25%',
+                width: '20%',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
               }} >
-                <Typography sx={{ p: 2 }}> Select an Industry </Typography>
+                <Typography variant="h6" sx={{ p: 2, fontWeight: '600'}}> Select an Industry </Typography>
                 <Box sx={{
                   height: '90%',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
                   bgcolor: 'background.paper',
-                  borderRadius: '16px', 
-                  overflow: 'hidden', 
-                  border: '2px solid #000',
                 }}>
                   <List>
-                  {industries.map((industry) => (
-                    <ListItem button key={industry.type} onClick={() => handleSelectIndustry(industry.type)}>
-                      <ListItemText primary={industry.type} />
-                    </ListItem>
-                    ))}
-                  </List>
-                  </Box>
-                </Box>
-              <Box sx={{
-                width: '25%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-              }} >
-                <Typography sx={{ p: 2 }}>Select a Company</Typography>
-                <Box sx={{
-                  height: '90%',
-                  bgcolor: 'background.paper',
-                  borderRadius: '16px', 
-                  overflow: 'hidden', 
-                  border: '2px solid #000',
-                }}>
-                  <List>
-                    {selectedIndustry && companies.map((company) => (
-                      <ListItem button key={company.company_id} onClick={() => handleSelectCompany(company)}>
-                        <ListItemText primary={company.name} />
+                    {industries.map((industry) => (
+                      <ListItem button key={industry.type} onClick={() => handleSelectIndustry(industry.type)}>
+                        <ListItemText primary={industry.type} />
                       </ListItem>
                     ))}
                   </List>
                 </Box>
+              </Box>
+              <Divider orientation="vertical" flexItem />
+              <Box sx={{
+                width: '75%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              }} >
+                <Stack>
+                  <Typography variant="h6" sx={{ p: 2, fontWeight: '600' }}>Select a Company</Typography>
+                </Stack>
+                <Grid container spacing={2}>
+                  {selectedIndustry && companyDetails.map((companyDetail) => (
+                    <Grid item xs={12} md={4} key={companyDetail.name}>
+                      <Divider orientation="vertical" flexItem />
+                      <Box
+                        sx={{
+                          padding: 2,
+                          '&:hover': {
+                            backgroundColor: 'action.hover',
+                            cursor: 'pointer',
+                          },
+                          height: 'auto',
+                        }}
+                        onClick={() => handleSelectCompany(companyDetail.name)}
+                      >
+                        <CompanyCard companyDetails={companyDetail} />
+                      </Box>
+                      <Divider></Divider>
+                    </Grid>
+                  ))}
+                </Grid>
               </Box>
             </Box>
           </Box>
