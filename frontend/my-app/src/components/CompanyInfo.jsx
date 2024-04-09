@@ -9,9 +9,7 @@ import MetricAccordion from './MetricAccordion';
 const CompanyInfo = () => {
   const location = useLocation();
 
-  const { company } = location.state;
-
-  const companyId = company.company_id;
+  const companyId = location.state;
 
   const [companyDetails, setCompanyDetails] = useState([]);
   const [frameworks, setFrameworks] = useState([]);
