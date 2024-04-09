@@ -34,7 +34,7 @@ def company_industry_company_list(token):
             cur.execute(query)
 
             for company in cur.fetchall():
-                (industry, name, id) = company
+                (industry, id) = company
                 industry_companies = {
                     "type": industry,
                     "companies": []
@@ -43,11 +43,10 @@ def company_industry_company_list(token):
                     industries.append(industry_companies)
 
                 index = get_dictionary_index_in_list(industries, "type", industry)
-                company_name = {
-                    "name": name,
+                company_id = {
                     "company_id": id
                 }
-                industries[index]["companies"].append(company_name)
+                industries[index]["companies"].append(company_id)
 
             return {
                 "industries": industries
