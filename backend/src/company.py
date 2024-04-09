@@ -69,7 +69,7 @@ def get_company_details(company_id):
         with db.cursor(dictionary=True) as cursor:
             # Fetch company details, ESG rating, industry, and industry ranking directly
             cursor.execute("""
-                SELECT name, info, esg_rating, industry, industry_ranking
+                SELECT perm_id as company_id, name, info, esg_rating, industry, industry_ranking
                 FROM company
                 WHERE perm_id = %s
             """, (company_id,))
