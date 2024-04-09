@@ -34,7 +34,7 @@ def company_industry_company_list(token):
             cur.execute(query)
 
             for company in cur.fetchall():
-                (industry, name, id) = company
+                (industry, id) = company
                 industry_companies = {
                     "type": industry,
                     "companies": []
@@ -43,11 +43,10 @@ def company_industry_company_list(token):
                     industries.append(industry_companies)
 
                 index = get_dictionary_index_in_list(industries, "type", industry)
-                company_name = {
-                    "name": name,
+                company_id = {
                     "company_id": id
                 }
-                industries[index]["companies"].append(company_name)
+                industries[index]["companies"].append(company_id)
 
             return {
                 "industries": industries
@@ -69,7 +68,7 @@ def get_company_details(company_id):
         with db.cursor(dictionary=True) as cursor:
             # Fetch company details, ESG rating, industry, and industry ranking directly
             cursor.execute("""
-                SELECT name, info, esg_rating, industry, industry_ranking
+                SELECT perm_id as company_id, name, info, esg_rating, industry, industry_ranking
                 FROM company
                 WHERE perm_id = %s
             """, (company_id,))
