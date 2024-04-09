@@ -50,3 +50,14 @@ it becomes unneeded.
 In response to Lucy's request for additional returns of first and last name for login and register responses, I worked on those.
 I also fixed the block account functionality and completed implementation of getting the list of frameworks.
 Briefly discussed with Ruoxi some minor adjustments to the SQL scripts for better clarity of naming and to have more data added.
+
+Week 8
+Presented Demo B in lab. The day after, worked on Retrospective B with the team.
+The team also allocated parts for the final report. I will work on the Installation/User document/manual.
+I expect the workload for my part won't be too much, so I can help others with their parts as needed.
+It turned out that my task of getting the default metrics did overlap with Offa's task, so I no longer worked on that
+and worked on implementing calculation of ESG score based on the current selection of metrics.
+In response to Lucy's request for easier handling of data for the frontend,
+I worked on changing the return structure of the ESG data functionality that Offa had worked on. After confirming the
+structure with Lucy, that was successfully merged.
+I took a look at the Sprint 3 user stories and began noting down tasks to do.
