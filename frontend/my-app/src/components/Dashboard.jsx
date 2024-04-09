@@ -63,7 +63,7 @@ const Dashboard = () => {
   };
 
   const handleSelectCompany = (company) => {
-    navigate('/company_info', { state: { company } });
+    navigate('/company_info', { state:  company  });
   }
 
   return (
@@ -140,7 +140,7 @@ const Dashboard = () => {
                           },
                           height: 'auto',
                         }}
-                        onClick={() => handleSelectCompany(companyDetail.name)}
+                        onClick={() => handleSelectCompany(companyDetail.company_id)}
                       >
                         <CompanyCard companyDetails={companyDetail} />
                       </Box>

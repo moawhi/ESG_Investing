@@ -26,7 +26,7 @@ def company_industry_company_list(token):
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
         
         query = """
-            SELECT industry, name, perm_id
+            SELECT industry, perm_id
             FROM company
         """
         industries = []
