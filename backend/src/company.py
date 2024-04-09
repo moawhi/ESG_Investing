@@ -44,7 +44,6 @@ def company_industry_company_list(token):
 
                 index = get_dictionary_index_in_list(industries, "type", industry)
                 company_name = {
-                    "name": name,
                     "company_id": id
                 }
                 industries[index]["companies"].append(company_name)
