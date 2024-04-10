@@ -96,7 +96,7 @@ const Dashboard = () => {
               gap: 10,
             }}>
               <Box sx={{
-                width: '20%',
+                width: '15%',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
@@ -130,21 +130,15 @@ const Dashboard = () => {
                 <Grid container spacing={2}>
                   {selectedIndustry && companyDetails.map((companyDetail) => (
                     <Grid item xs={12} md={4} key={companyDetail.name}>
-                      <Divider orientation="vertical" flexItem />
                       <Box
                         sx={{
                           padding: 2,
-                          '&:hover': {
-                            backgroundColor: 'action.hover',
-                            cursor: 'pointer',
-                          },
-                          height: 'auto',
                         }}
                         onClick={() => handleSelectCompany(companyDetail.company_id)}
                       >
                         <CompanyCard companyDetails={companyDetail} />
                       </Box>
-                      <Divider></Divider>
+
                     </Grid>
                   ))}
                 </Grid>
