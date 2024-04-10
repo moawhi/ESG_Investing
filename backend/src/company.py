@@ -8,6 +8,7 @@ from backend.src.helper import verify_token, get_dictionary_index_in_list
 BAD_REQUEST = 400
 FORBIDDEN = 403
 TOTAL_WEIGHT = 1
+DECIMAL_PLACES = 2
 
 def company_industry_company_list(token):
     """
@@ -129,7 +130,7 @@ def company_calculate_esg_score(token, esg_data):
             average_weighted_score = sum(scores) / len(scores)
             averaged_weighted_scores.append(average_weighted_score)
 
-    esg_score = sum(averaged_weighted_scores)
+    esg_score = round(sum(averaged_weighted_scores), DECIMAL_PLACES)
 
     return {
         "esg_score": esg_score
