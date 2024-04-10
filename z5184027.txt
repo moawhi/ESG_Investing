@@ -83,3 +83,13 @@ Attended weekly meeting
 Change account menu.
 
 Complete Profile page, frontend component.
+
+# Week 8
+
+Attended weekly meeting
+
+Record Retrospective B and sent to Scum master
+
+Redesign and implement dashboard United
+
+Design and implementing portfolio UI
