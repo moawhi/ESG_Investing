@@ -2,7 +2,7 @@
 Server
 """
 
-from backend.src import auth, framework, company
+from backend.src import auth, framework, company, portfolio
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from backend.src.company import get_company_details
@@ -121,6 +121,36 @@ def calculate_esg_score():
     esg_data = info["esg_data"]
 
     response = company.company_calculate_esg_score(token, esg_data)
+    if response.get("code"):
+        return jsonify(response), response.get("code")
+    return jsonify(response)
+
+@app.route("/portfolio/save-company", methods=["POST"])
+def save_company_to_portfolio():
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    info = request.get_json()
+    company_id = info["company_id"]
+    investment_amount = info["investment_amount"]
+    comment = info["comment"]
+
+    response = portfolio.portfolio_save_company(token, company_id, investment_amount, comment)
+    if response.get("code"):
+        return jsonify(response), response.get("code")
+    return jsonify(response)
+
+@app.route("/portfolio/delete-company", methods=["POST"])
+def delete_company_from_portfolio():
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    info = request.get_json()
+    company_id = info["company_id"]
+
+    response = portfolio.portfolio_delete_company(token, company_id)
     if response.get("code"):
         return jsonify(response), response.get("code")
     return jsonify(response)
