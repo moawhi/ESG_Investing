@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography, Grid, Card } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 import DevicesIcon from '@mui/icons-material/Devices';
@@ -16,16 +16,17 @@ const CompanyCard = ({ companyDetails, investmentAmount, impactStatement }) => {
 
   return (
     <div>
-      <Box sx={{
+      <Card sx={{
         display: 'flex',
         flexDirection: 'row',
         overflow: 'auto',
         height: '230px',
         width: '100%',
-        border: '3px solid #e0e0e0',
+        border: '2px solid #e0e0e0',
         borderRadius: '12px',
         ':hover': {
-          borderColor: '#b5d8b1',
+          bgcolor: 'action.hover',
+          cursor: 'pointer'
         },
         transition: 'border-color 0.3s',
       }}>
@@ -74,7 +75,7 @@ const CompanyCard = ({ companyDetails, investmentAmount, impactStatement }) => {
             </Typography>
           </Box>
         </Box>
-      </Box>
+      </Card>
     </div>
   );
 };
