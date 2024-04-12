@@ -11,7 +11,7 @@ function Topbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" elevation={0} sx={{ backgroundColor: '#b5d8b1' }}>
+      <AppBar position="static" elevation={0} sx={{ backgroundColor: '#b5d8b1', maxHeight: '64px' }}>
         <Toolbar>
           <Logo />
           <Typography variant='h4' sx={{ ml: 1, color: '#779c73', fontWeight: 'bold' }}>HF ESG Management</Typography>

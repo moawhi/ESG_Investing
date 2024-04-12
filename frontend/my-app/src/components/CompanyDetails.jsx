@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography, Grid, Button } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 import DevicesIcon from '@mui/icons-material/Devices';
@@ -38,6 +38,14 @@ const CompanyDetails = ({companyDetails}) => {
           <Box sx={{ padding: 1, mt: 1 }}>
             <Typography>{companyDetails.info}</Typography>
           </Box>
+          <Button sx={{
+            color: '#779c73', 
+            fontWeight: 'bold',
+            '&:hover': {
+              backgroundColor: "#daf0d8",
+          }}}>
+          Add to Portfolio
+          </Button>
           </Grid>
         </Box>
         <Box sx={{ 
