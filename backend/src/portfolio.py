@@ -28,7 +28,7 @@ def portfolio_save_company(token, company_id, investment_amount, comment):
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
   
         query = """
-            REPLACE INTO portfolio (user_id, company_id, investment_amount, comment)
+            REPLACE INTO user_portfolio (user_id, company_id, investment_amount, comment)
             VALUES (%s, %s, %s, %s)
         """
         user_id = get_user_id_from_token(token)
@@ -64,7 +64,7 @@ def portfolio_delete_company(token, company_id):
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
         
         query = """
-            DELETE FROM portfolio
+            DELETE FROM user_portfolio
             WHERE user_id = %s AND company_id = %s
         """
         with db.cursor() as cur:

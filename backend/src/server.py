@@ -141,7 +141,7 @@ def save_company_to_portfolio():
         return jsonify(response), response.get("code")
     return jsonify(response)
 
-@app.route("/portfolio/delete-company", methods=["POST"])
+@app.route("/portfolio/delete-company", methods=["DELETE"])
 def delete_company_from_portfolio():
     header = request.headers.get("Authorisation")
     token = ""
