@@ -1,8 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, List, ListItem, ListItemText, Divider, Button, Stack, Grid } from '@mui/material';
+import { Box, Typography, List, ListItem, ListItemText, Divider, Stack, Grid } from '@mui/material';
 import Topbar from './Topbar';
 import { fetchCompanyDetails } from './helper';
 
@@ -31,6 +30,7 @@ const Dashboard = () => {
       })
       if (response.ok) {
         const responseData = await response.json();
+        console.log(responseData);
         setIndustries(responseData.industries);
       } else {
         const errorBody = await response.json();
@@ -63,7 +63,7 @@ const Dashboard = () => {
   };
 
   const handleSelectCompany = (company) => {
-    navigate('/company_info', { state:  company  });
+    navigate('/company_info', { state: company });
   }
 
   return (
@@ -96,12 +96,12 @@ const Dashboard = () => {
               gap: 10,
             }}>
               <Box sx={{
-                width: '20%',
+                width: '15%',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
               }} >
-                <Typography variant="h6" sx={{ p: 2, fontWeight: '600'}}> Select an Industry </Typography>
+                <Typography variant="h6" sx={{ p: 2, fontWeight: '600' }}> Select an Industry </Typography>
                 <Box sx={{
                   height: '90%',
                   borderRadius: '16px',
@@ -110,7 +110,12 @@ const Dashboard = () => {
                 }}>
                   <List>
                     {industries.map((industry) => (
-                      <ListItem button key={industry.type} onClick={() => handleSelectIndustry(industry.type)}>
+                      <ListItem button key={industry.type} onClick={() => handleSelectIndustry(industry.type)} sx={{
+                        ':hover': {
+                          bgcolor: 'action.hover',
+                          cursor: 'pointer'
+                        },
+                      }}>
                         <ListItemText primary={industry.type} />
                       </ListItem>
                     ))}
@@ -128,23 +133,17 @@ const Dashboard = () => {
                   <Typography variant="h6" sx={{ p: 2, fontWeight: '600' }}>Select a Company</Typography>
                 </Stack>
                 <Grid container spacing={2}>
-                  {selectedIndustry && companyDetails.map((companyDetail) => (
+                  {companyDetails && selectedIndustry && companyDetails.map((companyDetail) => (
                     <Grid item xs={12} md={4} key={companyDetail.name}>
-                      <Divider orientation="vertical" flexItem />
                       <Box
                         sx={{
                           padding: 2,
-                          '&:hover': {
-                            backgroundColor: 'action.hover',
-                            cursor: 'pointer',
-                          },
-                          height: 'auto',
                         }}
                         onClick={() => handleSelectCompany(companyDetail.company_id)}
                       >
                         <CompanyCard companyDetails={companyDetail} />
                       </Box>
-                      <Divider></Divider>
+
                     </Grid>
                   ))}
                 </Grid>
