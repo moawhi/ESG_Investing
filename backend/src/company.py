@@ -7,6 +7,8 @@ from backend.src.helper import verify_token, get_dictionary_index_in_list
 
 BAD_REQUEST = 400
 FORBIDDEN = 403
+TOTAL_WEIGHT = 1
+DECIMAL_PLACES = 2
 
 def company_industry_company_list(token):
     """
@@ -104,6 +106,19 @@ def company_calculate_esg_score(token, esg_data):
             "message": "There was an error handling the ESG data",
             "code": BAD_REQUEST
         }
+    if not check_total_framework_metric_weight(esg_data):
+        return {
+            "status": "fail",
+            "message": "Please make sure the weights of all framework metrics add up to 1",
+            "code": BAD_REQUEST
+        }
+    if not check_total_indicator_weight(esg_data)[0]:
+        framework_metrics_to_check = ", ".join(check_total_indicator_weight(esg_data)[1])
+        return {
+            "status": "fail",
+            "message": f"Please make sure the weights of all indicators under each framework metric add up to 1. Please check indicator weights for: {framework_metrics_to_check}",
+            "code": BAD_REQUEST
+        }
     
     averaged_weighted_scores = []
     for framework_metric in esg_data:
@@ -115,8 +130,37 @@ def company_calculate_esg_score(token, esg_data):
             average_weighted_score = sum(scores) / len(scores)
             averaged_weighted_scores.append(average_weighted_score)
 
-    esg_score = sum(averaged_weighted_scores)
+    esg_score = round(sum(averaged_weighted_scores), DECIMAL_PLACES)
 
     return {
         "esg_score": esg_score
     }
+
+def check_total_framework_metric_weight(esg_data):
+    """
+    Checks if total weight of framework metrics is equal to 1.
+    """
+    framework_metric_weights = [metric["framework_metric_weight"] for metric in esg_data]
+    total_framework_metric_weight = sum(framework_metric_weights)
+    if total_framework_metric_weight != TOTAL_WEIGHT:
+        return False
+    
+    return True
+    
+def check_total_indicator_weight(esg_data):
+    """
+    Checks if total weight of the indicator under each framework metric is equal to 1.
+    Returns which framework metrics do not have the weights of the indicators under the metric
+    adding up to 1.
+    """
+    framework_metrics_to_check = []
+    for framework_metric in esg_data:
+        indicator_weights = [indicator["indicator_weight"] for indicator in framework_metric["indicators"]]
+        total_indicator_weight = sum(indicator_weights)
+        if total_indicator_weight != TOTAL_WEIGHT:
+            framework_metrics_to_check.append(framework_metric["framework_metric_name"])
+    if len(framework_metrics_to_check) > 0:
+        return (False, framework_metrics_to_check)
+    
+    return (True, framework_metrics_to_check)
+            
