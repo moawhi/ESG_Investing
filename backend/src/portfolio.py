@@ -7,6 +7,7 @@ portfolio_delete_company
 portfolio_list
 portfolio_edit_investment_amount
 portfolio_edit_comment
+portfolio_calculate_esg_score
 """
 
 import mysql.connector
@@ -227,3 +228,22 @@ def portfolio_edit_comment(token, company_id, comment):
     finally:
         if db.is_connected():
             db.close()
+
+def portfolio_calculate_esg_score(token):
+    if not verify_token(token):
+        return {
+            "status": "fail",
+            "message": "Invalid token",
+            "code": FORBIDDEN
+        }
+    
+    portfolio_companies = portfolio_list(token)["portfolio"]
+    investment_amounts = [company["investment_amount"] for company in portfolio_companies]
+    total_investment = sum(investment_amounts)
+    weighted_esg_scores = [(c["investment_amount"] / total_investment) * c["esg_rating"] for c in portfolio_companies]
+    portfolio_esg_score = round(sum(weighted_esg_scores), 2)
+    
+    return {
+        "esg_score": portfolio_esg_score
+    }
+        
