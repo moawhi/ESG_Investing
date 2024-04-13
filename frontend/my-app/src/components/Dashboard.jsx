@@ -44,11 +44,13 @@ const Dashboard = () => {
     fetchIndustriesAndCompanies();
   }, [token]);
 
+  const fetchDataDetails = async () => {
+    const details = await fetchCompanyDetails(companies);
+    console.log(details);
+    setCompanyDetails(details);
+  }
+
   useEffect(() => {
-    const fetchDataDetails = async () => {
-      const details = await fetchCompanyDetails(companies);
-      setCompanyDetails(details);
-    }
     fetchDataDetails();
   }, [companies]);
 
