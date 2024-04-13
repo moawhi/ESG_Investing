@@ -19,39 +19,36 @@ const Dashboard = () => {
   const name = localStorage.getItem('firstName');
 
   // fetch industries and companies
-  const fetchIndustriesAndCompanies = async () => {
-    try {
-      const response = await fetch('http://localhost:12345/company/industry-company-list', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorisation': 'Bearer ' + token,
-        },
-      })
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
-        setIndustries(responseData.industries);
-      } else {
-        const errorBody = await response.json();
-        console.error(errorBody.message);
+  useEffect(() => {
+    const fetchIndustriesAndCompanies = async () => {
+      try {
+        const response = await fetch('http://localhost:12345/company/industry-company-list', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorisation': 'Bearer ' + token,
+          },
+        })
+        if (response.ok) {
+          const responseData = await response.json();
+          console.log(responseData);
+          setIndustries(responseData.industries);
+        } else {
+          const errorBody = await response.json();
+          console.error(errorBody.message);
+        }
+      } catch (error) {
+        console.error('Error fetching industries and companies', error);
       }
-    } catch (error) {
-      console.error('Error fetching industries and companies', error);
-    }
-  };
-
-  useEffect(() => {
+    };
     fetchIndustriesAndCompanies();
-  }, []);
-
-  const fetchDataDetails = async () => {
-    const details = await fetchCompanyDetails(companies);
-    console.log(details);
-    setCompanyDetails(details);
-  }
+  }, [token]);
 
   useEffect(() => {
+    const fetchDataDetails = async () => {
+      const details = await fetchCompanyDetails(companies);
+      setCompanyDetails(details);
+    }
     fetchDataDetails();
   }, [companies]);
 
