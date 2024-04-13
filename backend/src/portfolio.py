@@ -119,7 +119,7 @@ def portfolio_list(token):
                 details = {
                     "company_id": company_id,
                     "company_name": company_name,
-                    "industy": industry,
+                    "industry": industry,
                     "esg_rating": esg_rating,
                     "industry_ranking": industry_ranking,
                     "investment_amount": investment_amount,
