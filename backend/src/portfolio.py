@@ -4,13 +4,15 @@ Portfolio functions
 Functions:
 portfolio_save_company
 portfolio_delete_company
+portfolio_list
+portfolio_edit_investment_amount
+portfolio_edit_comment
 """
 
 import mysql.connector
 from backend.src.helper import verify_token, get_user_id_from_token
 from backend.src.framework import framework_list, get_esg_data_for_company_and_framework
 from backend.src.company import company_calculate_esg_score
-
 
 BAD_REQUEST = 400
 FORBIDDEN = 403
@@ -143,6 +145,82 @@ def portfolio_list(token):
                 "portfolio": portfolio_companies
             }
             
+    except Exception as err:
+        print(f"Error: {err}")
+
+    finally:
+        if db.is_connected():
+            db.close()
+
+def portfolio_edit_investment_amount(token, company_id, investment_amount):
+    """
+    Edit investment amount for a company saved in the user's portfolio
+    """
+    if not verify_token(token):
+        return {
+            "status": "fail",
+            "message": "Invalid token",
+            "code": FORBIDDEN
+        }
+
+    db = None
+    try:
+        db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
+
+        query = """
+            UPDATE user_portfolio
+            SET investment_amount = %s
+            WHERE user_id = %s and company_id = %s
+        """
+        user_id = get_user_id_from_token(token)
+        with db.cursor() as cur:
+            user_id = get_user_id_from_token(token)
+            cur.execute(query, [investment_amount, user_id, company_id])
+            db.commit()
+
+            return {
+                "status": "success",
+                "message": "Successfully updated your investment amount"
+            }
+
+    except Exception as err:
+        print(f"Error: {err}")
+
+    finally:
+        if db.is_connected():
+            db.close()
+
+def portfolio_edit_comment(token, company_id, comment):
+    """
+    Edit comment for a company saved in the user's portfolio
+    """
+    if not verify_token(token):
+        return {
+            "status": "fail",
+            "message": "Invalid token",
+            "code": FORBIDDEN
+        }
+
+    db = None
+    try:
+        db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
+
+        query = """
+            UPDATE user_portfolio
+            SET comment = %s
+            WHERE user_id = %s and company_id = %s
+        """
+        user_id = get_user_id_from_token(token)
+        with db.cursor() as cur:
+            user_id = get_user_id_from_token(token)
+            cur.execute(query, [comment, user_id, company_id])
+            db.commit()
+
+            return {
+                "status": "success",
+                "message": "Successfully updated your comment"
+            }
+
     except Exception as err:
         print(f"Error: {err}")
 

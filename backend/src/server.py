@@ -167,5 +167,35 @@ def get_portfolio_companies_details():
         return jsonify(response), response.get("code")
     return jsonify(response)
 
+@app.route("/portfolio/edit-investment-amount", methods=["PUT"])
+def edit_investment_amount():
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    info = request.get_json()
+    company_id = info["company_id"]
+    investment_amount = info["investment_amount"]
+    
+    response = portfolio.portfolio_edit_investment_amount(token, company_id, investment_amount)
+    if response.get("code"):
+        return jsonify(response), response.get("code")
+    return jsonify(response)
+
+@app.route("/portfolio/edit-comment", methods=["PUT"])
+def edit_comment():
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    info = request.get_json()
+    company_id = info["company_id"]
+    comment = info["comment"]
+    
+    response = portfolio.portfolio_edit_comment(token, company_id, comment)
+    if response.get("code"):
+        return jsonify(response), response.get("code")
+    return jsonify(response)
+
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
