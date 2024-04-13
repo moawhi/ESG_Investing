@@ -1,6 +1,6 @@
-const token = localStorage.getItem('token');
 
 export const fetchCompanyDetails = async (companies) => {
+	const token = localStorage.getItem('token');
 	const companyDetails = await Promise.all(
 		companies.map(async (company) => {
 			try {
@@ -10,7 +10,7 @@ export const fetchCompanyDetails = async (companies) => {
 						method: 'GET',
 						headers: {
 							'Content-Type': 'application/json',
-							Authorisation: 'Bearer ' + token,
+							'Authorisation': 'Bearer ' + token,
 						},
 					}
 				);
