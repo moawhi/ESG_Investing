@@ -10,7 +10,7 @@ export const fetchCompanyDetails = async (companies) => {
 						method: 'GET',
 						headers: {
 							'Content-Type': 'application/json',
-							Authorisation: 'Bearer ' + token,
+							'Authorisation': 'Bearer ' + token,
 						},
 					}
 				);

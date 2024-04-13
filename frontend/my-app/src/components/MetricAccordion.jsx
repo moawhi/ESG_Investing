@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Accordion, AccordionSummary, AccordionDetails, Typography, Grid, Checkbox, FormControlLabel, Button, Tooltip } from '@mui/material';
+import { Box, Accordion, AccordionSummary, AccordionDetails, Typography, Grid, Checkbox, FormControlLabel, Button, IconButton, Tooltip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import HelpIcon from '@mui/icons-material/Help';
+import AddIcon from '@mui/icons-material/Add';
 import ChangeWeightPopup from './ChangeWeightPopup';
 
 const MetricAccordion = ({ metricDetails }) => {
@@ -15,7 +16,6 @@ const MetricAccordion = ({ metricDetails }) => {
   const [accordionIndex, setAccordionIndex] = useState('');
   const [indicatorIndex, setIndicatorIndex] = useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
-
 
   useEffect(() => {
     // Initialize the checked state for each accordion based on framework selected
@@ -132,8 +132,17 @@ const MetricAccordion = ({ metricDetails }) => {
   return (
     <div>
       <Grid container sx={{ pt: 4, pl: 1, mb: 1, alignItems: 'center' }}>
-        <Grid item xs={6.75}>
+        <Grid item xs={3.6}>
           <Typography sx={{ fontSize: '1.5rem', fontWeight:'bold' }}>Metrics and Indicators</Typography>
+        </Grid>
+        <Grid item xs={3.15}>
+          {metricDetails.length > 0 && (
+            <Tooltip placement="right" title={"Add more metrics"}>
+              <IconButton>
+                <AddIcon/>
+              </IconButton>
+            </Tooltip>
+          )}
         </Grid>
         <Grid item xs={2.25}>
           <Typography sx={{ fontWeight: 'bold' }}>Weight</Typography>

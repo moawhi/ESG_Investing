@@ -13,8 +13,6 @@ const Logo = () => {
     <IconButton onClick={handleLogoClick} 
     sx={{ 
       m: 1, 
-      color: '#779c73',
-      backgroundColor: "#b5d8b1",
       color: '#b5d8b1', 
       backgroundColor: '#779c73', 
     '&:hover': {
