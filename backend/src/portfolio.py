@@ -90,8 +90,8 @@ def portfolio_delete_company(token, company_id):
 def portfolio_list(token):
     """
     Gets all saved companies and relevant details in the user's portfolio
-    Details include company id, company name, ESG rating, industry ranking,
-    investment amount and comment.
+    Details include company id, company name, ESG rating, ESG scores for each
+    framework, industry ranking, investment amount and comment.
     """
     if not verify_token(token):
         return {
