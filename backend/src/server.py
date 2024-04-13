@@ -91,7 +91,7 @@ def company_details(company_id):
         return jsonify(details), 404
     return jsonify(details), 200
 
-app.route("/company/esg", methods=["GET"])
+@app.route("/company/esg", methods=["GET"])
 def company_esg():
     header = request.headers.get("Authorisation")
     token = ""
