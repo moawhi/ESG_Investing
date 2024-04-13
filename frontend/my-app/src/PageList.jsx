@@ -6,6 +6,7 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import Profile from './components/Profile';
 import CompanyInfo from './components/CompanyInfo';
+import Portfolio from './components/Portfolio';
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('token');
@@ -42,6 +43,7 @@ const PageList = () => {
         <Route path="/register" element={<Register token={token} setToken={setToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token} setToken={setToken} />} />
         <Route path="/profile" element={<Profile token={token} setToken={setToken} />} />
+        <Route path="/portfolio" element={<Portfolio token={token} setToken={setToken} />} />
       </Routes>
     </>
   );
