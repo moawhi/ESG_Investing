@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Accordion, AccordionSummary, AccordionDetails, Typography, Grid, Checkbox, FormControlLabel, Button } from '@mui/material';
+import { Box, Accordion, AccordionSummary, AccordionDetails, Typography, Grid, Checkbox, FormControlLabel, Button, Tooltip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import HelpIcon from '@mui/icons-material/Help';
 import ChangeWeightPopup from './ChangeWeightPopup';
 
 const MetricAccordion = ({ metricDetails }) => {
+  console.log(metricDetails);
   const [checkedAccordions, setCheckedAccordions] = useState({});
   const [esgScore, setEsgScore] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
@@ -72,7 +74,6 @@ const MetricAccordion = ({ metricDetails }) => {
   };
 
   const handleSubmitNewWeight = (weight) => {
-    console.log(weightType, accordionIndex, indicatorIndex, weight);
     const newWeights = { ...weights };
     if (weightType === 'metric') {
       newWeights[accordionIndex] = {...newWeights[accordionIndex], metricWeight: weight};
@@ -84,7 +85,6 @@ const MetricAccordion = ({ metricDetails }) => {
       newWeights[accordionIndex].indicatorWeights[indicatorIndex] = weight;
     }
     setWeights(newWeights);
-    console.log(newWeights);
   };
 
   const handleMetricsSelection = async () => {
@@ -106,9 +106,6 @@ const MetricAccordion = ({ metricDetails }) => {
       };
       // Filter out metrics with no selected indicators
     }).filter(metric => metric.indicators.length > 0); 
-    console.log("weights:");
-    console.log(weights);  
-    console.log(esgData);
 
     try {
       const response = await fetch('http://localhost:12345/company/calculate-esg-score', {
@@ -160,7 +157,7 @@ const MetricAccordion = ({ metricDetails }) => {
               <Accordion key={accordionIndex} sx={{ border: '1px solid #e0e0e0' }}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Grid container alignItems="center">
-                <Grid item xs={1}>
+                <Grid item xs={0.8}>
                     <FormControlLabel
                       control={
                       <Checkbox
@@ -168,11 +165,15 @@ const MetricAccordion = ({ metricDetails }) => {
                       // Stops accordion from toggling when checkbox is clicked
                         onClick={(event) => event.stopPropagation()}
                         onChange={(event) => handleAccordionCheckChange(accordionIndex, event.target.checked)}
+                        sx={{color: "#779c73",
+                        '&.Mui-checked': {
+                          color: "#779c73",
+                        },}}
                       />
                       }
                     />
-                  </Grid> 
-                  <Grid item xs={6}>
+                  </Grid>
+                  <Grid item xs={6.15}>
                     <Typography variant="h6">{metric.framework_metric_name}</Typography>
                   </Grid> 
                   <Grid item xs={1}>
@@ -193,17 +194,34 @@ const MetricAccordion = ({ metricDetails }) => {
               <AccordionDetails>
                 {metric.indicators.map((indicator, indicatorIndex) => (
                   <Grid key={indicatorIndex} container alignItems="center" spacing={2}>
-                    <Grid item xs={1}>
+                    <Grid item xs={0.75}>
                       <FormControlLabel
                         control={
                           <Checkbox
                           checked={checkedAccordions[accordionIndex]?.indicators[indicatorIndex] || false}
                           onChange={(event) => handleIndicatorCheckChange(accordionIndex, indicatorIndex, event.target.checked)}
+                          sx={{color: "#98c493",
+                          '&.Mui-checked': {
+                            color: "#98c493",
+                          },}}
                           />
                         }
                       />
                     </Grid>
-                    <Grid item xs={5.7}>
+                    <Grid item xs={0.5}>
+                    <Tooltip 
+                      placement="left"
+                      title={
+                      <React.Fragment>
+                        <div>{indicator.indicator_description}</div>
+                        <div>Indicator provided by {indicator.provider_name}</div>
+                      </React.Fragment>
+                      }
+                    >
+                      <HelpIcon sx= {{color: "#a2cf9d"}}/>
+                    </Tooltip>
+                    </Grid> 
+                    <Grid item xs={5.4}>
                       <Typography>{indicator.indicator_name}</Typography>
                     </Grid>
                     <Grid item xs={2.4} sx={{ borderRight: '1px solid #e0e0e0' }}>
@@ -235,7 +253,9 @@ const MetricAccordion = ({ metricDetails }) => {
             position: 'sticky', 
             bottom: 0, 
             padding: 2,
-            bgcolor: 'white'}}>
+            bgcolor: 'white',
+            borderTop: '2px solid #c7c7c7'
+            }}>
             <Grid container spacing={2}>
               <Grid item xs={8}>
                 <Button 
@@ -268,7 +288,7 @@ const MetricAccordion = ({ metricDetails }) => {
                   width: "95%"
                 }} 
               > <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
-                <Typography variant="body2">{errorMessage}</Typography>
+                <Typography variant="body2">{errorMessage}.</Typography>
               </Box>
             )}
           </Box>
