@@ -60,7 +60,15 @@ const ChangeWeightPopup = ({ open, setOpenDialog, handleSubmitNewWeight }) => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmission}>Submit</Button>
+          <Button 
+          onClick={handleSubmission}
+          sx={{
+            mr: 1,
+            mb: 1,
+            color: '#779c73', 
+            '&:hover': {
+              backgroundColor: "#daf0d8",
+          }}}>Submit</Button>
         </DialogActions>
       </Dialog>
     </div>

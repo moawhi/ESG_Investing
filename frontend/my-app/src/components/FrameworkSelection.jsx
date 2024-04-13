@@ -34,7 +34,11 @@ const FrameworkSelection = ({ frameworks, onSelectFramework }) => {
             <FormControlLabel
               key={framework.framework_id}
               value={framework.framework_id.toString()}
-              control={<Radio />}
+              control={<Radio 
+              sx= {{color: "#779c73",
+              '&.Mui-checked': {
+                color: "#779c73",
+              },}}/>}
               label={
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="body1" sx={{ fontSize: '1.2rem', mb: 0.5 }}>{framework.name}</Typography>

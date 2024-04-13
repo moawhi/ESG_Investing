@@ -8,6 +8,9 @@ portfolio_delete_company
 
 import mysql.connector
 from backend.src.helper import verify_token, get_user_id_from_token
+from backend.src.framework import framework_list, get_esg_data_for_company_and_framework
+from backend.src.company import company_calculate_esg_score
+
 
 BAD_REQUEST = 400
 FORBIDDEN = 403
@@ -84,4 +87,65 @@ def portfolio_delete_company(token, company_id):
         if db.is_connected():
             db.close()
 
+def portfolio_list(token):
+    """
+    Gets all saved companies and relevant details in the user's portfolio
+    Details include company id, company name, ESG rating, ESG scores for each
+    framework, industry ranking, investment amount and comment.
+    """
+    if not verify_token(token):
+        return {
+            "status": "fail",
+            "message": "Invalid token",
+            "code": FORBIDDEN
+        }
+    
+    db = None
+    try:
+        db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
+        
+        query = """
+            SELECT c.perm_id, c.name, c.esg_rating, c.industry_ranking, p.investment_amount, p.comment
+            FROM user_portfolio p
+                JOIN company c ON (c.perm_id = p.company_id)
+            WHERE user_id = %s
+        """
+        portfolio_companies = []
+        with db.cursor() as cur:
+            user_id = get_user_id_from_token(token)
+            cur.execute(query, [user_id])
+            for company in cur.fetchall():
+                (company_id, company_name, esg_rating, industry_ranking, investment_amount, comment) = company
+                details = {
+                    "company_id": company_id,
+                    "company_name": company_name,
+                    "esg_rating": esg_rating,
+                    "industry_ranking": industry_ranking,
+                    "investment_amount": investment_amount,
+                    "comment": comment
+                }
 
+                frameworks = framework_list(token, company_id)["frameworks"]
+                for framework in frameworks:
+                    framework_name = framework["name"]
+                    framework_id = framework["framework_id"]
+                    esg_data = get_esg_data_for_company_and_framework(company_id, framework_id)["esg_data"]
+                    esg_score = company_calculate_esg_score(token, esg_data)["esg_score"]
+                    framework_esg_score = {
+                        f"esg_score_{framework_name}": esg_score
+                    }
+                    details.update(framework_esg_score)
+
+                portfolio_companies.append(details)
+
+            return {
+                "status": "success",
+                "portfolio": portfolio_companies
+            }
+            
+    except Exception as err:
+        print(f"Error: {err}")
+
+    finally:
+        if db.is_connected():
+            db.close()
