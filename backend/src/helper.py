@@ -32,9 +32,9 @@ def verify_token(token):
             cur.execute(query)
             users = cur.fetchall()
             now = datetime.datetime.now()
-            logout_time = int(now.timestamp())
+            now_timestamp = int(now.timestamp())
             
-            if (decoded_token["user_id"],) not in users or logout_time > decoded_token["exp"]:
+            if (decoded_token["user_id"],) not in users or now_timestamp > decoded_token["exp"]:
                 return False 
             return True
 

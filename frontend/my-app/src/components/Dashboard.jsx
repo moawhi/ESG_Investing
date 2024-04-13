@@ -58,6 +58,7 @@ const Dashboard = () => {
     // get companies based on selected industry
     const industryCompanies = industries.find(i => i.type === industry)?.companies || [];
     setCompanies(industryCompanies);
+    fetchDataDetails();
   };
 
   const handleSelectCompany = (company) => {
@@ -131,7 +132,7 @@ const Dashboard = () => {
                   <Typography variant="h6" sx={{ p: 2, fontWeight: '600' }}>Select a Company</Typography>
                 </Stack>
                 <Grid container spacing={2}>
-                  {companyDetails && selectedIndustry && companyDetails.length > 0 && (
+                  {companyDetails && selectedIndustry && (
                     companyDetails.map((companyDetail) => (
                       <Grid item xs={12} md={4} key={companyDetail.company_id}>
                         <Box

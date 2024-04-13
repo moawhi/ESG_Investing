@@ -105,7 +105,7 @@ def portfolio_list(token):
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
         
         query = """
-            SELECT c.perm_id, c.name, c.esg_rating, c.industry_ranking, p.investment_amount, p.comment
+            SELECT c.perm_id, c.name, c.industry, c.esg_rating, c.industry_ranking, p.investment_amount, p.comment
             FROM user_portfolio p
                 JOIN company c ON (c.perm_id = p.company_id)
             WHERE user_id = %s
@@ -115,10 +115,11 @@ def portfolio_list(token):
             user_id = get_user_id_from_token(token)
             cur.execute(query, [user_id])
             for company in cur.fetchall():
-                (company_id, company_name, esg_rating, industry_ranking, investment_amount, comment) = company
+                (company_id, company_name, industry, esg_rating, industry_ranking, investment_amount, comment) = company
                 details = {
                     "company_id": company_id,
                     "company_name": company_name,
+                    "industry": industry,
                     "esg_rating": esg_rating,
                     "industry_ranking": industry_ranking,
                     "investment_amount": investment_amount,
