@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from backend.src.company import get_company_details
 from backend.src.helper import verify_token
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -124,6 +125,27 @@ def calculate_esg_score():
     if response.get("code"):
         return jsonify(response), response.get("code")
     return jsonify(response)
+
+@app.route("/company/esg", methods=["GET"])
+def company_esg():
+    company_id = request.args.get("company_id", type=int)
+    framework_id = request.args.get("framework_id", type=int)
+    additional_metrics = request.args.get("additional_metrics")  # Expected as a JSON string of metric IDs
+
+    if not company_id or not framework_id:
+        return jsonify({"status": "fail", "message": "Missing company or framework ID"}), 400
+
+    if additional_metrics:
+        try:
+            additional_metrics = json.loads(additional_metrics)
+        except json.JSONDecodeError:
+            return jsonify({"status": "fail", "message": "Invalid additional metrics format"}), 400
+
+    esg_data = framework.get_esg_data_for_company_and_framework(company_id, framework_id, additional_metrics)
+    if "message" in esg_data:
+        return jsonify(esg_data), 404
+
+    return jsonify(esg_data), 200
 
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
