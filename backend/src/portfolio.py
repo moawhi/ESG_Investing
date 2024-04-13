@@ -230,6 +230,11 @@ def portfolio_edit_comment(token, company_id, comment):
             db.close()
 
 def portfolio_calculate_esg_score(token):
+    """
+    Calculates the ESG score for the user's portfolio
+    The ESG score is calculated as:
+        the sum of (company investment amount / total investment in portfolio) * company ESG rating
+    """
     if not verify_token(token):
         return {
             "status": "fail",
@@ -244,6 +249,7 @@ def portfolio_calculate_esg_score(token):
     portfolio_esg_score = round(sum(weighted_esg_scores), 2)
     
     return {
-        "esg_score": portfolio_esg_score
+        "esg_score": portfolio_esg_score,
+        "total_investment": total_investment
     }
         
