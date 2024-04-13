@@ -133,19 +133,20 @@ const Dashboard = () => {
                   <Typography variant="h6" sx={{ p: 2, fontWeight: '600' }}>Select a Company</Typography>
                 </Stack>
                 <Grid container spacing={2}>
-                  {companyDetails && selectedIndustry && companyDetails.map((companyDetail) => (
-                    <Grid item xs={12} md={4} key={companyDetail.name}>
-                      <Box
-                        sx={{
-                          padding: 2,
-                        }}
-                        onClick={() => handleSelectCompany(companyDetail.company_id)}
-                      >
-                        <CompanyCard companyDetails={companyDetail} />
-                      </Box>
-
-                    </Grid>
-                  ))}
+                  {companyDetails && selectedIndustry && companyDetails.length > 0 && (
+                    companyDetails.map((companyDetail) => (
+                      <Grid item xs={12} md={4} key={companyDetail.company_id}>
+                        <Box
+                          sx={{
+                            padding: 2,
+                          }}
+                          onClick={() => handleSelectCompany(companyDetail.company_id)}
+                        >
+                          <CompanyCard companyDetails={companyDetail} />
+                        </Box>
+                      </Grid>
+                    ))
+                  )}
                 </Grid>
               </Box>
             </Box>

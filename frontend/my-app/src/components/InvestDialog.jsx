@@ -105,6 +105,9 @@ export default function InvestDialog({ companyDetail }) {
             type="number"
             fullWidth
             variant="standard"
+            inputProps={{
+              min: 0
+            }}
           />
           <TextField
             margin="dense"
