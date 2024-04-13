@@ -155,5 +155,17 @@ def delete_company_from_portfolio():
         return jsonify(response), response.get("code")
     return jsonify(response)
 
+@app.route("/portfolio/list", methods=["GET"])
+def get_portfolio_companies_details():
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    
+    response = portfolio.portfolio_list(token)
+    if response.get("code"):
+        return jsonify(response), response.get("code")
+    return jsonify(response)
+
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
