@@ -52,3 +52,9 @@ def get_dictionary_index_in_list(dict_list, key, value):
     for dictionary in dict_list:
         if dictionary.get(key) == value:
             return dict_list.index(dictionary)
+        
+def get_user_id_from_token(token):
+    """
+    Gets the user id from a valid token
+    """
+    return decode_jwt(token)["user_id"]

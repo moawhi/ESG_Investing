@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import {Box, Typography, Grid } from '@mui/material';
+import {Box, Grid } from '@mui/material';
 import Topbar from './Topbar';
 import CompanyDetails from './CompanyDetails';
 import FrameworkSelection from './FrameworkSelection';
@@ -121,27 +121,7 @@ const CompanyInfo = () => {
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Grid container sx={{ pt: 4, pl: 1, mb: 1, alignItems: 'center' }}>
-            <Grid item xs={6.9}>
-            <Typography sx={{ fontSize: '1.5rem', fontWeight:'bold' }}>Metrics and Indicators</Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography sx={{ fontWeight: 'bold' }}>Weight</Typography>
-            </Grid>
-            <Grid item xs={1}>
-              <Typography sx={{ fontWeight: 'bold' }}>2022</Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography sx={{ fontWeight: 'bold' }}>2023</Typography>
-            </Grid>
-          </Grid>
-          <Box sx={{ 
-            maxHeight: '84vh', 
-            overflow: 'auto',
-            scrollbarWidth: 'none' 
-            }}>
-            <MetricAccordion metricDetails={metricDetails} />
-          </Box>
+          <MetricAccordion metricDetails={metricDetails} />
         </Grid>
       </Grid>
     </div>

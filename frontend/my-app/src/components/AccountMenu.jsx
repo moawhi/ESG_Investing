@@ -100,7 +100,7 @@ const AccountMenu = () => {
           </ListItemIcon>
           <Typography > Watchlist</Typography>
         </MenuItem>
-        <MenuItem onClick={() => handleNavigate('/')}>
+        <MenuItem onClick={() => handleNavigate('/portfolio')}>
           <ListItemIcon>
             <PieChartOutlineIcon />
           </ListItemIcon>

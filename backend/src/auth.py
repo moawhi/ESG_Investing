@@ -132,14 +132,13 @@ def auth_login(email, password):
 def auth_logout(token):
     """
     User logs out of account
-    """
+    """    
     if not verify_token(token):
         return {
             "status": "fail",
             "message": "Invalid token",
             "code": FORBIDDEN
         }
-
     return {}
 
 def auth_block_account(id):

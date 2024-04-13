@@ -160,12 +160,12 @@ export default function Login() {
               > <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
                 <Typography variant="body2">{errorMessage}</Typography>
               </Box>
-              )}
-            </Box>
-            <Box sx={{ p: 2, textAlign: 'center' }}>
-              <Copyright sx={{ mt: 5 }} />
-            </Box>
+            )}
           </Box>
+          <Box sx={{ p: 2, textAlign: 'center' }}>
+            <Copyright sx={{ mt: 5 }} />
+          </Box>
+        </Box>
       </Grid>
     </Grid>
   </ThemeProvider>
