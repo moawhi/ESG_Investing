@@ -98,7 +98,7 @@ const Dashboard = () => {
               gap: 10,
             }}>
               <Box sx={{
-                width: '15%',
+                width: '22%',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
@@ -126,7 +126,7 @@ const Dashboard = () => {
               </Box>
               <Divider orientation="vertical" flexItem />
               <Box sx={{
-                width: '75%',
+                width: '100%',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
@@ -140,7 +140,7 @@ const Dashboard = () => {
                       <Grid item xs={12} md={4} key={companyDetail.company_id}>
                         <Box
                           sx={{
-                            padding: 2,
+                            padding: 1,
                           }}
                           onClick={() => handleSelectCompany(companyDetail.company_id)}
                         >

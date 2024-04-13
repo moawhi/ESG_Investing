@@ -72,11 +72,12 @@ export default function InvestDialog({ companyDetail }) {
     <React.Fragment>
       <Button
         onClick={handleClickOpen}
+        variant="contained"
         sx={{
-          color: '#779c73',
+          backgroundColor: "#8eb08b",
           fontWeight: 'bold',
           '&:hover': {
-            backgroundColor: "#daf0d8",
+            backgroundColor: "#779c73",
           }
         }}>
         Add to Portfolio

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Grid, Card } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
@@ -7,12 +8,18 @@ import FactoryIcon from '@mui/icons-material/Factory';
 
 // Adjust the props to include investmentAmount and impactStatement as optional
 const CompanyCard = ({ companyDetails, investmentAmount, impactStatement }) => {
+  const navigate = useNavigate();
+
   const industryIcons = {
     Technology: DevicesIcon,
     Energy: EnergySavingsLeafIcon,
     Finance: AttachMoneyIcon,
     Manufacturing: FactoryIcon,
   };
+
+  const handleSelectCompany = (company) => {
+    navigate('/company_info', { state: company });
+  }
 
   return (
     <div>
@@ -29,7 +36,8 @@ const CompanyCard = ({ companyDetails, investmentAmount, impactStatement }) => {
           cursor: 'pointer'
         },
         transition: 'border-color 0.3s',
-      }}>
+      }}
+        onClick={() => handleSelectCompany(companyDetails.company_id)}>
         <Box sx={{
           flex: 1,
           padding: 2,
@@ -38,13 +46,15 @@ const CompanyCard = ({ companyDetails, investmentAmount, impactStatement }) => {
             <Grid item>
               {industryIcons[companyDetails.industry] ? React.createElement(industryIcons[companyDetails.industry], { sx: { verticalAlign: 'middle', mr: 2, color: '#779c73', fontSize: '4rem' } }) : null}
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12}>
               <Typography sx={{ fontWeight: 'bold', fontSize: '1rem' }}>{companyDetails.name}</Typography>
+              {companyDetails.company_name && (<Typography sx={{ fontWeight: 'bold', fontSize: '1rem' }}>{companyDetails.company_name}</Typography>
+              )}
               {investmentAmount && (
-                <Typography sx={{ fontSize: '0.9rem' }}>Investment: ${investmentAmount.toLocaleString()}</Typography>
+                <Typography sx={{ fontSize: '1rem', mt: 1, fontWeight: 'bold' }}> ${investmentAmount.toLocaleString()}</Typography>
               )}
               {impactStatement && (
-                <Typography sx={{ fontSize: '0.8rem', mt: 1 }}>{impactStatement}</Typography>
+                <Typography sx={{ fontSize: '1rem', mt: 1 }}>{impactStatement}</Typography>
               )}
             </Grid>
           </Grid>
