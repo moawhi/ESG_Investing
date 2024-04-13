@@ -129,3 +129,33 @@ def process_esg_data(cursor, esg_data):
             "provider_name": row["provider_name"]
         }
         existing_metric["indicators"].append(indicator_details)
+
+def list_metrics_not_in_framework(framework_id):
+    """
+    List all metrics that are not part of the specified framework.
+    """
+    db = None
+    try:
+        db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
+        query = """
+            SELECT ind.id, ind.name, ind.description
+            FROM indicator ind
+            WHERE ind.id NOT IN (
+                SELECT fmi.indicator_id
+                FROM framework_metric_indicator_mapping fmi
+                JOIN framework_metric fm ON fmi.framework_metric_id = fm.id
+                WHERE fm.framework_id = %s
+            )
+        """
+        with db.cursor(dictionary=True) as cursor:
+            cursor.execute(query, (framework_id,))
+            metrics = cursor.fetchall()
+            return {"metrics": metrics}
+
+    except Exception as err:
+        print(f"Error: {err}")
+        return {"status": "fail", "message": "Unable to fetch metrics", "code": FORBIDDEN}
+
+    finally:
+        if db and db.is_connected():
+            db.close()

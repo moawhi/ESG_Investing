@@ -91,22 +91,30 @@ def company_details(company_id):
         return jsonify(details), 404
     return jsonify(details), 200
 
-@app.route("/company/esg", methods=["GET"])
+app.route("/company/esg", methods=["GET"])
 def company_esg():
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
         token = header.split(" ")[1]
-    company_id = request.args.get("company_id", type=int)
-    framework_id = request.args.get("framework_id", type=int)
 
     if not verify_token(token):
         return jsonify({"status": "fail", "message": "Invalid token"}), 403
 
+    company_id = request.args.get("company_id", type=int)
+    framework_id = request.args.get("framework_id", type=int)
+    additional_metrics = request.args.get("additional_metrics")  # JSON string of metric IDs
+
     if not company_id or not framework_id:
         return jsonify({"status": "fail", "message": "Missing company or framework ID"}), 400
 
-    esg_data = framework.get_esg_data_for_company_and_framework(company_id, framework_id)
+    if additional_metrics:
+        try:
+            additional_metrics = json.loads(additional_metrics)
+        except json.JSONDecodeError:
+            return jsonify({"status": "fail", "message": "Invalid additional metrics format"}), 400
+
+    esg_data = framework.get_esg_data_for_company_and_framework(company_id, framework_id, additional_metrics)
     if "message" in esg_data:
         return jsonify(esg_data), 404
 
@@ -126,26 +134,16 @@ def calculate_esg_score():
         return jsonify(response), response.get("code")
     return jsonify(response)
 
-@app.route("/company/esg", methods=["GET"])
-def company_esg():
-    company_id = request.args.get("company_id", type=int)
-    framework_id = request.args.get("framework_id", type=int)
-    additional_metrics = request.args.get("additional_metrics")  # Expected as a JSON string of metric IDs
-
-    if not company_id or not framework_id:
-        return jsonify({"status": "fail", "message": "Missing company or framework ID"}), 400
-
-    if additional_metrics:
-        try:
-            additional_metrics = json.loads(additional_metrics)
-        except json.JSONDecodeError:
-            return jsonify({"status": "fail", "message": "Invalid additional metrics format"}), 400
-
-    esg_data = framework.get_esg_data_for_company_and_framework(company_id, framework_id, additional_metrics)
-    if "message" in esg_data:
-        return jsonify(esg_data), 404
-
-    return jsonify(esg_data), 200
+@app.route("/framework/<int:framework_id>/available-metrics", methods=["GET"])
+def available_metrics(framework_id):
+    """
+    Endpoint to retrieve all metrics not part of a specified framework.
+    """
+    metrics = framework.list_metrics_not_in_framework(framework_id)
+    if "metrics" in metrics:
+        return jsonify(metrics), 200
+    else:
+        return jsonify(metrics), 400
 
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
