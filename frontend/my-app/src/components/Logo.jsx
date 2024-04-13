@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Button, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import SpaIcon from '@mui/icons-material/Spa';
 

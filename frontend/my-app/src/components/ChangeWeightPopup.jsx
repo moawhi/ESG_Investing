@@ -3,12 +3,12 @@ import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, B
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 
-const ChangeWeightPopup = ({ open, setOpenDialog, handleSubmitNewWeight }) => {
+const ChangeWeightPopup = ({ open, setOpenWeightPopup, handleSubmitNewWeight }) => {
   const [weightInput, setWeightInput] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleClose = () => {
-    setOpenDialog(false);
+    setOpenWeightPopup(false);
     setErrorMessage('');
     setWeightInput('');
   };

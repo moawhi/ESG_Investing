@@ -5,12 +5,14 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import HelpIcon from '@mui/icons-material/Help';
 import AddIcon from '@mui/icons-material/Add';
 import ChangeWeightPopup from './ChangeWeightPopup';
+import AddMetricPopup from './AddMetricPopup';
 
 const MetricAccordion = ({ metricDetails }) => {
   console.log(metricDetails);
   const [checkedAccordions, setCheckedAccordions] = useState({});
   const [esgScore, setEsgScore] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openMetricPopup, setOpenMetricPopup] = useState(false);
+  const [openWeightPopup, setOpenWeightPopup] = useState(false);
   const [weights, setWeights] = useState({});
   const [weightType, setWeightType] = useState('');
   const [accordionIndex, setAccordionIndex] = useState('');
@@ -32,6 +34,10 @@ const MetricAccordion = ({ metricDetails }) => {
     setWeights(initialWeights);
     setEsgScore("");
   }, [metricDetails]);
+
+  const handleClickMetricOpen = () => {
+    setOpenMetricPopup(true);
+  };
 
   const handleAccordionCheckChange = (accordionIndex, isChecked) => {
     // Update the checked state for the accordion and all its indicators
@@ -64,13 +70,13 @@ const MetricAccordion = ({ metricDetails }) => {
     setCheckedAccordions(updatedCheckedState);
   };
 
-  const handleClickOpen = (type, accordionIndex, indicatorIndex, event) => {
+  const handleClickWeightOpen = (type, accordionIndex, indicatorIndex, event) => {
     // Prevent accordion from expanding
     event.stopPropagation(); 
     setWeightType(type);
     setAccordionIndex(accordionIndex);  
     setIndicatorIndex(indicatorIndex);  
-    setOpenDialog(true);
+    setOpenWeightPopup(true);
   };
 
   const handleSubmitNewWeight = (weight) => {
@@ -138,8 +144,8 @@ const MetricAccordion = ({ metricDetails }) => {
         <Grid item xs={3.15}>
           {metricDetails.length > 0 && (
             <Tooltip placement="right" title={"Add more metrics"}>
-              <IconButton>
-                <AddIcon/>
+              <IconButton onClick={handleClickMetricOpen}>
+                <AddIcon sx={{color:"#779c73"}}/>
               </IconButton>
             </Tooltip>
           )}
@@ -148,15 +154,19 @@ const MetricAccordion = ({ metricDetails }) => {
           <Typography sx={{ fontWeight: 'bold' }}>Weight</Typography>
         </Grid>
         <Grid item xs={1}>
-          <Typography sx={{ fontWeight: 'bold' }}>2022</Typography>
+          <Tooltip placement="left" title={"Indicator scores for 2022"}>
+            <Typography sx={{ fontWeight: 'bold' }}>2022</Typography>
+          </Tooltip>
         </Grid>
         <Grid item xs={2}>
-          <Typography sx={{ fontWeight: 'bold' }}>2023</Typography>
+          <Tooltip placement="right" title={"Indicator scores for 2023"}>
+            <Typography sx={{ fontWeight: 'bold' }}>2023</Typography>
+          </Tooltip>
         </Grid>
       </Grid>
       <Box sx={{ display: 'flex', 
       flexDirection: 'column', 
-      maxHeight: 'calc(100vh - 140px)', 
+      maxHeight: 'calc(100vh - 145px)', 
       overflowY: 'auto', 
       scrollbarWidth: 'none' }}>
         {metricDetails.length > 0 ? (
@@ -188,7 +198,7 @@ const MetricAccordion = ({ metricDetails }) => {
                   <Grid item xs={1}>
                     <Button 
                       variant="contained" 
-                      onClick={(event) => handleClickOpen('metric', accordionIndex, null, event)}
+                      onClick={(event) => handleClickWeightOpen('metric', accordionIndex, null, event)}
                       sx={{ 
                       bgcolor: "#86ad82",
                       borderRadius: "16px",
@@ -235,7 +245,7 @@ const MetricAccordion = ({ metricDetails }) => {
                     </Grid>
                     <Grid item xs={2.4} sx={{ borderRight: '1px solid #e0e0e0' }}>
                       <Button 
-                        onClick={(event) => handleClickOpen('indicator', accordionIndex, indicatorIndex, event)}
+                        onClick={(event) => handleClickWeightOpen('indicator', accordionIndex, indicatorIndex, event)}
                         variant="contained" 
                         sx={{ 
                         bgcolor: "#98c493",
@@ -309,9 +319,13 @@ const MetricAccordion = ({ metricDetails }) => {
           )}
       </Box>
       <ChangeWeightPopup
-        open={openDialog}
-        setOpenDialog={setOpenDialog}
+        open={openWeightPopup}
+        setOpenWeightPopup={setOpenWeightPopup}
         handleSubmitNewWeight={(weight) => handleSubmitNewWeight(weight)}
+      />
+      <AddMetricPopup
+        open={openMetricPopup}
+        setOpenMetricPopup={setOpenMetricPopup}
       />
     </div>
   );
