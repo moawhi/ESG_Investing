@@ -22,11 +22,11 @@ def portfolio_save_company(token, company_id, investment_amount, comment):
             "message": "Invalid token",
             "code": FORBIDDEN
         }
-    
+
     db = None
     try:
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
-  
+
         query = """
             REPLACE INTO user_portfolio (user_id, company_id, investment_amount, comment)
             VALUES (%s, %s, %s, %s)
@@ -40,7 +40,7 @@ def portfolio_save_company(token, company_id, investment_amount, comment):
                 "status": "success",
                 "message": "Successfully saved to your portfolio"
             }
-            
+
     except Exception as err:
         print(f"Error: {err}")
 
@@ -62,7 +62,7 @@ def portfolio_delete_company(token, company_id):
     db = None
     try:
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
-        
+
         query = """
             DELETE FROM user_portfolio
             WHERE user_id = %s AND company_id = %s
@@ -76,7 +76,7 @@ def portfolio_delete_company(token, company_id):
                 "status": "success",
                 "message": "Successfully deleted from your portfolio"
             }
-            
+
     except Exception as err:
         print(f"Error: {err}")
 
