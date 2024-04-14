@@ -164,12 +164,6 @@ def portfolio_edit(token, company_id, investment_amount, comment):
             "message": "Invalid token",
             "code": FORBIDDEN
         }
-    if investment_amount == "":
-        return {
-            "status": "fail",
-            "message": "Please enter an investing amount",
-            "code": BAD_REQUEST
-        }
     
     db = None
     try:
