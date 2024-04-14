@@ -134,12 +134,12 @@ def calculate_esg_score():
         return jsonify(response), response.get("code")
     return jsonify(response)
 
-@app.route("/framework/<int:framework_id>/available-metrics", methods=["GET"])
-def available_metrics(framework_id):
+@app.route("/framework/<int:framework_id>/unincluded-metrics", methods=["GET"])
+def unincluded_metrics(framework_id):
     """
-    Endpoint to retrieve all metrics not part of a specified framework.
+    Endpoint to retrieve all metrics and their indicators that are not part of a specified framework.
     """
-    metrics = framework.list_metrics_not_in_framework(framework_id)
+    metrics = framework.list_metrics_not_part_of_framework(framework_id)
     if "metrics" in metrics:
         return jsonify(metrics), 200
     else:

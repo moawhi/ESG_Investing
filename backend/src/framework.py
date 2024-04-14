@@ -130,27 +130,39 @@ def process_esg_data(cursor, esg_data):
         }
         existing_metric["indicators"].append(indicator_details)
 
-def list_metrics_not_in_framework(framework_id):
+def list_metrics_not_part_of_framework(framework_id):
     """
-    List all metrics that are not part of the specified framework.
+    Fetch all metrics and their indicators that are not part of the specified framework.
     """
     db = None
     try:
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
         query = """
-            SELECT ind.id, ind.name, ind.description
-            FROM indicator ind
-            WHERE ind.id NOT IN (
-                SELECT fmi.indicator_id
-                FROM framework_metric_indicator_mapping fmi
-                JOIN framework_metric fm ON fmi.framework_metric_id = fm.id
-                WHERE fm.framework_id = %s
+            SELECT fm.id AS metric_id, fm.name AS metric_name, fm.description AS metric_description,
+                   ind.id AS indicator_id, ind.name AS indicator_name, ind.description AS indicator_description
+            FROM framework_metric fm
+            INNER JOIN framework_metric_indicator_mapping fmi ON fm.id = fmi.framework_metric_id
+            INNER JOIN indicator ind ON fmi.indicator_id = ind.id
+            WHERE fm.id NOT IN (
+                SELECT framework_metric_id FROM framework_metric WHERE framework_id = %s
             )
         """
         with db.cursor(dictionary=True) as cursor:
             cursor.execute(query, (framework_id,))
-            metrics = cursor.fetchall()
-            return {"metrics": metrics}
+            metrics = {}
+            for row in cursor.fetchall():
+                if row['metric_id'] not in metrics:
+                    metrics[row['metric_id']] = {
+                        'metric_name': row['metric_name'],
+                        'metric_description': row['metric_description'],
+                        'indicators': []
+                    }
+                metrics[row['metric_id']]['indicators'].append({
+                    'indicator_id': row['indicator_id'],
+                    'indicator_name': row['indicator_name'],
+                    'indicator_description': row['indicator_description']
+                })
+            return {'metrics': list(metrics.values())}
 
     except Exception as err:
         print(f"Error: {err}")
