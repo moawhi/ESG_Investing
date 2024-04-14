@@ -153,9 +153,10 @@ def portfolio_list(token):
         if db.is_connected():
             db.close()
 
-def portfolio_edit_investment_amount(token, company_id, investment_amount):
+def portfolio_edit(token, company_id, investment_amount, comment):
     """
-    Edit investment amount for a company saved in the user's portfolio
+    Edits investment amount and/or comment for a company in the user's portfolio
+    If no input for comment is provided by the user, the comment is unchanged.
     """
     if not verify_token(token):
         return {
@@ -163,50 +164,23 @@ def portfolio_edit_investment_amount(token, company_id, investment_amount):
             "message": "Invalid token",
             "code": FORBIDDEN
         }
-
+    if investment_amount == "":
+        return {
+            "status": "fail",
+            "message": "Please enter an investing amount",
+            "code": BAD_REQUEST
+        }
+    
     db = None
     try:
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
 
-        query = """
+        update_investment_amount = """
             UPDATE user_portfolio
             SET investment_amount = %s
             WHERE user_id = %s and company_id = %s
         """
-        user_id = get_user_id_from_token(token)
-        with db.cursor() as cur:
-            user_id = get_user_id_from_token(token)
-            cur.execute(query, [investment_amount, user_id, company_id])
-            db.commit()
-
-            return {
-                "status": "success",
-                "message": "Successfully updated your investment amount"
-            }
-
-    except Exception as err:
-        print(f"Error: {err}")
-
-    finally:
-        if db.is_connected():
-            db.close()
-
-def portfolio_edit_comment(token, company_id, comment):
-    """
-    Edit comment for a company saved in the user's portfolio
-    """
-    if not verify_token(token):
-        return {
-            "status": "fail",
-            "message": "Invalid token",
-            "code": FORBIDDEN
-        }
-
-    db = None
-    try:
-        db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
-
-        query = """
+        update_comment = """
             UPDATE user_portfolio
             SET comment = %s
             WHERE user_id = %s and company_id = %s
@@ -214,12 +188,16 @@ def portfolio_edit_comment(token, company_id, comment):
         user_id = get_user_id_from_token(token)
         with db.cursor() as cur:
             user_id = get_user_id_from_token(token)
-            cur.execute(query, [comment, user_id, company_id])
+            cur.execute(update_investment_amount, [investment_amount, user_id, company_id])
             db.commit()
+
+            if comment != "":
+                cur.execute(update_comment, [comment, user_id, company_id])
+                db.commit()
 
             return {
                 "status": "success",
-                "message": "Successfully updated your comment"
+                "message": "Successfully updated"
             }
 
     except Exception as err:
