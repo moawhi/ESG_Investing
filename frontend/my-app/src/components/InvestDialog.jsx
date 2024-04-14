@@ -90,7 +90,7 @@ export default function InvestDialog({ companyDetail }) {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Add {companyDetail.name} to My Portfolio</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Add {companyDetail.name} to my Portfolio</DialogTitle>
         <DialogContent>
           <DialogContentText>
             To save this company to your Portfolio, please enter your investing amount and an optional comment. We

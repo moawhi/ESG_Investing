@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid, Button } from '@mui/material';
+import { Box, Typography, Grid } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 import DevicesIcon from '@mui/icons-material/Devices';
@@ -39,7 +39,7 @@ const CompanyDetails = ({ companyDetails }) => {
             <Box sx={{ padding: 1, mt: 1 }}>
               <Typography>{companyDetails.info}</Typography>
             </Box>
-            <InvestDialog  companyDetail={companyDetails}></InvestDialog>
+            <InvestDialog companyDetail={companyDetails}></InvestDialog>
           </Grid>
         </Box>
         <Box sx={{
