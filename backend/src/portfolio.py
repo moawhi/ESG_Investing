@@ -156,7 +156,6 @@ def portfolio_list(token):
 def portfolio_edit(token, company_id, investment_amount, comment):
     """
     Edits investment amount and/or comment for a company in the user's portfolio
-    If no input for comment is provided by the user, the comment is unchanged.
     """
     if not verify_token(token):
         return {
@@ -169,25 +168,15 @@ def portfolio_edit(token, company_id, investment_amount, comment):
     try:
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
 
-        update_investment_amount = """
+        query = """
             UPDATE user_portfolio
-            SET investment_amount = %s
+            SET investment_amount = %s, comment = %s
             WHERE user_id = %s and company_id = %s
         """
-        update_comment = """
-            UPDATE user_portfolio
-            SET comment = %s
-            WHERE user_id = %s and company_id = %s
-        """
-        user_id = get_user_id_from_token(token)
         with db.cursor() as cur:
             user_id = get_user_id_from_token(token)
-            cur.execute(update_investment_amount, [investment_amount, user_id, company_id])
+            cur.execute(query, [investment_amount, comment, user_id, company_id])
             db.commit()
-
-            if comment != "":
-                cur.execute(update_comment, [comment, user_id, company_id])
-                db.commit()
 
             return {
                 "status": "success",
