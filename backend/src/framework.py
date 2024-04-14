@@ -144,7 +144,7 @@ def list_metrics_not_part_of_framework(framework_id):
             INNER JOIN framework_metric_indicator_mapping fmi ON fm.id = fmi.framework_metric_id
             INNER JOIN indicator ind ON fmi.indicator_id = ind.id
             WHERE fm.id NOT IN (
-                SELECT framework_metric_id FROM framework_metric WHERE framework_id = %s
+                SELECT id FROM framework_metric WHERE framework_id = %s
             )
         """
         with db.cursor(dictionary=True) as cursor:
