@@ -3,7 +3,7 @@ Framework functions
 """
 
 import mysql.connector
-from backend.src.helper import verify_token, get_dictionary_index_in_list
+from backend.src.helper import verify_token
 
 FORBIDDEN = 403
 
@@ -128,7 +128,11 @@ def process_esg_data(cursor, esg_data):
             "indicator_description": row["indicator_description"],
             "provider_name": row["provider_name"]
         }
-        existing_metric["indicators"].append(indicator_details)
+        indicator = next((i for i in existing_metric["indicators"] if i["indicator_name"] == row["metric_name"]), None)
+        if indicator is None:
+            existing_metric["indicators"].append(indicator_details)
+        else:
+            indicator.update(indicator_details)
 
 def list_metrics_not_part_of_framework(framework_id):
     """
