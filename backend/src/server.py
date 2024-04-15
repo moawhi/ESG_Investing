@@ -187,5 +187,31 @@ def get_portfolio_companies_details():
         return jsonify(response), response.get("code")
     return jsonify(response)
 
+@app.route("/portfolio/edit", methods=["PUT"])
+def edit_portfolio_investment_amount_comment():
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    info = request.get_json()
+    company_id = info["company_id"]
+    investment_amount = info["investment_amount"]
+    comment = info["comment"]
+
+    response = portfolio.portfolio_edit(token, company_id, investment_amount, comment) 
+    return jsonify(response), response.get("code")
+
+@app.route("/portfolio/calculate-esg-score", methods=["GET"])
+def calculate_portfolio_esg_score():
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    
+    response = portfolio.portfolio_calculate_esg_score(token)
+    if response.get("code"):
+        return jsonify(response), response.get("code")
+    return jsonify(response)
+
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
