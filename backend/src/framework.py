@@ -78,14 +78,14 @@ def get_esg_data_for_company_and_framework(company_id, framework_id, additional_
             # Fetching ESG data for the framework
             cursor.execute("""
                 SELECT fm.name AS framework_metric_name, fm.description, fm.weight AS framework_metric_weight,
-                       ced.metric_name, ced.metric_score, ced.metric_year, ind.description AS indicator_description,
-                       fmi.weight AS indicator_weight, ced.provider_name
+                       ind.name AS indicator_name, ind.description AS indicator_description,
+                       ced.metric_score, ced.metric_year, fmi.weight AS indicator_weight, ced.provider_name
                 FROM framework_metric fm
                 JOIN framework_metric_indicator_mapping fmi ON fm.id = fmi.framework_metric_id
                 JOIN indicator ind ON fmi.indicator_id = ind.id
-                JOIN company_esg_raw_data ced ON ind.id = ced.metric_id AND ced.company_id = %s
-                WHERE fm.framework_id = %s
-            """, (company_id, framework_id))
+                JOIN company_esg_raw_data ced ON ind.id = ced.metric_id
+                WHERE fm.framework_id = %s AND ced.company_id = %s
+            """, (framework_id, company_id))
 
             process_esg_data(cursor, esg_data)
 
@@ -93,12 +93,14 @@ def get_esg_data_for_company_and_framework(company_id, framework_id, additional_
             if additional_metrics:
                 for metric_id in additional_metrics:
                     cursor.execute("""
-                        SELECT ind.name AS indicator_name, ind.description AS indicator_description, 
-                            ced.metric_score, ced.metric_year, ced.provider_name,
-                            'Individual Metric' AS framework_metric_name, 1 AS indicator_weight
-                        FROM indicator ind
+                        SELECT fm.name AS framework_metric_name, fm.weight AS framework_metric_weight, 
+                            ind.name AS indicator_name, ind.description AS indicator_description, 
+                            ced.metric_score, ced.metric_year, ced.provider_name
+                        FROM framework_metric fm
+                        JOIN framework_metric_indicator_mapping fmi ON fm.id = fmi.framework_metric_id
+                        JOIN indicator ind ON fmi.indicator_id = ind.id
                         JOIN company_esg_raw_data ced ON ind.id = ced.metric_id
-                        WHERE ced.company_id = %s AND ind.id = %s
+                        WHERE ced.company_id = %s AND fm.id = %s
                     """, (company_id, metric_id))
                     process_esg_data(cursor, esg_data)
 
