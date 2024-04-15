@@ -77,9 +77,9 @@ def get_esg_data_for_company_and_framework(company_id, framework_id, additional_
 
             # Fetching ESG data for the framework
             cursor.execute("""
-                SELECT fm.name AS framework_metric_name, fm.description, fm.weight AS framework_metric_weight,
-                       ind.name AS indicator_name, ind.description AS indicator_description,
-                       ced.metric_score, ced.metric_year, fmi.weight AS indicator_weight, ced.provider_name
+                SELECT fm.name AS framework_metric_name, fm.description AS framework_metric_description, fm.weight AS framework_metric_weight,
+                    ind.name AS indicator_name, ind.description AS indicator_description,
+                    ced.metric_score, ced.metric_year, fmi.weight AS indicator_weight, ced.provider_name
                 FROM framework_metric fm
                 JOIN framework_metric_indicator_mapping fmi ON fm.id = fmi.framework_metric_id
                 JOIN indicator ind ON fmi.indicator_id = ind.id
@@ -118,6 +118,7 @@ def process_esg_data(cursor, esg_data):
         if not existing_metric:
             existing_metric = {
                 "framework_metric_name": row["framework_metric_name"],
+                "framework_metric_description": row["description"],  # Added framework metric description
                 "framework_metric_weight": row.get("framework_metric_weight", 0),
                 "indicators": []
             }
@@ -125,9 +126,9 @@ def process_esg_data(cursor, esg_data):
 
         indicator_details = {
             "indicator_name": row["indicator_name"],
+            "indicator_description": row["indicator_description"],
             "indicator_weight": row.get("indicator_weight", 1),
             "indicator_score_{}".format(row["metric_year"]): row["metric_score"],
-            "indicator_description": row["indicator_description"],
             "provider_name": row["provider_name"]
         }
         existing_metric["indicators"].append(indicator_details)
