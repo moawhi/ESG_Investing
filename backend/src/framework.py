@@ -93,12 +93,12 @@ def get_esg_data_for_company_and_framework(company_id, framework_id, additional_
             if additional_metrics:
                 for metric_id in additional_metrics:
                     cursor.execute("""
-                        SELECT 'Additional Metric' AS framework_metric_name, ind.name AS metric_name, 
-                               ind.description AS indicator_description, ced.metric_score, ced.metric_year, 
-                               ced.provider_name
+                        SELECT ind.name AS indicator_name, ind.description AS indicator_description, 
+                            ced.metric_score, ced.metric_year, ced.provider_name,
+                            'Individual Metric' AS framework_metric_name, 1 AS indicator_weight
                         FROM indicator ind
-                        JOIN company_esg_raw_data ced ON ind.id = ced.metric_id AND ced.company_id = %s
-                        WHERE ind.id = %s
+                        JOIN company_esg_raw_data ced ON ind.id = ced.metric_id
+                        WHERE ced.company_id = %s AND ind.id = %s
                     """, (company_id, metric_id))
                     process_esg_data(cursor, esg_data)
 
