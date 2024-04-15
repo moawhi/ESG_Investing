@@ -93,9 +93,9 @@ def get_esg_data_for_company_and_framework(company_id, framework_id, additional_
             if additional_metrics:
                 for metric_id in additional_metrics:
                     cursor.execute("""
-                        SELECT fm.name AS framework_metric_name, fm.description, 0 AS framework_metric_weight,
-                               ced.metric_name AS indicator_name, ced.metric_score, ced.metric_year, ind.description AS indicator_description,
-                               0 AS indicator_weight, ced.provider_name
+                        SELECT fm.name AS framework_metric_name, fm.description AS framework_metric_description, 0 AS framework_metric_weight,
+                            ced.metric_name AS indicator_name, ced.metric_score, ced.metric_year, ind.description AS indicator_description,
+                            0 AS indicator_weight, ced.provider_name
                         FROM framework_metric fm
                         JOIN framework_metric_indicator_mapping fmi ON fm.id = fmi.framework_metric_id
                         JOIN indicator ind ON fmi.indicator_id = ind.id
@@ -118,7 +118,7 @@ def process_esg_data(cursor, esg_data):
         if not existing_metric:
             existing_metric = {
                 "framework_metric_name": row["framework_metric_name"],
-                "framework_metric_description": row["description"],  # Added framework metric description
+                "framework_metric_description": row.get("framework_metric_description", ""),  # Include framework metric description
                 "framework_metric_weight": row.get("framework_metric_weight", 0),
                 "indicators": []
             }
