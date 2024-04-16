@@ -279,7 +279,7 @@ def auth_check_password_strength(password):
             not re.search("[a-z]", password) or
             not re.search("[A-Z]", password) or
             not re.search("[0-9]", password) or
-            not re.search("[_@$]", password)):
+            password.isalnum()):
         return False
     return True
 
