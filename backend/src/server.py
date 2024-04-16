@@ -2,7 +2,7 @@
 Server
 """
 
-from backend.src import auth, framework, company, portfolio
+from backend.src import auth, framework, company, portfolio, user
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from backend.src.company import get_company_details
@@ -212,6 +212,32 @@ def calculate_portfolio_esg_score():
     if response.get("code"):
         return jsonify(response), response.get("code")
     return jsonify(response)
+
+@app.route("/user/update-details", methods=["PUT"])
+def update_user_details():
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    info = request.get_json()
+    first_name = info["first_name"]
+    last_name = info["last_name"]
+    email_address = info["email_address"]
+
+    response = user.user_update_details(token, first_name, last_name, email_address)
+    return jsonify(response), response.get("code")
+
+@app.route("/user/update-password", methods=["PUT"])
+def update_user_password():
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    info = request.get_json()
+    password = info["password"]
+
+    response = user.user_update_password(token, password)
+    return jsonify(response), response.get("code")
 
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)
