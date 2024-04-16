@@ -6,8 +6,13 @@ import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 import DevicesIcon from '@mui/icons-material/Devices';
 import FactoryIcon from '@mui/icons-material/Factory';
 
-// Adjust the props to include investmentAmount and impactStatement as optional
-const CompanyCard = ({ companyDetails, investmentAmount, impactStatement }) => {
+const CompanyCard = ({
+  companyDetails,
+  investmentAmount,
+  impactStatement,
+  selected = false,
+  onSelect,
+}) => {
   const navigate = useNavigate();
 
   const industryIcons = {
@@ -17,30 +22,36 @@ const CompanyCard = ({ companyDetails, investmentAmount, impactStatement }) => {
     Manufacturing: FactoryIcon,
   };
 
-  const handleSelectCompany = (company) => {
-    navigate('/company_info', { state: company });
-  }
+  const handleClick = () => {
+    if (onSelect) {
+      onSelect(companyDetails.company_id);
+    } else {
+      navigate('/company_info', { state: companyDetails.company_id });
+    }
+  };
 
   return (
     <div>
-      <Card sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        overflow: 'auto',
-        height: '230px',
-        width: '100%',
-        border: '2px solid #e0e0e0',
-        borderRadius: '12px',
-        ':hover': {
-          bgcolor: 'action.hover',
-          cursor: 'pointer'
-        },
-        transition: 'border-color 0.3s',
-      }}
-        onClick={() => handleSelectCompany(companyDetails.company_id)}>
+      <Card
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          overflow: 'auto',
+          height: '200px',
+          width: '100%',
+          border: selected ? '3px solid #779c73' : '2px solid #e0e0e0',
+          borderRadius: '12px',
+          ':hover': {
+            bgcolor: 'action.hover',
+            cursor: 'pointer',
+          },
+          transition: 'border-color 0.3s',
+        }}
+        onClick={handleClick}
+      >
         <Box sx={{
           flex: 1,
-          padding: 2,
+          padding: 1.5,
         }}>
           <Grid container alignItems="center" spacing={1}>
             <Grid item>
@@ -63,7 +74,7 @@ const CompanyCard = ({ companyDetails, investmentAmount, impactStatement }) => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          padding: 2,
+          padding: 1.5,
         }}>
           <Box sx={{ textAlign: 'center' }}>
             <Typography variant="h4" component="span" sx={{ fontWeight: 'bold' }}>

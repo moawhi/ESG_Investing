@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, List, ListItem, ListItemText, Divider, Stack, Grid } from '@mui/material';
 import Topbar from './Topbar';
-import { fetchCompanyDetails } from './helper';
+import { fetchCompanyDetails, fetchPortfolioData } from './helper';
 
 import CompanyCard from './CompanyCard';
 
@@ -86,7 +86,7 @@ const Dashboard = () => {
           }}>
             <Box>
               <Typography variant="h4" sx={{ mb: 1, mt: 1 }}>Welcome, {name}.</Typography>
-              <Typography variant="h5" gutterBottom>Get Started</Typography>
+              {/* <Typography variant="h5" gutterBottom>Get Started</Typography> */}
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }} />
             </Box>
             <Box sx={{
@@ -102,7 +102,7 @@ const Dashboard = () => {
                 display: 'flex',
                 flexDirection: 'column',
               }} >
-                <Typography variant="h6" sx={{ p: 2, fontWeight: '600' }}> Select an Industry </Typography>
+                <Typography variant="h6" sx={{ p: 1, fontWeight: '600' }}> Select an Industry </Typography>
                 <Box sx={{
                   height: '90%',
                   borderRadius: '16px',
@@ -131,7 +131,7 @@ const Dashboard = () => {
                 flexDirection: 'column',
               }} >
                 <Stack>
-                  <Typography variant="h6" sx={{ p: 2, fontWeight: '600' }}>Select a Company</Typography>
+                  <Typography variant="h6" sx={{ p: 1, fontWeight: '600' }}>Select a Company</Typography>
                 </Stack>
                 <Grid container spacing={2}>
                   {companyDetails && selectedIndustry && (
