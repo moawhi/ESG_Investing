@@ -131,7 +131,7 @@ def process_esg_data(cursor, esg_data):
             "indicator_score_{}".format(row["metric_year"]): row["metric_score"],
             "provider_name": row["provider_name"]
         }
-        indicator = next((i for i in existing_metric["indicators"] if i["indicator_name"] == row["metric_name"]), None)
+        indicator = next((i for i in existing_metric["indicators"] if i["indicator_name"] == row["indicator_name"]), None)
         if indicator is None:
             existing_metric["indicators"].append(indicator_details)
         else:
