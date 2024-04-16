@@ -131,7 +131,7 @@ def process_esg_data(cursor, esg_data):
             "indicator_score_{}".format(row["metric_year"]): row["metric_score"],
             "provider_name": row["provider_name"]
         }
-        indicator = next((i for i in existing_metric["indicators"] if i["indicator_name"] == row["metric_name"]), None)
+        indicator = next((i for i in existing_metric["indicators"] if i["indicator_name"] == row["indicator_name"]), None)
         if indicator is None:
             existing_metric["indicators"].append(indicator_details)
         else:
@@ -160,15 +160,10 @@ def list_metrics_not_part_of_framework(framework_id):
             for row in cursor.fetchall():
                 if row['metric_id'] not in metrics:
                     metrics[row['metric_id']] = {
+                        'metric_id': row['metric_id'],
                         'metric_name': row['metric_name'],
                         'metric_description': row['metric_description'],
-                        'indicators': []
                     }
-                metrics[row['metric_id']]['indicators'].append({
-                    'indicator_id': row['indicator_id'],
-                    'indicator_name': row['indicator_name'],
-                    'indicator_description': row['indicator_description']
-                })
             return {'metrics': list(metrics.values())}
 
     except Exception as err:
