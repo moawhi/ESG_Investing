@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, TextField, Button, Snackbar, Alert } from '@mui/material';
-import { useUser } from './UserContext'; // Adjust the import path as necessary
+import { useUser } from './UserContext';
 
 const GeneralInformation = () => {
   const { user, updateUser } = useUser();

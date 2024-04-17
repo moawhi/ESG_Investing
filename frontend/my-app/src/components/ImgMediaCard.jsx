@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@mui/material';
-import { useUser } from './UserContext'; // Adjust path as necessary
+import { useUser } from './UserContext';
+import UpdatePasswordDialog from './UpdatePasswordDialog';
 
 export default function ImgMediaCard() {
     const { user } = useUser();
+    const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+    const handleOpenPasswordDialog = () => {
+      setIsPasswordDialogOpen(true);
+  };
+
+  const handleClosePasswordDialog = () => {
+      setIsPasswordDialogOpen(false);
+  };
 
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -19,8 +28,9 @@ export default function ImgMediaCard() {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Update Password</Button>
+                <Button size="small" onClick={handleOpenPasswordDialog}>Update Password</Button>
             </CardActions>
+            <UpdatePasswordDialog open={isPasswordDialogOpen} handleClose={handleClosePasswordDialog} />
         </Card>
     );
 }
