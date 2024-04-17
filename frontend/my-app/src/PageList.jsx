@@ -6,7 +6,7 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import Profile from './components/Profile';
 import CompanyInfo from './components/CompanyInfo';
-import Portfolio from './components/Portfolio';
+import Portfolio from './components/Portfolio/Portfolio';
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('token');

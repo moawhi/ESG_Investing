@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -11,12 +10,14 @@ import Alert from '@mui/material/Alert';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export default function InvestDialog({ companyDetail }) {
+export default function DeleteDialog({ companyDetail, onCompanyDeleted }) {
   const [open, setOpen] = React.useState(false);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
   const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
+
   const token = localStorage.getItem('token');
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -32,36 +33,30 @@ export default function InvestDialog({ companyDetail }) {
     setSnackbarOpen(false);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const investment_amount = formData.get('investAmount');
-    const comment = formData.get('Comment');
-
+  const handleDelete = async () => {
     try {
-      const response = await fetch('http://localhost:12345/portfolio/save-company', {
-        method: 'POST',
+      const response = await fetch('http://localhost:12345/portfolio/delete-company', {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorisation': 'Bearer ' + token,
+          Authorisation: 'Bearer ' + token,
         },
         body: JSON.stringify({
-          company_id: companyDetail.company_id,
-          investment_amount,
-          comment
+          company_id: companyDetail.company_id
         })
       });
 
       const result = await response.json();
       if (response.ok) {
-        setSnackbarMessage('Company added to Portfolio successfully!');
+        setSnackbarMessage('Company deleted successfully!');
         setSnackbarSeverity('success');
+        onCompanyDeleted(companyDetail.company_id);
       } else {
-        setSnackbarMessage(`Failed to add company: ${result.message}`);
+        setSnackbarMessage(`Failed to delete company: ${result.message}`);
         setSnackbarSeverity('error');
       }
     } catch (error) {
-      setSnackbarMessage(`Failed to add company: ${error.message}`);
+      setSnackbarMessage(`Failed to delete company: ${error.message}`);
       setSnackbarSeverity('error');
     }
     setSnackbarOpen(true);
@@ -74,55 +69,27 @@ export default function InvestDialog({ companyDetail }) {
         onClick={handleClickOpen}
         variant="contained"
         sx={{
-          backgroundColor: "#8eb08b",
+          backgroundColor: "#ff6347",
           fontWeight: 'bold',
           '&:hover': {
-            backgroundColor: "#779c73",
+            backgroundColor: "#e05237",
           }
         }}>
-        Add to Portfolio
+        Delete
       </Button>
       <Dialog
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          component: 'form',
-          onSubmit: handleSubmit,
-        }}
       >
-        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Add {companyDetail.name} to my Portfolio</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Delete {companyDetail.company_name}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To save this company to your Portfolio, please enter your investing amount and an optional comment. We
-            will update immediately.
+            Are you sure you want to delete this company from your portfolio? This action cannot be undone.
           </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="investAmount"
-            label="Investing Amount"
-            type="number"
-            fullWidth
-            variant="standard"
-            inputProps={{
-              min: 0
-            }}
-          />
-          <TextField
-            margin="dense"
-            id="comment"
-            name="Comment"
-            label="Comment (Optional)"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Add</Button>
+          <Button onClick={handleDelete} variant="contained">Delete</Button>
         </DialogActions>
       </Dialog>
       <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleSnackbarClose}>

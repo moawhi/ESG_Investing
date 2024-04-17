@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, List, ListItem, ListItemText, Divider, Stack, Grid } from '@mui/material';
 import Topbar from './Topbar';
-import { fetchCompanyDetails } from './helper';
+import { fetchCompanyDetails, fetchPortfolioData } from './helper';
 
 import CompanyCard from './CompanyCard';
 
@@ -86,7 +86,7 @@ const Dashboard = () => {
           }}>
             <Box>
               <Typography variant="h4" sx={{ mb: 1, mt: 1 }}>Welcome, {name}.</Typography>
-              <Typography variant="h5" gutterBottom>Get Started</Typography>
+              {/* <Typography variant="h5" gutterBottom>Get Started</Typography> */}
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }} />
             </Box>
             <Box sx={{
@@ -97,12 +97,12 @@ const Dashboard = () => {
               gap: 10,
             }}>
               <Box sx={{
-                width: '15%',
+                width: '22%',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
               }} >
-                <Typography variant="h6" sx={{ p: 2, fontWeight: '600' }}> Select an Industry </Typography>
+                <Typography variant="h6" sx={{ p: 1, fontWeight: '600' }}> Select an Industry </Typography>
                 <Box sx={{
                   height: '90%',
                   borderRadius: '16px',
@@ -125,13 +125,13 @@ const Dashboard = () => {
               </Box>
               <Divider orientation="vertical" flexItem />
               <Box sx={{
-                width: '75%',
+                width: '100%',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
               }} >
                 <Stack>
-                  <Typography variant="h6" sx={{ p: 2, fontWeight: '600' }}>Select a Company</Typography>
+                  <Typography variant="h6" sx={{ p: 1, fontWeight: '600' }}>Select a Company</Typography>
                 </Stack>
                 <Grid container spacing={2}>
                   {companyDetails && selectedIndustry && (
@@ -139,7 +139,7 @@ const Dashboard = () => {
                       <Grid item xs={12} md={4} key={companyDetail.company_id}>
                         <Box
                           sx={{
-                            padding: 2,
+                            padding: 1,
                           }}
                           onClick={() => handleSelectCompany(companyDetail.company_id)}
                         >

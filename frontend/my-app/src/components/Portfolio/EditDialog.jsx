@@ -11,12 +11,17 @@ import Alert from '@mui/material/Alert';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export default function InvestDialog({ companyDetail }) {
+export default function EditDialog({ companyDetail, onCompanyUpdated }) {
   const [open, setOpen] = React.useState(false);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
   const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
+  const [investmentAmount, setInvestmentAmount] = React.useState(companyDetail.investment_amount);
+  const [comment, setComment] = React.useState(companyDetail.comment);
+  const [isSaveDisabled, setIsSaveDisabled] = React.useState(true); // Initially, save button is disabled
+
   const token = localStorage.getItem('token');
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -37,13 +42,12 @@ export default function InvestDialog({ companyDetail }) {
     const formData = new FormData(event.currentTarget);
     const investment_amount = formData.get('investAmount');
     const comment = formData.get('Comment');
-
     try {
-      const response = await fetch('http://localhost:12345/portfolio/save-company', {
-        method: 'POST',
+      const response = await fetch('http://localhost:12345/portfolio/edit', {
+        method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorisation': 'Bearer ' + token,
+					'Content-Type': 'application/json',
+					Authorisation: 'Bearer ' + token,
         },
         body: JSON.stringify({
           company_id: companyDetail.company_id,
@@ -54,19 +58,29 @@ export default function InvestDialog({ companyDetail }) {
 
       const result = await response.json();
       if (response.ok) {
-        setSnackbarMessage('Company added to Portfolio successfully!');
+        setSnackbarMessage('Company details updated successfully!');
         setSnackbarSeverity('success');
+        onCompanyUpdated({
+          ...companyDetail,
+          investment_amount: investmentAmount,
+          comment
+        });
       } else {
-        setSnackbarMessage(`Failed to add company: ${result.message}`);
+        setSnackbarMessage(`Failed to update company details: ${result.message}`);
         setSnackbarSeverity('error');
       }
     } catch (error) {
-      setSnackbarMessage(`Failed to add company: ${error.message}`);
+      setSnackbarMessage(`Failed to update company details: ${error.message}`);
       setSnackbarSeverity('error');
     }
     setSnackbarOpen(true);
     handleClose();
   };
+
+  // Update state and check if save button should be enabled whenever there's a change in input fields
+  React.useEffect(() => {
+    setIsSaveDisabled(investmentAmount === companyDetail.investment_amount && comment === companyDetail.comment);
+  }, [investmentAmount, comment, companyDetail]);
 
   return (
     <React.Fragment>
@@ -80,7 +94,7 @@ export default function InvestDialog({ companyDetail }) {
             backgroundColor: "#779c73",
           }
         }}>
-        Add to Portfolio
+        Edit
       </Button>
       <Dialog
         open={open}
@@ -90,11 +104,10 @@ export default function InvestDialog({ companyDetail }) {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Add {companyDetail.name} to my Portfolio</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Edit Investment for {companyDetail.company_name}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To save this company to your Portfolio, please enter your investing amount and an optional comment. We
-            will update immediately.
+            To update this company in your Portfolio, please edit your investing amount or comment.
           </DialogContentText>
           <TextField
             autoFocus
@@ -109,6 +122,8 @@ export default function InvestDialog({ companyDetail }) {
             inputProps={{
               min: 0
             }}
+            defaultValue={companyDetail.investment_amount}
+            onChange={(e) => setInvestmentAmount(e.target.value)}
           />
           <TextField
             margin="dense"
@@ -118,11 +133,13 @@ export default function InvestDialog({ companyDetail }) {
             type="text"
             fullWidth
             variant="standard"
+            defaultValue={companyDetail.comment}
+            onChange={(e) => setComment(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Add</Button>
+          <Button type="submit" disabled={isSaveDisabled} variant={isSaveDisabled ? "outlined" : "contained"} >Save</Button>
         </DialogActions>
       </Dialog>
       <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleSnackbarClose}>
