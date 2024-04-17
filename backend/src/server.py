@@ -239,5 +239,24 @@ def update_user_password():
     response = user.user_update_password(token, password)
     return jsonify(response), response.get("code")
 
+@app.route("/framework/rebalance-weight", methods=["GET"])
+def rebalance_metric_weights():
+    """
+    Endpoint to obtain the rebalanced weight for the user's currently selected metrics.
+    """
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
+    metrics = request.args.get("metrics")
+    try:
+        metrics = json.loads(metrics)
+    except json.JSONDecodeError:
+        return jsonify({"status": "fail", "message": "Invalid metrics format"}), 400
+
+    response = framework.rebalance_weights_of_all_metrics(token, metrics)
+    return jsonify(response), response.get("code")
+
+
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT, debug=True)

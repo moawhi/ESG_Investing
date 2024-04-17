@@ -138,18 +138,19 @@ def company_calculate_esg_score(token, esg_data):
 
 def check_total_framework_metric_weight(esg_data):
     """
-    Checks if total weight of framework metrics is equal to 1.
+    Checks if total weight of framework metrics is between (1 - 0.05) and (1 + 0.05) inclusive.
     """
     framework_metric_weights = [metric["framework_metric_weight"] for metric in esg_data]
     total_framework_metric_weight = sum(framework_metric_weights)
-    if total_framework_metric_weight != TOTAL_WEIGHT:
+    if abs(total_framework_metric_weight - TOTAL_WEIGHT) > (0.05 * TOTAL_WEIGHT):
         return False
     
     return True
     
 def check_total_indicator_weight(esg_data):
     """
-    Checks if total weight of the indicator under each framework metric is equal to 1.
+    Checks if total weight of the indicators under each framework metric is 
+    between (1 - 0.05) and (1 + 0.05) inclusive.
     Returns which framework metrics do not have the weights of the indicators under the metric
     adding up to 1.
     """
@@ -157,7 +158,7 @@ def check_total_indicator_weight(esg_data):
     for framework_metric in esg_data:
         indicator_weights = [indicator["indicator_weight"] for indicator in framework_metric["indicators"]]
         total_indicator_weight = sum(indicator_weights)
-        if total_indicator_weight != TOTAL_WEIGHT:
+        if abs(total_indicator_weight - TOTAL_WEIGHT) > (0.05 * TOTAL_WEIGHT):
             framework_metrics_to_check.append(framework_metric["framework_metric_name"])
     if len(framework_metrics_to_check) > 0:
         return (False, framework_metrics_to_check)

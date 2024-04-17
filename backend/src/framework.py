@@ -6,6 +6,7 @@ import mysql.connector
 from backend.src.helper import verify_token
 
 FORBIDDEN = 403
+DECIMAL_PLACES = 2
 
 def framework_list(token, company_id):
     """
@@ -95,7 +96,7 @@ def get_esg_data_for_company_and_framework(company_id, framework_id, additional_
                     cursor.execute("""
                         SELECT fm.name AS framework_metric_name, fm.description AS framework_metric_description, 0 AS framework_metric_weight,
                             ced.metric_name AS indicator_name, ced.metric_score, ced.metric_year, ind.description AS indicator_description,
-                            0 AS indicator_weight, ced.provider_name
+                            fmi.weight AS indicator_weight, ced.provider_name
                         FROM framework_metric fm
                         JOIN framework_metric_indicator_mapping fmi ON fm.id = fmi.framework_metric_id
                         JOIN indicator ind ON fmi.indicator_id = ind.id
@@ -173,3 +174,29 @@ def list_metrics_not_part_of_framework(framework_id):
     finally:
         if db and db.is_connected():
             db.close()
+
+def rebalance_weights_of_all_metrics(token, metrics):
+    """
+    Gets the rebalanced weight for each metric. This weight is obtained by dividing
+    1 by the number of currently selected metrics.
+
+    Parameters:
+        token (JSON object): the user's token
+        metrics (list of int): the list of IDs of metrics the user has currently selected
+
+    Returns:
+        dict: the rebalanced weight for each metric.
+    """
+    if not verify_token(token):
+        return {
+            "status": "fail",
+            "message": "Invalid token",
+            "code": FORBIDDEN
+        }
+
+    num_metrics = len(metrics)
+    rebalanced_weight = round((1 / num_metrics), DECIMAL_PLACES)
+
+    return {
+        "weight": rebalanced_weight
+    }
