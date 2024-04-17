@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
@@ -6,7 +6,8 @@ import DevicesIcon from '@mui/icons-material/Devices';
 import FactoryIcon from '@mui/icons-material/Factory';
 import InvestDialog from './InvestDialog';
 
-const CompanyDetails = ({ companyDetails }) => {
+const CompanyDetails = ({ companyId }) => {
+  const [companyDetails, setCompanyDetails] = useState([]);
 
   const industryIcons = {
     Technology: DevicesIcon,
@@ -14,6 +15,37 @@ const CompanyDetails = ({ companyDetails }) => {
     Finance: AttachMoneyIcon,
     Manufacturing: FactoryIcon
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token'); 
+  
+    const fetchCompanyDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:12345/company/${companyId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorisation': 'Bearer ' + token,
+          },
+        });
+
+        if (response.ok) {
+          const responseData = await response.json();
+          setCompanyDetails(responseData); 
+        } else {
+          const errorBody = await response.json();
+          console.error(errorBody.message);
+        }
+
+      } catch (error) {
+        console.error('Error fetching company details:', error);
+      }
+    };
+    
+    if (companyId) {
+      fetchCompanyDetails();
+    }
+  }, [companyId]);
 
   return (
     <div>

@@ -1,14 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, RadioGroup, Radio, FormControlLabel, Typography } from '@mui/material';
 
-const FrameworkSelection = ({ frameworks, onSelectFramework }) => {
-
+const FrameworkSelection = ({ companyId, onSelectFramework }) => {
+  const [frameworks, setFrameworks] = useState([]);
   const [selectedFramework, setSelectedFramework] = useState('');
 
+  useEffect(() => {
+    const fetchFrameworks = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch(`http://localhost:12345/framework/list?company_id=${companyId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorisation': 'Bearer ' + token,
+          },
+        })
+          if (response.ok) {
+            const responseData = await response.json();
+            setFrameworks(responseData.frameworks);
+          } else {
+            const errorBody = await response.json();
+            console.error(errorBody.message);
+          }
+        } catch (error) {
+          console.error('Error fetching frameworks', error);
+        }
+      }
+
+    if (companyId) {
+      fetchFrameworks(); 
+    }
+  }, [companyId]);
+  
   const handleChange = (event) => {
-    const newFramework = event.target.value;
-    setSelectedFramework(newFramework);;
-    onSelectFramework(newFramework);
+    const newFrameworkId = event.target.value;
+    setSelectedFramework(newFrameworkId);
+    onSelectFramework(newFrameworkId);
   };
 
   return (

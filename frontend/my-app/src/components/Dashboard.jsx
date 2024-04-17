@@ -31,7 +31,6 @@ const Dashboard = () => {
         })
         if (response.ok) {
           const responseData = await response.json();
-          console.log(responseData);
           setIndustries(responseData.industries);
         } else {
           const errorBody = await response.json();
@@ -46,7 +45,6 @@ const Dashboard = () => {
 
   const fetchDataDetails = async () => {
     const details = await fetchCompanyDetails(companies);
-    console.log(details);
     setCompanyDetails(details);
   }
 

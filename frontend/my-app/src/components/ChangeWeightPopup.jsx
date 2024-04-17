@@ -26,7 +26,7 @@ const ChangeWeightPopup = ({ open, setOpenWeightPopup, handleSubmitNewWeight }) 
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Please enter a new weight</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Please enter a new weight:</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
