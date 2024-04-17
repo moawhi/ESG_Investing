@@ -157,6 +157,20 @@ export default function Register() {
                       autoComplete="new-password"
                     />
                   </Grid>
+                  <Grid item xs={12}>
+                    <Typography sx={{ fontSize: '0.8rem', color: 'grey' }}>
+                      Password Requirements:
+                    </Typography>
+                    <Box sx={{ paddingLeft: 1, typography: 'body2', fontSize: '0.8rem', color: 'gray' }}>
+                    <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
+                      <li>at least 1 upper case letter.</li>
+                      <li>at least 1 lower case letter.</li>
+                      <li>at least 1 number.</li>
+                      <li>at least 1 special character.</li>
+                      <li>at least 8 characters.</li>
+                    </ul>
+                  </Box>
+                  </Grid>
                 </Grid>
                 <Button
                   type="submit"
@@ -171,7 +185,7 @@ export default function Register() {
                 </Button>
                 <Grid container justifyContent="flex-end">
                   <Grid item>
-                    <Link to="/" variant="body2">
+                    <Link to="/login" variant="body2">
                       {"Already have an account? Sign in"}
                     </Link>
                   </Grid>
