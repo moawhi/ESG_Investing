@@ -105,7 +105,7 @@ def auth_login(email, password):
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
         
         query = """
-            SELECT id, first_name, last_name, password, blocked, login_attempts, last_login
+            SELECT id, email_address, first_name, last_name, password, blocked, login_attempts, last_login
             FROM user
             WHERE email_address = %s
         """
@@ -131,7 +131,7 @@ def auth_login(email, password):
             now = datetime.datetime.now()
             if result is None:
                 return {"status": "fail", "message": "Incorrect email or password", "code": BAD_REQUEST}
-            (id, first_name, last_name, hashed_password, blocked, login_attempts, last_login) = result
+            (id, first_name, last_name, hashed_password, blocked, login_attempts, last_login, email) = result
 
             if blocked:
                 if now >= last_login + datetime.timedelta(minutes=BLOCK_TIME):
