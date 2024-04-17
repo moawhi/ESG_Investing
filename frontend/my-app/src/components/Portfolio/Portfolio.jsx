@@ -37,19 +37,26 @@ const Portfolio = () => {
   }
 
   const GetweightedAvgESGScore = async () => {
-    const details = await fetchWeightedAvgESGScore();
-    console.log(details);
-    setWeightedAvgESGScore(details.esg_score);
-    setTotalInvestment(details.total_investment);
+    try {
+      const details = await fetchWeightedAvgESGScore();
+      setWeightedAvgESGScore(details.esg_score);
+      setTotalInvestment(details.total_investment);  
+    } catch (err) {
+      console.error('Error fetching portfolio details:', err);
+      setError('Failed to load data');
+    } finally {
+      setLoading(false);
+      setRerenderFlag(false);
+    }
   }
 
   useEffect(() => {
     GetweightedAvgESGScore();
-  }, [token, rerenderFlag])
+  }, [rerenderFlag])
 
   useEffect(() => {
     fetchDataDetails();
-  }, [token, rerenderFlag])
+  }, [rerenderFlag])
 
   const handleAddCompanyClick = () => {
     navigate('/dashboard');
