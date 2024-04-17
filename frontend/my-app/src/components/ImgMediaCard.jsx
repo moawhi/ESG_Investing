@@ -1,28 +1,36 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import React, { useState } from 'react';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@mui/material';
+import { useUser } from './UserContext';
+import UpdatePasswordDialog from './UpdatePasswordDialog';
 
 export default function ImgMediaCard() {
-  return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        component="img"
-        alt="Avatar"
-        height="200"
-        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeAKvlSuCAVIu5B45Fgjsdrasym0LWbSzbVQ&usqp=CAU"
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          Full Name
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Edit Avatar</Button>
-      </CardActions>
-    </Card>
-  );
+    const { user } = useUser();
+    const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+    const handleOpenPasswordDialog = () => {
+      setIsPasswordDialogOpen(true);
+  };
+
+  const handleClosePasswordDialog = () => {
+      setIsPasswordDialogOpen(false);
+  };
+
+    return (
+        <Card sx={{ maxWidth: 345 }}>
+            <CardMedia
+                component="img"
+                alt="Avatar"
+                height="200"
+                image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeAKvlSuCAVIu5B45Fgjsdrasym0LWbSzbVQ&usqp=CAU"
+            />
+            <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                    {user.firstName} {user.lastName}
+                </Typography>
+            </CardContent>
+            <CardActions>
+                <Button size="small" onClick={handleOpenPasswordDialog}>Update Password</Button>
+            </CardActions>
+            <UpdatePasswordDialog open={isPasswordDialogOpen} handleClose={handleClosePasswordDialog} />
+        </Card>
+    );
 }

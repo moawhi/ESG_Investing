@@ -1,31 +1,43 @@
 """
 Authentication functions
+Filename: auth.py
 
+Functions:
+    - auth_register
+    - auth_login
+    - auth_logout
+    - auth_block_account
+    - auth_unblock_account
+    - auth_check_password_strength
+    - auth_check_registered_email
 """
 
 import mysql.connector
 import re
+import datetime
 from backend.src.encryption import *
-from backend.src.helper import verify_token
+from backend.src.helper import verify_token, prompt_for_missing_field
 
 LOGIN_ATTEMPT_LIMIT = 3
 BAD_REQUEST = 400
 FORBIDDEN = 403
-
-def prompt_for_missing_field(user_inputs):
-    for field in user_inputs.keys():
-        if not user_inputs[field]:
-            return {
-                "status": "fail",
-                "message": "Please fill in all fields",
-                "code": BAD_REQUEST
-            }
+BLOCK_TIME = 1 # Block users for 1 minute
 
 def auth_register(first_name, last_name, email, password):
     """
     User creates a new account with their first name, last name, email and password
     If email is already registered, no new account is created
 
+    Parameters:
+        first_name (string): the user's first name
+        last_name (string): the user's last name
+        email (string): the user's email address
+        password (string): the user's password
+
+    Returns:
+        dict: the user's ID, first name, last name and token and a success status
+        if successful register, otherwise returns a message of the corresponding 
+        error if unsuccessful register
     """
     if prompt_for_missing_field(locals()):
         return prompt_for_missing_field(locals())
@@ -58,7 +70,13 @@ def auth_register(first_name, last_name, email, password):
         db.commit()
         user_id = cursor.lastrowid
         token = generate_jwt(user_id)
-        return {"status": "success", "user_id": user_id, "token": token}
+        return {
+            "status": "success",
+            "user_id": user_id, 
+            "token": token,
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email}
     except Exception as err:
         print(f"Error: {err}")
         return {"status": "fail", "message": str(err)}
@@ -67,6 +85,18 @@ def auth_register(first_name, last_name, email, password):
             db.close()
 
 def auth_login(email, password):
+    """
+    Logs in a user.
+
+    Parameters:
+        email (string): the user's email
+        password (string): the user's password
+
+    Returns:
+        dict: the user's ID, first name, last name and token
+        and success status if successful login, otherwise returns a message of
+        the corresponding error if unsuccessful login
+    """
     if prompt_for_missing_field(locals()):
         return prompt_for_missing_field(locals())
     
@@ -75,7 +105,7 @@ def auth_login(email, password):
         db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
         
         query = """
-            SELECT id, email_address, password, blocked, login_attempts
+            SELECT id, first_name, last_name, password, blocked, login_attempts, last_login
             FROM user
             WHERE email_address = %s
         """
@@ -89,25 +119,48 @@ def auth_login(email, password):
             SET login_attempts = 0
             WHERE id = %s
         """
+        update_last_login = """
+            UPDATE user
+            SET last_login = %s
+            WHERE id = %s
+        """
         
         with db.cursor() as cur:
             cur.execute(query, [email])
             result = cur.fetchone()
-            if result is None or not verify_password(password, result[2]):
-                if result:
-                    cur.execute(increase_login_attempts, [result[0]])
-                    db.commit()
-                return {"status": "fail", "message": "Incorrect username or password", "code": BAD_REQUEST}
-
-            (id, user_email, hashed_password, blocked, login_attempts) = result
+            now = datetime.datetime.now()
+            if result is None:
+                return {"status": "fail", "message": "Incorrect email or password", "code": BAD_REQUEST}
+            (id, first_name, last_name, hashed_password, blocked, login_attempts, last_login) = result
 
             if blocked:
-                return {"status": "fail", "message": "Your account is blocked", "code": FORBIDDEN}
-
+                if now >= last_login + datetime.timedelta(minutes=BLOCK_TIME):
+                    auth_unblock_account(id)
+                    cur.execute(reset_login_attempts,[id])
+                    db.commit()
+                else:
+                    return {"status": "fail", "message": "Your account is blocked. Please try again later.", "code": FORBIDDEN}
+            if login_attempts >= LOGIN_ATTEMPT_LIMIT:
+                return auth_block_account(id)
+            
+            cur.execute(update_last_login, [now, id])
+            db.commit()
+            if not verify_password(password, hashed_password):
+                cur.execute(increase_login_attempts, [id])
+                db.commit()
+                return {"status": "fail", "message": "Incorrect email or password", "code": BAD_REQUEST}
+                
             cur.execute(reset_login_attempts, [id])
             db.commit()
             token = generate_jwt(id)
-            return {"user_id": id, "status": "success", "token": token}
+            return {
+                "user_id": id,
+                "status": "success",
+                "token": token,
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email
+            }
             
     except Exception as err:
         print(f"Error: {err}")
@@ -119,25 +172,34 @@ def auth_login(email, password):
 def auth_logout(token):
     """
     User logs out of account
-    """
+
+    Parameters:
+        token (JSON object): the user's token
+
+    Returns:
+        dict: empty dict on successful logout, otherwise returns a message for
+        invalid token if unsuccessful logout
+    """    
     if not verify_token(token):
         return {
             "status": "fail",
             "message": "Invalid token",
             "code": FORBIDDEN
         }
-
     return {}
 
-def auth_block_account(id):
+def auth_block_account(user_id):
     """
     User is blocked from their account after multiple failed login attempts. An
-    incorrect email or password causes a failed login attempt. 
-    
-    If an incorrect password is provided a certain number of times for a valid
-    registered email, the account created using that email will be blocked.
+    incorrect email or password causes a failed login attempt. If an incorrect password
+    is provided a certain number of times for a valid registered email,
+    the account created using that email will be blocked for a set amount of time.
 
-    The user's account is blocked until the user recovers it.
+    Parameters:
+        user_id (int): the user's id
+
+    Returns:
+        dict: message that the user's account has been blocked
     """
     db = None
     try:
@@ -148,18 +210,49 @@ def auth_block_account(id):
         
         query = """
             UPDATE user
-            SET blocked = TRUE
+            SET blocked = TRUE, login_attempts = 0
             WHERE id = %s
         """
         
         with db.cursor() as cur:
-            cur.execute(query, [id])
+            cur.execute(query, [user_id])
             db.commit()
             return {
                 "status": "fail",
-                "message": "Your account has been blocked",
+                "message": "Your account has been blocked. Please try again in 1 minute.",
                 "code": FORBIDDEN
             } 
+            
+    except Exception as err:
+        print(f"Error: {err}")
+
+    finally:
+        if db.is_connected():
+            db.close()
+
+def auth_unblock_account(user_id):
+    """
+    Unblock a user after the blocking period has passed.
+
+    Parameters:
+        id (int): the user's id
+    """
+    db = None
+    try:
+        db = mysql.connector.connect(user="esg",
+                                     password="esg",
+                                     host="127.0.0.1",
+                                     database="esg_management")
+        
+        query = """
+            UPDATE user
+            SET blocked = FALSE
+            WHERE id = %s
+        """
+        
+        with db.cursor() as cur:
+            cur.execute(query, [user_id])
+            db.commit()
             
     except Exception as err:
         print(f"Error: {err}")
@@ -177,18 +270,30 @@ def auth_check_password_strength(password):
     - at least 1 number
     - at least 1 special character
     - at least 8 characters
+
+    Parameters:
+        password (string): the user's password
+
+    Returns:
+        bool: True if the password meets the requirements, otherwise False
     """
     if (len(password) < 8 or
             not re.search("[a-z]", password) or
             not re.search("[A-Z]", password) or
             not re.search("[0-9]", password) or
-            not re.search("[_@$]", password)):
+            password.isalnum()):
         return False
     return True
 
 def auth_check_registered_email(email):
     """
-    Checks that the email has not been used to register already
+    Checks that the email has not been used to register already.
+
+    Parameters:
+        email (string): the user's email
+
+    Returns:
+        bool: True if the email has been registered already, otherwise False
     """
     db = mysql.connector.connect(
         user="esg",
