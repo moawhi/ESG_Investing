@@ -75,7 +75,8 @@ def auth_register(first_name, last_name, email, password):
             "user_id": user_id, 
             "token": token,
             "first_name": first_name,
-            "last_name": last_name}
+            "last_name": last_name,
+            "email": email}
     except Exception as err:
         print(f"Error: {err}")
         return {"status": "fail", "message": str(err)}
@@ -157,7 +158,8 @@ def auth_login(email, password):
                 "status": "success",
                 "token": token,
                 "first_name": first_name,
-                "last_name": last_name
+                "last_name": last_name,
+                "email": email
             }
             
     except Exception as err:
