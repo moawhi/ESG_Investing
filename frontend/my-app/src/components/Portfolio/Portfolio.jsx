@@ -6,6 +6,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Topbar from '../Topbar';
 import CompanyCard from '../CompanyCard';
 import EditDialog from './EditDialog';
+import DeleteDialog from './DeleteDialog';
 import InvestmentPieChart from './InvestmentPieChart';
 import ESGScoresChart from './ESGScoreChart';
 import { fetchPortfolioData, fetchWeightedAvgESGScore } from '../helper';
@@ -13,6 +14,8 @@ import { fetchPortfolioData, fetchWeightedAvgESGScore } from '../helper';
 const Portfolio = () => {
   const [portfolioDetails, setPortfolioDetails] = useState([]);
   const [weightedAvgESGScore, setWeightedAvgESGScore] = useState(0);
+  const [totalInvestment, setTotalInvestment] = useState(0);
+  const [rerenderFlag, setRerenderFlag] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem('token');
@@ -29,6 +32,7 @@ const Portfolio = () => {
       setError('Failed to load data');
     } finally {
       setLoading(false);
+      setRerenderFlag(false);
     }
   }
 
@@ -36,15 +40,16 @@ const Portfolio = () => {
     const details = await fetchWeightedAvgESGScore();
     console.log(details);
     setWeightedAvgESGScore(details.esg_score);
+    setTotalInvestment(details.total_investment);
   }
 
   useEffect(() => {
     GetweightedAvgESGScore();
-  }, [token])
+  }, [token, rerenderFlag])
 
   useEffect(() => {
     fetchDataDetails();
-  }, [token])
+  }, [token, rerenderFlag])
 
   const handleAddCompanyClick = () => {
     navigate('/dashboard');
@@ -59,8 +64,20 @@ const Portfolio = () => {
     setSelectedCompany(selectedCompany && selectedCompany.company_id === company.company_id ? null : company);
   };
 
-  const pieSeries = portfolioDetails.map(item => item.investment_amount);
-  const pieLabels = portfolioDetails.map(item => item.company_name);
+  const handleCompanyUpdate = (updatedCompany) => {
+    const updatedDetails = portfolioDetails.map(item =>
+      item.company_id === updatedCompany.company_id ? { ...item, ...updatedCompany } : item
+    );
+    setPortfolioDetails(updatedDetails);
+    setSelectedCompany(null);
+    setRerenderFlag(true);
+  };
+
+  const handleCompanyDelete = (deletedCompanyId) => {
+    const updatedDetails = portfolioDetails.filter(item => item.company_id !== deletedCompanyId);
+    setPortfolioDetails(updatedDetails);
+    setSelectedCompany(null);
+  };
 
   if (loading) {
     return (
@@ -153,21 +170,20 @@ const Portfolio = () => {
               </Box>
             )}
             {selectionMode && selectedCompany && (
-              <Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: 2,
+                }}>
                 <EditDialog
                   companyDetail={selectedCompany}
+                  onCompanyUpdated={handleCompanyUpdate}
                 />
-                <Button variant="contained"
-                  onClick={handleAddCompanyClick}
-                  sx={{
-                    marginRight: 1,
-                    backgroundColor: '#779c73',
-                    '&:hover': {
-                      backgroundColor: '#667c62'
-                    }
-                  }}>
-                  Delete
-                </Button>
+                <DeleteDialog
+                  companyDetail={selectedCompany}
+                  onCompanyDeleted={handleCompanyDelete}
+                />
                 <Button
                   variant="outlined"
                   onClick={handleToggleSelectionMode}
@@ -191,7 +207,7 @@ const Portfolio = () => {
           <Grid item xs={12} md={4}>
             <Card sx={{ mb: 3 }}>
               <CardContent>
-                <InvestmentPieChart pieSeries={pieSeries} pieLabels={pieLabels} />
+                <InvestmentPieChart key={portfolioDetails.map(item => item.investment_amount)} portfolioDetails={portfolioDetails} totalInvestment={totalInvestment}/>
               </CardContent>
             </Card>
             <Card sx={{ mb: 3, position: 'relative' }}>

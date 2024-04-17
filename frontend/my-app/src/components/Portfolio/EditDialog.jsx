@@ -11,7 +11,7 @@ import Alert from '@mui/material/Alert';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export default function EditDialog({ companyDetail }) {
+export default function EditDialog({ companyDetail, onCompanyUpdated }) {
   const [open, setOpen] = React.useState(false);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
@@ -39,12 +39,11 @@ export default function EditDialog({ companyDetail }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const investment_amount = formData.get('investAmount');
     const comment = formData.get('Comment');
     try {
-      const response = await fetch('http://localhost:12345/portfolio/edit-company', {
+      const response = await fetch('http://localhost:12345/portfolio/edit', {
         method: 'PUT',
         headers: {
 					'Content-Type': 'application/json',
@@ -61,6 +60,11 @@ export default function EditDialog({ companyDetail }) {
       if (response.ok) {
         setSnackbarMessage('Company details updated successfully!');
         setSnackbarSeverity('success');
+        onCompanyUpdated({
+          ...companyDetail,
+          investment_amount: investmentAmount,
+          comment
+        });
       } else {
         setSnackbarMessage(`Failed to update company details: ${result.message}`);
         setSnackbarSeverity('error');

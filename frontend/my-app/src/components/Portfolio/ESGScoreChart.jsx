@@ -10,7 +10,7 @@ const ESGScoresChart = ({ companyDetails, weightedAvgESGScore }) => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '40%',
+        columnWidth: '20%',
         endingShape: 'rounded'
       },
     },

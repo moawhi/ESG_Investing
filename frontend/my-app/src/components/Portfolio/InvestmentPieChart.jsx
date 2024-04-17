@@ -1,7 +1,10 @@
 import React from 'react';
 import ApexCharts from 'react-apexcharts';
 
-const InvestmentPieChart = ({ pieSeries, pieLabels }) => {
+const InvestmentPieChart = ({ portfolioDetails }) => {
+  const pieSeries = portfolioDetails.map(item => item.investment_amount);
+  const totalInvestment = pieSeries.reduce((acc, val) => acc + val, 0);
+  const pieLabels = portfolioDetails.map(item => item.company_name);
   const options = {
     labels: pieLabels,
     legend: { position: 'bottom' },
@@ -14,10 +17,6 @@ const InvestmentPieChart = ({ pieSeries, pieLabels }) => {
               show: true,
               showAlways: true,
               label: 'Total Investment',
-              formatter: function () {
-                const totalInvestment = pieSeries.reduce((acc, val) => acc + val, 0);
-                return `$${totalInvestment.toLocaleString()}`;
-              }
             }
           }
         }

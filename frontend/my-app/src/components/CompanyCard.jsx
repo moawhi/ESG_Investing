@@ -35,7 +35,7 @@ const CompanyCard = ({
       <Card
         sx={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           overflow: 'auto',
           height: '200px',
           width: '100%',
@@ -50,51 +50,56 @@ const CompanyCard = ({
         onClick={handleClick}
       >
         <Box sx={{
-          flex: 1,
           padding: 1.5,
         }}>
           <Grid container alignItems="center" spacing={1}>
-            <Grid item>
+            <Grid item xs={12} md={4}>
               {industryIcons[companyDetails.industry] ? React.createElement(industryIcons[companyDetails.industry], { sx: { verticalAlign: 'middle', mr: 2, color: '#779c73', fontSize: '4rem' } }) : null}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={8}>
               <Typography sx={{ fontWeight: 'bold', fontSize: '1rem' }}>{companyDetails.name}</Typography>
               {companyDetails.company_name && (<Typography sx={{ fontWeight: 'bold', fontSize: '1rem' }}>{companyDetails.company_name}</Typography>
-              )}
-              {investmentAmount && (
-                <Typography sx={{ fontSize: '1rem', mt: 1, fontWeight: 'bold' }}> ${investmentAmount.toLocaleString()}</Typography>
-              )}
-              {impactStatement && (
-                <Typography sx={{ fontSize: '1rem', mt: 1 }}>{impactStatement}</Typography>
               )}
             </Grid>
           </Grid>
         </Box>
         <Box sx={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: investmentAmount ? 'column' : 'row',
           alignItems: 'center',
+          justifyContent: 'space-between',
           padding: 1.5,
         }}>
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h4" component="span" sx={{ fontWeight: 'bold' }}>
-              {companyDetails.esg_rating}
-            </Typography>
-            <Typography variant="subtitle1" sx={{ display: 'block' }}>
-              ESG Rating
-            </Typography>
-          </Box>
-          <Box sx={{
-            textAlign: 'center',
-            mt: 2
-          }}>
-            <Typography variant="h4" component="span" sx={{ fontWeight: 'bold' }}>
-              {companyDetails.industry_ranking}
-            </Typography>
-            <Typography variant="subtitle1" sx={{ display: 'block' }}>
-              Industry Ranking
-            </Typography>
-          </Box>
+          {!investmentAmount && (
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h4" component="span" sx={{ fontWeight: 'bold' }}>
+                {companyDetails.esg_rating}
+              </Typography>
+              <Typography variant="subtitle1" sx={{ display: 'block' }}>
+                ESG Rating
+              </Typography>
+            </Box>
+          )}
+          {!investmentAmount && (
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h4" component="span" sx={{ fontWeight: 'bold' }}>
+                {companyDetails.industry_ranking}
+              </Typography>
+              <Typography variant="subtitle1" sx={{ display: 'block' }}>
+                Industry Ranking
+              </Typography>
+            </Box>
+          )}
+          {investmentAmount && (
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h5" component="span" sx={{ fontWeight: 'bold' }}>
+                ${investmentAmount.toLocaleString()}
+              </Typography>
+            </Box>
+          )}
+          {impactStatement && (
+            <Typography sx={{ fontSize: '1rem', mt: 1 }}>{impactStatement}</Typography>
+          )}
         </Box>
       </Card>
     </div>
