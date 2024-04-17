@@ -1,15 +1,73 @@
-import React from 'react';
-import { Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Grid, TextField, Button, Snackbar, Alert } from '@mui/material';
+import { useUser } from './UserContext'; // Adjust the import path as necessary
 
 const GeneralInformation = () => {
+  const { user, updateUser } = useUser();
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [email, setEmail] = useState(user.email);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [error, setError] = useState(false);
+  const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+
+  // Effect to handle enabling/disabling the Save All button
+  useEffect(() => {
+    if (firstName !== user.firstName || lastName !== user.lastName || email !== user.email) {
+      setIsSaveDisabled(false);
+    } else {
+      setIsSaveDisabled(true);
+    }
+  }, [firstName, lastName, email, user]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorisation: 'Bearer ' + token,
+    };
+
+    const body = JSON.stringify({
+      first_name: firstName,
+      last_name: lastName,
+      email_address: email
+    });
+
+    try {
+      const response = await fetch('http://localhost:12345/user/update-details', {
+        method: 'PUT',
+        headers: headers,
+        body: body
+      });
+      const data = await response.json();
+      if (response.ok) {
+        updateUser({ firstName, lastName, email });
+        setSnackbarMessage('Details updated successfully!');
+        setError(false);
+      } else {
+        setSnackbarMessage(data.message || 'Failed to update details.');
+        setError(true);
+      }
+    } catch (err) {
+      setSnackbarMessage('Network error.');
+      setError(true);
+    }
+
+    setSnackbarOpen(true);
+  };
+
   return (
-    <form noValidate autoComplete="off">
+    <form noValidate autoComplete="off" onSubmit={handleSubmit}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <TextField
             required
             label="First Name"
             fullWidth
+            value={firstName}
+            onChange={e => setFirstName(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -17,99 +75,39 @@ const GeneralInformation = () => {
             required
             label="Last Name"
             fullWidth
+            value={lastName}
+            onChange={e => setLastName(e.target.value)}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            label="Birthday"
-            type="date"
-            defaultValue="mm/dd/yyyy"
-            InputLabelProps={{ shrink: true }}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-            <InputLabel>Gender</InputLabel>
-            <Select
-              defaultValue=""
-              label="Gender"
-              required
-            >
-              <MenuItem value="male">Male</MenuItem>
-              <MenuItem value="female">Female</MenuItem>
-              <MenuItem value="other">Prefer not to say</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <TextField
             required
             type="email"
             label="Email"
             fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            label="Phone"
-            fullWidth
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            required
-            label="Address"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            required
-            label="Suburb"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            required
-            label="City"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <FormControl fullWidth>
-            <InputLabel>State</InputLabel>
-            <Select
-              defaultValue=""
-              label="State"
-              required
-            >
-              <MenuItem value="state1">NSW</MenuItem>
-              <MenuItem value="state2">VIC</MenuItem>
-              <MenuItem value="state2">WA</MenuItem>
-              <MenuItem value="state2">TAS</MenuItem>
-              <MenuItem value="state2">QLD</MenuItem>
-              <MenuItem value="state2">SA</MenuItem>
-              <MenuItem value="state2">ACT</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            label="Postcode"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button variant="contained" color="primary">
+          <Button type="submit" variant="contained"
+            sx={{
+              backgroundColor: "#8eb08b",
+              fontWeight: 'bold',
+              '&:hover': {
+                backgroundColor: "#779c73",
+              }
+            }}
+            disabled={isSaveDisabled}>
             Save All
           </Button>
         </Grid>
       </Grid>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+        <Alert onClose={() => setSnackbarOpen(false)} severity={error ? "error" : "success"}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </form>
   );
 };

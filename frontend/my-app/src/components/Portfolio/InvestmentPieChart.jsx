@@ -3,7 +3,6 @@ import ApexCharts from 'react-apexcharts';
 
 const InvestmentPieChart = ({ portfolioDetails }) => {
   const pieSeries = portfolioDetails.map(item => item.investment_amount);
-  const totalInvestment = pieSeries.reduce((acc, val) => acc + val, 0);
   const pieLabels = portfolioDetails.map(item => item.company_name);
   const options = {
     labels: pieLabels,

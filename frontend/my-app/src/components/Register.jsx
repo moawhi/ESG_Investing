@@ -59,6 +59,7 @@ export default function Register() {
           localStorage.setItem('token', resBody.token);
           localStorage.setItem('firstName', resBody.first_name);
           localStorage.setItem('lastName', resBody.last_name);
+          localStorage.setItem('email', resBody.email);
           navigate('/dashboard');
         } 
       } else {

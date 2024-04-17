@@ -131,6 +131,13 @@ const Dashboard = () => {
                 <Stack>
                   <Typography variant="h6" sx={{ p: 1, fontWeight: '600' }}>Select a Company</Typography>
                 </Stack>
+                {!selectedIndustry && (
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60%' }}>
+                    <Typography color="error">
+                      Please select an industry
+                    </Typography>
+                  </Box>
+                )}
                 <Grid container spacing={2}>
                   {companyDetails && selectedIndustry && (
                     companyDetails.map((companyDetail) => (
