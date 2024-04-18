@@ -76,7 +76,7 @@ python3 -m backend.src.server
 ```
 If you get an OSError saying the address is already in use, in `backend/src/server.py` change `PORT` to use a different port number.
 
-Please ensure you have Flask installed to run the server. If not, please execute `pip3 install -r requirements.txt` in the root directory to install all the required dependencies.
+Please ensure you have Flask installed to run the server. If not, please execute `pip3 install -r requirements.txt` in the `backend/` directory to install all the required dependencies.
 
 ### Supported Browsers Configuration
 By default, the supported browsers for this web application are:
