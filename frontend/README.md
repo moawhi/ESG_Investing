@@ -20,7 +20,7 @@ To run the web app, ensure you are in the `frontend/my-app/` directory and execu
 ```
 npm start
 ```
-The web app will open in your browser at `http://localhost:3000/`. If the user has yet to log in, you will be directed to `http://localhost:3000/login`. Please ensure you use Chrome, Firefox, or Safari as your browser. If you wish to use other browsers, please see 
+The web app will open in your browser at `http://localhost:3000/`. If the user has yet to log in, you will be directed to `http://localhost:3000/login`. Please ensure you use Chrome, Firefox, or Safari as your browser. If you wish to use other browsers, please see [Supported Browsers Configuration](#Supported-Browsers-Configuration).
 
 ### Supported Browsers Configuration
 By default, the supported browsers for this web application are:

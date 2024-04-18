@@ -31,7 +31,7 @@ pip3 install -r requirements.txt
     - `user_test.py`: Tests for user routes
 
 ## Running Tests
-Ensure you have pytest installed. If not, please execute `pip3 install -r requirements.txt` in the backend/ directory.
+Ensure you have pytest installed. If not, please execute `pip3 install -r requirements.txt` in the `backend/` directory.
 
 To run the tests, in the root directory, execute:
 ```
