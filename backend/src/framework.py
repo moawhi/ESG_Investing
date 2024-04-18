@@ -11,8 +11,15 @@ DECIMAL_PLACES = 2
 def framework_list(token, company_id):
     """
     Gets all available frameworks in the database for a specified company using
-    the company id.
-    Provides the id, name and the information of each framework.
+    the company id. Provides the id, name and the information of each framework.
+
+    Parameters:
+        token (JSON object): the user's token
+        company_id (int): the company ID
+
+    Returns:
+        dict: contains a list of dictionaries each containing a framework's ID, 
+        name and description if the framework is available for the company
     """
     if not verify_token(token):
         return {
@@ -59,10 +66,14 @@ def get_esg_data_for_company_and_framework(company_id, framework_id, additional_
     Fetch ESG data for a specific company within a selected framework and optional additional metrics.
     The function now returns data including the year, framework metric weight, indicator weight,
     and ESG score of the indicator along with the source origin (provider name), leaving the calculation of the weighted score for later processing.
+
     Parameters:
         company_id (int): ID of the company.
         framework_id (int): ID of the framework.
         additional_metrics (list of int, optional): List of additional metric IDs to include.
+
+    Returns:
+        dict: the ESG data for the selected company and framework
     """
     db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
     esg_data = []
@@ -114,6 +125,13 @@ def get_esg_data_for_company_and_framework(company_id, framework_id, additional_
     return {"esg_data": esg_data}
 
 def process_esg_data(cursor, esg_data):
+    """
+    Gets the details for each framework metric and for each indicator under each metric.
+
+    Parameters:
+        cursor (MySQLCursor object): the cursor used to iterate through records in the database
+        esg_data (list): the list of ESG data, which contains metrics and the indicators under the metric
+    """
     for row in cursor.fetchall():
         existing_metric = next((item for item in esg_data if item["framework_metric_name"] == row["framework_metric_name"]), None)
         if not existing_metric:
@@ -141,6 +159,13 @@ def process_esg_data(cursor, esg_data):
 def list_metrics_not_part_of_framework(framework_id):
     """
     Fetch all metrics and their indicators that are not part of the specified framework.
+
+    Parameters:
+        framework_id (int): the ID of the specified framework
+
+    Returns:
+        dict: the list of the metrics that are not part of the specified framework if successful, otherwise
+        returns a message for the corresponding error if unsuccessful
     """
     db = None
     try:

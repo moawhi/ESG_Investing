@@ -1,0 +1,22 @@
+#!/bin/bash
+
+USER="esg"
+PASSWORD="esg"
+DB="esg_management"
+
+sudo mysql -uroot -e "CREATE DATABASE IF NOT EXISTS ${DB};"
+echo "Database ${DB} successfully created"
+sudo mysql -uroot -e "CREATE USER IF NOT EXISTS ${USER}@localhost IDENTIFIED BY '${PASSWORD}';"
+echo "User ${USER} successfully created"
+sudo mysql -uroot -e "GRANT ALL PRIVILEGES ON ${DB}.* TO ${USER}@localhost;"
+sudo mysql -uroot -e "FLUSH PRIVILEGES;"
+echo "User privileges for ${USER} successfully granted"
+
+for sql_file in *.sql
+do
+    mysql -u${USER} -p${PASSWORD} -D${DB} < ${sql_file}
+    echo "The above warning message regarding insecure usage of password on the command line interface can be ignored"
+    echo "Successfully ran ${sql_file}"
+done
+echo "Database successfully populated"
+echo "You're good to go"
