@@ -86,7 +86,7 @@ By default, the supported browsers for this web application are:
 
 If you wish to configure the supported browsers for the web app, you can navigate to `frontend/my-app/` and add your desired browser to `browserslist` in `package.json`.
 
-e.g. Adding Edge as a supported browser
+**e.g. Adding Edge as a supported browser**
 
 Find `package.json` in the `frontend/my-app/` directory
 
