@@ -13,7 +13,7 @@
 This project aims to create an ESG Management System where investors can easily and efficiently evaluate the ESG performances of companies by viewing frameworks and metrics and managing a portfolio of their investments.
 
 ## Getting Started
-To use the software, `git clone` this repository and follow the [Installation and Setup Guide](##Installation-and-Setup-Guide).
+To use the software, `git clone` this repository and follow the [Installation and Setup Guide](#Installation-and-Setup-Guide).
 
 ## Installation and Setup Guide
 ### Requirements
@@ -43,7 +43,7 @@ Please note you will need to enter your root user password as some commands in t
 ```
 python3 -m backend.src.server
 ```
-This will run the server. See [Running the Server](###Running-the-Server) for additional details.
+This will run the server. See [Running the Server](#Running-the-Server) for additional details.
 
 4. Open a separate terminal and navigate to the `frontend/my-app/` directory. Execute the following commands:
 ```
@@ -54,7 +54,7 @@ npm start
 
 The web app will open in your browser at the url `http://localhost:3000/`. If the user has yet to log in, you will be directed to `http://localhost:3000/login`.
 
-Please ensure you use Chrome, Firefox, or Safari for your browser. See [Supported Browsers Configuration](###Supported-Browsers-Configuration) if you wish to configure what browsers the web app can open in.
+Please ensure you use Chrome, Firefox, or Safari for your browser. See [Supported Browsers Configuration](#Supported-Browsers-Configuration) if you wish to configure what browsers the web app can open in.
 
 ### Instructions for Running the App after First Installation and Setup
 After installation of all required dependencies and setup of the database, you can simply follow these instructions to open the web app.
