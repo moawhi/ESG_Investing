@@ -1,0 +1,79 @@
+Week 1
+- Formed a team of 5, named HighFive
+- P13 chosen for project
+
+Week 2
+- Progress on Project Proposal
+- Help out with the Storyboard
+- Fill out user story, (some missing ones like notifications?)
+
+Week 3
+- worked on Storyboard with one of the team members
+    - helped with the login page and registration page
+    - helped with the notifications page
+- help discuss about the user story
+- discussed clarifications on the Storyboard in regards to error/success message and email verification
+
+Week 4
+- Discussed with Alyssa regarding user registration
+    - discussed user stories
+    - password strength
+    - blocked account (recover emails when blocked)
+- allocated which functions to do
+    - assigned email registration
+    - assigned password strength
+    - assigned checking registered emails
+- mostly waiting for the database to be set up in order to know how user data is stored
+
+Week 5
+- implemented email registration
+- implemented checking registered emails
+- confirmed how the password strength would be set up (token and encryption)
+- implemented password strength along
+    - originally only using python to check password strength
+    - finalised with tokens and encryption for the passwords
+- worked on Retrospective A with the others
+
+Week 6
+- new script from Roxy as to how the database is populated
+- looked into what needs to be done based on the new database
+- needed to discuss with Alyssa about metrics selection
+    - discussed about the missing comparison function
+- wrote down some tasks and what needs to be done
+
+Week 7
+- discussed with Alyssa about the task allocation regarding sprint 2
+    - getting company details in general
+    - getting esg data depending on specific frameworks and selecting/deselecting indicators
+- implemented functionality for getting company details in general
+- implemented functionality for getting esg data depending on specific frameworks
+- adjusted the esg data functionality according to the new schema provided by Roxy
+- adjusted the server routes to keep things consistent with other routes made by Alyssa
+- fixed a lot of merge conflicts
+- soon working on Retrospective B with the others
+- havent managed to implement functionality for selecting/deselecting indicators
+
+Week 8
+- discussed with Alyssa regarding task allocation for sprint 3
+    - allocated implementing selection of indicators other than the default metrics
+    - allocated implementing comparing 2 companies' esg performance
+- discussed and allocated parts of the final report with the team
+- revised and finishing up sprint 2 as well
+- finished working on Retrospective B with the others
+- fixed up esg data function for adding an additional indicator
+
+Week 9
+- added source of metrics when getting company info
+- implemented selection of indicators other than the default metrics
+    - took a while since many problems arose in the process
+- updated email to the return for register and login
+- worked on the final report
+
+Week 10
+- discussed with the team regarding which part of the project we would be presenting
+    - allocated presenting register/login/logout (and anything related to the mentioned)
+- practiced presenting since problems regarding running the app on my part arose
+    - practiced presenting as a voiceover while Lucy shares her screen
+- presented according to how the team practiced
+    - presented as a voiceover while Lucy shares her screen
+- finished up the final report
