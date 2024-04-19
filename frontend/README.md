@@ -11,7 +11,8 @@ npm install
 to install all required dependencies for the frontend.
 
 ## Structure
-- `my-app/` directory:
+- `my-app/` directory: Contains all the source files required for the application. Also contains configuration files.
+    - `public/` directory: Contains static assets. Has the main index.html
     - `src/` directory:
         - `components/` directory: This directory contains the code and logic for the components in all the page of the webapp.
           - `AccountManagement` directory:  Contains components to do with logging in and registering.
@@ -47,14 +48,14 @@ to install all required dependencies for the frontend.
           - `helper.js`: fetch function using in multiple components.
         - `PageList.jsx`: Routing all the components with their associate path.
         - `App.jsx`: Index components wraping PageList.jsx.
-# Running the Web App
+## Running the Web App
 To run the web app, ensure you are in the `frontend/my-app/` directory and execute:
 ```
 npm start
 ```
-The web app will open in your browser at `http://localhost:3000/`. If the user has yet to log in, you will be directed to `http://localhost:3000/login`. Please ensure you use Chrome, Firefox, or Safari as your browser. If you wish to use other browsers, please see [Supported Browsers Configuration](#Supported-Browsers-Configuration).
+The web app will open in your browser at `http://localhost:3000/`. If the app does not automatically open in your browser, you can enter the url `http://localhost:3000/` directly in your browser. If the user has yet to log in, you will be directed to `http://localhost:3000/login`. Please ensure you use Chrome, Firefox, or Safari as your browser. If you wish to use other browsers, please see [Supported Browsers Configuration](#Supported-Browsers-Configuration).
 
-### Supported Browsers Configuration
+## Supported Browsers Configuration
 By default, the supported browsers for this web application are:
 - Chrome
 - Firefox

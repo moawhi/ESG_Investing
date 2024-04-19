@@ -52,7 +52,7 @@ npm start
 ```
 `npm install` will install the needed dependencies for the frontend code of the software. `npm start` will start up the web application.
 
-The web app will open in your browser at the url `http://localhost:3000/`. If the user has yet to log in, you will be directed to `http://localhost:3000/login`.
+The web app will open in your browser at the url `http://localhost:3000/`. If the user has yet to log in, you will be directed to `http://localhost:3000/login`. If the app does not automatically open in your browser, you can enter the url `http://localhost:3000/` directly in your browser.
 
 Please ensure you use Chrome, Firefox, or Safari for your browser. See [Supported Browsers Configuration](#Supported-Browsers-Configuration) if you wish to configure what browsers the web app can open in.
 
