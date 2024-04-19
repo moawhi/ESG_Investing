@@ -67,6 +67,7 @@ const GeneralInformation = () => {
             label="First Name"
             fullWidth
             value={firstName}
+            color='success'
             onChange={e => setFirstName(e.target.value)}
           />
         </Grid>
@@ -76,6 +77,7 @@ const GeneralInformation = () => {
             label="Last Name"
             fullWidth
             value={lastName}
+            color='success'
             onChange={e => setLastName(e.target.value)}
           />
         </Grid>
@@ -86,6 +88,7 @@ const GeneralInformation = () => {
             label="Email"
             fullWidth
             value={email}
+            color='success'
             onChange={e => setEmail(e.target.value)}
           />
         </Grid>

@@ -47,7 +47,6 @@ export const fetchPortfolioData = async () => {
 		}
 
 		const data = await response.json();
-		console.log(data.portfolio);
 		return data.portfolio;
 	} catch (err) {
 		console.error('Error fetching portfolio details:', err);

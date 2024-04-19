@@ -35,7 +35,6 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
     });
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData.esg_data);
         setMetricDetails(responseData.esg_data);
       } else {
         const errorBody = await response.json();
@@ -152,8 +151,6 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
       };
       // Filter out metrics with no selected indicators
     }).filter(metric => metric.indicators.length > 0); 
-
-    console.log(esgData);
 
     try {
       const response = await fetch('http://localhost:12345/company/calculate-esg-score', {
