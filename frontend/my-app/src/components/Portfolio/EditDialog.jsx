@@ -20,8 +20,6 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
   const [comment, setComment] = React.useState(companyDetail.comment);
   const [isSaveDisabled, setIsSaveDisabled] = React.useState(true); // Initially, save button is disabled
 
-  const buttonColor = "#8eb08b";
-
   const token = localStorage.getItem('token');
 
   const handleClickOpen = () => {
@@ -49,7 +47,7 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
+          Authorisation: 'Bearer ' + token,
         },
         body: JSON.stringify({
           company_id: companyDetail.company_id,
@@ -90,7 +88,7 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
         onClick={handleClickOpen}
         variant="contained"
         sx={{
-          backgroundColor: buttonColor,
+          backgroundColor: "#8eb08b",
           fontWeight: 'bold',
           '&:hover': {
             backgroundColor: "#779c73",
@@ -121,7 +119,10 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
             type="number"
             fullWidth
             variant="standard"
-            color="success"
+            color='success'
+            inputProps={{
+              min: 0
+            }}
             defaultValue={companyDetail.investment_amount}
             onChange={(e) => setInvestmentAmount(e.target.value)}
           />
@@ -133,15 +134,15 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
             type="text"
             fullWidth
             variant="standard"
-            color="success"
             defaultValue={companyDetail.comment}
+            color='success'
             onChange={(e) => setComment(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} sx={{ color: buttonColor }}>Cancel</Button>
+          <Button onClick={handleClose} sx={{ color: "#8eb08b" }}>Cancel</Button>
           <Button sx={{
-            backgroundColor: buttonColor,
+            backgroundColor: "#8eb08b",
             fontWeight: 'bold',
             '&:hover': {
               backgroundColor: "#779c73",
