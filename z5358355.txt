@@ -73,3 +73,9 @@ I also worked on editing investment amount and comment for a company and clarifi
 Another thing I worked on was calculating the ESG score of the portfolio.
 I began working on the installation guide, however I will wait for the web app to be more complete before
 I work on the user manual.
+
+Week 10
+Wrapped up the final functionalities, and finished implementing updating user details and password.
+I also helped to make some adjustments in response to some matters the frontend needed.
+Then discussed with the team structure and roles for final demo. Did a practice demo and finally presented in the lab.
+Worked on cleaning up code and finalising documentation. Worked on finishing my part for the project report.
