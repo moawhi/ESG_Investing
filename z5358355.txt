@@ -1,0 +1,81 @@
+Week 1
+Formed group. Name is 3900W18BHighFive. Scrum master is Lucy. Scrum master set up Jira. Confirmed joined Jira.
+Decided weekly meeting and standup schedule. In the weekly meeting, we decided on the project. Chose P13.
+Informed mentors of project selection.
+
+Week 2
+Started proposal. In lab, allocated parts for proposal. I am in charge of 3a, which is the storyboards.
+Will wait for user stories to be added to work on my part and will add user stories as well.
+Further detail will be discussed in the meeting arranged outside of lab.
+
+Week 3
+Worked together with Offa on the storyboards. Contributed some user stories for user registration, metrics visualisation and
+profile personalisation. I started off the storyboards for user registration and profile personalisation,
+and then Offa extended on these and completed them to higher quality, then I worked mainly on the metrics visualisation.
+I discussed with the team about approaches for presenting the metrics. Upon near completion of the storyboards, went through with
+the team to address any concerns about the storyboards and made changes as needed. Once completed, the storyboards were added to
+the proposal for submission. I helped to check formatting of the proposal.
+
+Week 4
+Discussed with Offa about functions needed for user registration by looking at the user stories and outlined some details,
+e.g. factors for password strength, what happens when an account gets blocked (we decided that the user would need to recover their account).
+Then we allocated tasks. I was in charge of login, logout and blocking the account after multiple login attempt failures.
+Mostly worked on the logic of it while waiting for setup of the database to store user data.
+Once the database is setup, would begin in earnest with functionality and making the routes for the server.
+Also intend to set up the server using Python Flask.
+
+Week 5
+Worked on implementing user login functionality. Discussed with team about demo and presented demo in lab.
+Worked on Retrospective A with the team.
+Aiming to finish off rest of unfinished user registration functionality as soon as possible. Then will discuss
+with Offa about framework and metric selection and discuss with Ruoxi as needed about database-related matters
+for implementation.
+
+Week 6
+Ruoxi provided a script which populates the database with data so I took some time to look through the tables
+and understand what each table contains.
+Lucy pointed out some bugs to do with login functionality and also suggested adding an error message for missing
+fields, so I worked on that. A bug was also found for the block account functionality but that will be placed at
+lower priority to complete for now.
+Main focus will be to discuss with Offa what needs to be done for metrics selection. I wrote down some tasks we may
+need to do in order to achieve the functionality for metrics selection and will discuss with Offa and refine to proceed.
+
+Week 7
+Together with Offa, went through tasks that needed to be done for sprint 2. Went through user stories together with Offa and
+created subtasks and allocated them between us. I would be doing getting the list of frameworks from the database, getting the
+default metrics for a selected framework, calculating the new ESG score for a company after the user adjusts weighting and
+selection of metrics and allow users be able to change the weighting of metrics.
+However, after some review, it turned out that my task of getting the default metrics may overlap with Offa's task, in which case
+it becomes unneeded.
+In response to Lucy's request for additional returns of first and last name for login and register responses, I worked on those.
+I also fixed the block account functionality and completed implementation of getting the list of frameworks.
+Briefly discussed with Ruoxi some minor adjustments to the SQL scripts for better clarity of naming and to have more data added.
+
+Week 8
+Presented Demo B in lab. The day after, worked on Retrospective B with the team.
+The team also allocated parts for the final report. I will work on the Installation/User document/manual.
+I expect the workload for my part won't be too much, so I can help others with their parts as needed.
+It turned out that my task of getting the default metrics did overlap with Offa's task, so I no longer worked on that
+and worked on implementing calculation of ESG score based on the current selection of metrics.
+In response to Lucy's request for easier handling of data for the frontend,
+I worked on changing the return structure of the ESG data functionality that Offa had worked on. After confirming the
+structure with Lucy, that was successfully merged.
+I took a look at the Sprint 3 user stories and began noting down tasks to do.
+
+Week 9
+Discussed with Offa for tasks for Sprint 3 and Lucy helped to prioritise tasks. I was in charge of
+portfolio related functions. Since Duong was working on the portfolio on the frontend, throughout my work,
+I discussed with him the things I needed to do.
+I implemented saving and deleting companies for the portfolio, and getting all
+saved companies and relevant details for the portfolio. I discussed with Ruoxi about creating a new table
+in the database in order to achieve these tasks.
+I also worked on editing investment amount and comment for a company and clarified with Duong how to achieve this.
+Another thing I worked on was calculating the ESG score of the portfolio.
+I began working on the installation guide, however I will wait for the web app to be more complete before
+I work on the user manual.
+
+Week 10
+Wrapped up the final functionalities, and finished implementing updating user details and password.
+I also helped to make some adjustments in response to some matters the frontend needed.
+Then discussed with the team structure and roles for final demo. Did a practice demo and finally presented in the lab.
+Worked on cleaning up code and finalising documentation. Worked on finishing my part for the project report.
