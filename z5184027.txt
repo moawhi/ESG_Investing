@@ -90,6 +90,29 @@ Attended weekly meeting
 
 Record Retrospective B and sent to Scum master
 
-Redesign and implement dashboard United
+Redesign and implement dashboard UI
 
-Design and implementing portfolio UI
+Design portfolio UI
+
+# Week 9
+
+Finish and test Adding company to a portfolio
+
+Show all company in the portfolio
+
+Attemped implementing edit and delete companies from portfolio but got errors, might be due to 
+complexity of Portfolio component structure.
+
+Requested backend team to include more infor in the portfolio/list route to display on chart
+
+# Week 10
+
+Reorganise Portfolio, move Edit and Delete to a separate component
+
+Hooked in Edit and Delete api successfully
+
+Added on pie chart to show investment composition
+
+Added bar chart for company comparison
+
+Complete Profile page, added funcitonality to update password, and user information
