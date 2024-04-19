@@ -3,8 +3,8 @@ User functions
 Filename: user.py
 
 Functions:
-    user_update_details
-    user_update_password
+    - user_update_details
+    - user_update_password
 """
 
 import mysql.connector

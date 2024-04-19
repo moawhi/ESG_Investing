@@ -4,7 +4,7 @@ import { Box, Typography, Grid, Card, CardContent, CircularProgress, Button, Too
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import Topbar from '../Topbar/Topbar';
-import CompanyCard from '../CompanyCard';
+import CompanyCard from '../Dashboard/CompanyCard';
 import EditDialog from './EditDialog';
 import DeleteDialog from './DeleteDialog';
 import InvestmentPieChart from './InvestmentPieChart';

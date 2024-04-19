@@ -1,11 +1,13 @@
 """
 Server
+Filename: server.py
+
+Defines the routes needed for functionalities of the web app.
 """
 
 from backend.src import auth, framework, company, portfolio, user
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from backend.src.company import get_company_details
 from backend.src.helper import verify_token
 import json
 
@@ -16,6 +18,9 @@ PORT = 12345
 
 @app.route("/register", methods=["POST"])
 def register():
+    """
+    Endpoint for a user to register an account.
+    """
     info = request.get_json()
     first_name = info["first_name"]
     last_name = info["last_name"]
@@ -29,27 +34,32 @@ def register():
 
 @app.route("/login", methods=["POST"])
 def login():
+    """
+    Endpoint for a user to log in to their account.
+    """
     info = request.get_json()
     email = info["email_address"]
     password = info["password"]
     login_response = auth.auth_login(email, password)
 
-    if login_response.get("code"):
-        return jsonify(login_response), login_response.get("code")
-    return jsonify(login_response)
+    return jsonify(login_response), login_response.get("code")
 
 @app.route("/logout", methods=["POST"])
 def logout():
+    """
+    Endpoint for user to log out of their account.
+    """
     info = request.get_json()
     token = info["token"]
     logout_response = auth.auth_logout(token)
     
-    if logout_response.get("code"):
-        return jsonify(logout_response), logout_response.get("code")
-    return jsonify(logout_response)
+    return jsonify(logout_response), logout_response.get("code")
 
 @app.route("/framework/list", methods=["GET"])
 def framework_list():
+    """
+    Endpoint to retrieve all available frameworks for a selected company.
+    """
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
@@ -57,28 +67,27 @@ def framework_list():
     company_id = request.args.get("company_id")
 
     response = framework.framework_list(token, company_id)
-    if response.get("code"):
-        return jsonify(response), response.get("code")
-    return jsonify(response)
+    return jsonify(response), response.get("code")
 
 @app.route("/company/industry-company-list", methods=["GET"])
 def industry_company_list():
-    header = request.headers.get('Authorisation')
-    token = ''
-    if header and header.startswith('Bearer '):
-        token = header.split(' ')[1]
+    """
+    Endpoint to retrieve all industries and the companies in each industry.
+    """
+    header = request.headers.get("Authorisation")
+    token = ""
+    if header and header.startswith("Bearer "):
+        token = header.split(" ")[1]
 
     response = company.company_industry_company_list(token)
-    if response.get("code"):
-        return jsonify(response), response.get("code")
-    return jsonify(response)
+    return jsonify(response), response.get("code")
 
 @app.route("/company/<int:company_id>", methods=["GET"])
 def company_details(company_id):
     """
     Endpoint to retrieve details of a specific company.
     """
-    header = request.headers.get('Authorisation')
+    header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
         token = header.split(" ")[1]
@@ -86,13 +95,16 @@ def company_details(company_id):
     if not verify_token(token):
         return jsonify({"status": "fail", "message": "Invalid token"}), 403
 
-    details = get_company_details(company_id)
+    details = company.get_company_details(company_id)
     if "message" in details:
         return jsonify(details), 404
     return jsonify(details), 200
 
 @app.route("/company/esg", methods=["GET"])
 def company_esg():
+    """
+    Endpoint to get the ESG data for a selected company and framework.
+    """
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
@@ -122,6 +134,9 @@ def company_esg():
 
 @app.route("/company/calculate-esg-score", methods=["POST"])
 def calculate_esg_score():
+    """
+    Endpoint to calculate the ESG score for a company and selected metrics and indicators.
+    """
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
@@ -130,9 +145,7 @@ def calculate_esg_score():
     esg_data = info["esg_data"]
 
     response = company.company_calculate_esg_score(token, esg_data)
-    if response.get("code"):
-        return jsonify(response), response.get("code")
-    return jsonify(response)
+    return jsonify(response), response.get("code")
 
 @app.route("/framework/<int:framework_id>/unincluded-metrics", methods=["GET"])
 def unincluded_metrics(framework_id):
@@ -147,6 +160,9 @@ def unincluded_metrics(framework_id):
 
 @app.route("/portfolio/save-company", methods=["POST"])
 def save_company_to_portfolio():
+    """
+    Endpoint to save a company to the user's portfolio.
+    """
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
@@ -157,12 +173,13 @@ def save_company_to_portfolio():
     comment = info["comment"]
 
     response = portfolio.portfolio_save_company(token, company_id, investment_amount, comment)
-    if response.get("code"):
-        return jsonify(response), response.get("code")
-    return jsonify(response)
+    return jsonify(response), response.get("code")
 
 @app.route("/portfolio/delete-company", methods=["DELETE"])
 def delete_company_from_portfolio():
+    """
+    Endpoint to delete a company from the user's portfolio.
+    """
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
@@ -171,24 +188,26 @@ def delete_company_from_portfolio():
     company_id = info["company_id"]
 
     response = portfolio.portfolio_delete_company(token, company_id)
-    if response.get("code"):
-        return jsonify(response), response.get("code")
-    return jsonify(response)
+    return jsonify(response), response.get("code")
 
 @app.route("/portfolio/list", methods=["GET"])
 def get_portfolio_companies_details():
+    """
+    Endpoint to retrieve all companies and relevant details in the user's portfolio.
+    """
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
         token = header.split(" ")[1]
     
     response = portfolio.portfolio_list(token)
-    if response.get("code"):
-        return jsonify(response), response.get("code")
-    return jsonify(response)
+    return jsonify(response), response.get("code")
 
 @app.route("/portfolio/edit", methods=["PUT"])
 def edit_portfolio_investment_amount_comment():
+    """
+    Endpoint for editing the investment amount and/or comment for a company in the user's portfolio.
+    """
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
@@ -203,18 +222,22 @@ def edit_portfolio_investment_amount_comment():
 
 @app.route("/portfolio/calculate-esg-score", methods=["GET"])
 def calculate_portfolio_esg_score():
+    """
+    Endpoint to calculate the ESG score of the user's portfolio.
+    """
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
         token = header.split(" ")[1]
     
     response = portfolio.portfolio_calculate_esg_score(token)
-    if response.get("code"):
-        return jsonify(response), response.get("code")
-    return jsonify(response)
+    return jsonify(response), response.get("code")
 
 @app.route("/user/update-details", methods=["PUT"])
 def update_user_details():
+    """
+    Endpoint to update the user's details.
+    """
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
@@ -229,6 +252,9 @@ def update_user_details():
 
 @app.route("/user/update-password", methods=["PUT"])
 def update_user_password():
+    """
+    Endpoint to update the user's password.
+    """
     header = request.headers.get("Authorisation")
     token = ""
     if header and header.startswith("Bearer "):
