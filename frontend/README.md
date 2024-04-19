@@ -13,7 +13,7 @@ to install all required dependencies for the frontend.
 ## Structure
 - `my-app/` directory: Contains all the source files required for the application. Also contains configuration files.
     - `public/` directory: Contains static assets. Has the main index.html
-    - `src/` directory:
+    - `src/` directory: Contains jsx and CSS files for the logic and style of the frontend
         - `components/` directory: This directory contains the code and logic for the components in all the page of the webapp.
           - `AccountManagement` directory:  Contains components to do with logging in and registering.
             - `Login.jsx`: Handles frontend logic for logging in and styling of the login page
