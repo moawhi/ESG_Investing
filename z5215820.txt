@@ -28,3 +28,14 @@ This week, I achieved a milestone by developing 105 comprehensive ESG indicators
 
 Week 8
 Building on our progress, I constructed two robust frameworks tailored to analyze and report on the ESG performance of companies in the FinTech sector. These frameworks are instrumental in operationalizing our indicators, facilitating a systematic approach to ESG evaluation and reporting.
+
+Week 9
+Focused on enhancing the database schema for scalability and efficiency. Added more sample data to bolster testing and development efforts. These steps are important for maintaining the integrity and functionality of our ESG management system.
+
+Week 10
+Focused on drafting the system architecture and overview sections of our report. Clarifying our project's structure and objectives for stakeholders.
+
+
+
+
+
