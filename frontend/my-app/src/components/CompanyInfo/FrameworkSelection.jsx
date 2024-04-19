@@ -1,3 +1,5 @@
+/* handles logic and styling of framework selection component of company info page */
+
 import React, { useState, useEffect } from 'react';
 import { Box, RadioGroup, Radio, FormControlLabel, Typography } from '@mui/material';
 
@@ -5,6 +7,7 @@ const FrameworkSelection = ({ companyId, onSelectFramework }) => {
   const [frameworks, setFrameworks] = useState([]);
   const [selectedFramework, setSelectedFramework] = useState('');
 
+  // fetches frameworks every time new company is selected
   useEffect(() => {
     const fetchFrameworks = async () => {
       const token = localStorage.getItem('token');
@@ -33,12 +36,14 @@ const FrameworkSelection = ({ companyId, onSelectFramework }) => {
     }
   }, [companyId]);
   
+  // change frameworkId when new framework is selected
   const handleChange = (event) => {
     const newFrameworkId = event.target.value;
     setSelectedFramework(newFrameworkId);
     onSelectFramework(newFrameworkId);
   };
 
+  // styling of framework selection component
   return (
     <Box       
       sx = {{ pt: 4, pl: 4, pr: 4 }}>

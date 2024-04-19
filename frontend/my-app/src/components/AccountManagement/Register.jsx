@@ -1,7 +1,7 @@
+/* handles logic and styling of register page */
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
 
 import { Paper, Box, Grid, Avatar, Button, CssBaseline, TextField, Typography} from '@mui/material/';
 
@@ -24,6 +24,8 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
+// upon successful register navigates user to dashboard and receives token for this session
+// otherwise displays error and doesn't register account
 export default function Register() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = React.useState('');

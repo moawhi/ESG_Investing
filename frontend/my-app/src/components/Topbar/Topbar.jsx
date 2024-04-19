@@ -1,3 +1,5 @@
+/* handles styling of topbar */
+
 import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,7 +10,7 @@ import Logo from './Logo';
 import AccountMenu from './AccountMenu';
 
 function Topbar() {
-
+  // places logo, platform name and account icon in topbar
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" elevation={0} sx={{ backgroundColor: '#b5d8b1', maxHeight: '60px' }}>

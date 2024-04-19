@@ -1,3 +1,5 @@
+/* handles logic and styling of popup dialog box for changing weights */
+
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Box, Typography } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
@@ -7,12 +9,15 @@ const ChangeWeightPopup = ({ open, setOpenWeightPopup, handleSubmitNewWeight }) 
   const [weightInput, setWeightInput] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  // upon closing the popup, resets error message and input box
   const handleClose = () => {
     setOpenWeightPopup(false);
     setErrorMessage('');
     setWeightInput('');
   };
 
+  // upon submission, check if weight is valid. If not valid, display error message. 
+  // If valid, return weight.
   const handleSubmission = () => {
     const weight = parseFloat(weightInput);
     if (isNaN(weight) || weight < 0 || weight > 1) {
@@ -23,6 +28,7 @@ const ChangeWeightPopup = ({ open, setOpenWeightPopup, handleSubmitNewWeight }) 
     }
   };
 
+  // styling of change weight popup dialog
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
