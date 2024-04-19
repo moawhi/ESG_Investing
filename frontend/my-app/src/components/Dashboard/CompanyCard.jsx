@@ -6,6 +6,12 @@ import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 import DevicesIcon from '@mui/icons-material/Devices';
 import FactoryIcon from '@mui/icons-material/Factory';
 
+/**
+ * 
+ * @param {companyDetails, investAmount, impactStatement, select, onSelect}
+ * @returns Company Card showing details about a company or invested amount in this company when
+ * using in portfolio page
+ */
 const CompanyCard = ({
   companyDetails,
   investmentAmount,
@@ -22,6 +28,7 @@ const CompanyCard = ({
     Manufacturing: FactoryIcon,
   };
 
+  // Disable navigate to company Info page when it's in edit mode in Portfolio page
   const handleClick = () => {
     if (onSelect) {
       onSelect(companyDetails.company_id);

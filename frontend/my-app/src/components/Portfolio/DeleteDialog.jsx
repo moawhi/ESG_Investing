@@ -10,6 +10,11 @@ import Alert from '@mui/material/Alert';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
+/**
+ * Delete dialog component, this to alert user once deleting a company
+ * @param {companyDetail, onCompanyDeleted}
+ * @returns Delete dialog component
+ */
 export default function DeleteDialog({ companyDetail, onCompanyDeleted }) {
   const [open, setOpen] = React.useState(false);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -33,6 +38,7 @@ export default function DeleteDialog({ companyDetail, onCompanyDeleted }) {
     setSnackbarOpen(false);
   };
 
+  // fetch to delete a company from the portfolio
   const handleDelete = async () => {
     try {
       const response = await fetch('http://localhost:12345/portfolio/delete-company', {

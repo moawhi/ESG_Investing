@@ -1,6 +1,11 @@
 import React from 'react';
 import ApexCharts from 'react-apexcharts';
 
+/**
+ * Donut chart showing portfolio composition and total investment
+ * @param {portfolioDetails} param0 
+ * @returns 
+ */
 const InvestmentPieChart = ({ portfolioDetails }) => {
   const pieSeries = portfolioDetails.map(item => item.investment_amount);
   const pieLabels = portfolioDetails.map(item => item.company_name);

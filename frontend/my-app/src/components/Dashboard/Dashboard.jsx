@@ -3,10 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, List, ListItem, ListItemText, Divider, Stack, Grid } from '@mui/material';
 import Topbar from '../Topbar/Topbar';
-import { fetchCompanyDetails, fetchPortfolioData } from '../helper';
+import { fetchCompanyDetails } from '../helper';
 
 import CompanyCard from './CompanyCard';
 
+
+/**
+ * 
+ * @returns Dashboard component, showing all industries and associate companies
+ */
 const Dashboard = () => {
   const navigate = useNavigate();
 
