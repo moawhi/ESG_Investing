@@ -1,0 +1,52 @@
+Week 1
+Formed a group with Alyssa, Offa, Duong and Roxy. We chose project 13, ESG management system for FinTech industry as our project and are aiming to get a distinction. 
+I decided to become the scrum master, and so am in charge of Jira and the overall progress of the team. 
+We also made a discord server for communication, and are planning to have weekly meetings on Saturday afternoon. 
+
+
+Week 2
+Started the proposal. Allocated members to each part of the proposal during the Wednesday lab. 
+I will be working on everything to do with the user stories and sprints, including uploading them to Jira. 
+Also joined the github classroom and connected it to Jira as part of my scrum master responsibilities. 
+
+
+Week 3
+Finished off the proposal and submitted it. I made the sprint start and end times, created some user stories for sprint 1, 2 and 3
+I made the first sprint start on Friday Week 3, so we are going to begin programming soon. 
+During this sprint we will be implementing user registration and basic framework and metric selection. 
+
+Week 4
+Began working on sprint 1. Set up the frontend directory, and began implementing login and register pages. 
+Set the tasks in jira to in progress.
+
+Week 5
+Finished implementing the frontend parts of sprint 1, linking frontend and backend and a bit of the dashboard. 
+Didn't manage to implement everything we wanted to implement in sprint 1, so moved most of the metrics and framework functionality to sprint 2. 
+Alyssa gave the progressive demo in our Wednesday lab session, and we discussed things to work on for sprint 2 on Thursday morning during our retrospective meeting. 
+I suggested that we work on our time management, and implement strict times to complete tasks. 
+
+Week 6
+Finalised the implementation of registration/login in frontend. 
+Worked on making child issues in Jira. 
+Looked over metrics and frameworks and how to display them on the dashboard. 
+
+Week 7
+Implemented company search, company information and framework selection in frontend. 
+Created a new route for company information, which will hold both the company information and esg data. 
+Looked a bit into metrics selection, and how to display it on the webpage. 
+
+
+Week 8
+Suggested to Alyssa that the structure of the esg_data dictionary be change to make it easier for frontend. 
+Began implementing metrics display and selection. 
+
+
+Week 9
+Finished implementing calculate new esg score. 
+Began implementing changing weight of metrics and indicators. 
+
+Week 10
+Finished implementing changing weights of metrics and indicators and adding new metrics. 
+Cleaned up some code on the frontend, changing where some functions were located in each component. 
+Added comments to frontend code. 
+Began and finished work on the functionality description part of the project report. 
