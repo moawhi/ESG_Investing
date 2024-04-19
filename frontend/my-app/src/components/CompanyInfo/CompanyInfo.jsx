@@ -1,3 +1,5 @@
+/* handles styling of company info page */
+
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {Box, Grid } from '@mui/material';
@@ -10,7 +12,7 @@ const CompanyInfo = () => {
   const location = useLocation();
   const companyId = location.state;
   const [selectedFrameworkId, setSelectedFrameworkId] = useState(null);
-
+  
   return (
     <div>
       <Topbar />

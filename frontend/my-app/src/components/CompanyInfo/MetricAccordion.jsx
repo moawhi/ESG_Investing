@@ -1,3 +1,5 @@
+/* handles logic and styling of the metric and indicators accordion */
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Accordion, AccordionSummary, AccordionDetails, Typography, Grid, Checkbox, FormControlLabel, Button, IconButton, Tooltip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -20,6 +22,7 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
   const [indicatorIndex, setIndicatorIndex] = useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
 
+  // fetch metrics if frameworkId, companyId or token changes
   const fetchMetrics = useCallback(async (additionalMetricIds = []) => {
     let url = `http://localhost:12345/company/esg?company_id=${companyId}&framework_id=${selectedFrameworkId}`;
     if (additionalMetricIds.length > 0) {
@@ -52,11 +55,13 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
     }
   }, [selectedFrameworkId, fetchMetrics]);
 
+  // when new metrics are added, fetch metrics again.
   const handleAddMetrics = (additionalMetricIds) => {
     fetchMetrics(additionalMetricIds);
   };
 
   // Initialize the checked state for each accordion based on framework selected
+  // change rendering if metricDetails changes
   useEffect(() => {
     const initialCheckedState = {};
     const initialWeights = {};
@@ -76,6 +81,7 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
     setOpenMetricPopup(true);
   };
 
+  // updates metrics being checked
   const handleAccordionCheckChange = (accordionIndex, isChecked) => {
     // Update the checked state for the accordion and all its indicators
     const updatedCheckedState = {
@@ -89,6 +95,7 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
     setCheckedAccordions(updatedCheckedState);
   };
 
+  // updates indicators being checked
   const handleIndicatorCheckChange = (accordionIndex, indicatorIndex, isChecked) => {
     // Update the checked state for a single indicator
     const updatedIndicators = [...checkedAccordions[accordionIndex].indicators];
@@ -107,6 +114,7 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
     setCheckedAccordions(updatedCheckedState);
   };
 
+  // open change weight popup
   const handleClickWeightOpen = (type, accordionIndex, indicatorIndex, event) => {
     // Prevent accordion from expanding
     event.stopPropagation(); 
@@ -116,6 +124,7 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
     setOpenWeightPopup(true);
   };
 
+  // when new weight is submitted, change weight of selected metric/indicator to new weight
   const handleSubmitNewWeight = (weight) => {
     const newWeights = { ...weights };
     if (weightType === 'metric') {
@@ -130,6 +139,7 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
     setWeights(newWeights);
   };
 
+  // calculates new ESG score for the selected metrics and indicators.
   const handleMetricsSelection = async () => {
     setErrorMessage('');
 
@@ -174,6 +184,7 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
   } 
   };
 
+  // balance the metrics weights to all be equal and add up to 1
   const balanceMetricWeights = async () => {
     const selectedMetricNames = metricDetails.filter((_, index) => checkedAccordions[index].checked).map(metric => metric.framework_metric_name);
     const metricsJson = JSON.stringify(selectedMetricNames);
@@ -215,6 +226,7 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
     } 
   };
 
+  // styling for metric accordion
   return (
     <div>
       <Grid container sx={{ pt: 4, pl: 1, mb: 1, alignItems: 'center' }}>

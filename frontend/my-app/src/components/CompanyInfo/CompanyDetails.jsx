@@ -1,3 +1,5 @@
+/* handles logic and styling of company details component of company info page */
+
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -9,6 +11,7 @@ import InvestDialog from './InvestDialog';
 const CompanyDetails = ({ companyId }) => {
   const [companyDetails, setCompanyDetails] = useState([]);
 
+  // assign icons with industry
   const industryIcons = {
     Technology: DevicesIcon,
     Energy: EnergySavingsLeafIcon,
@@ -16,6 +19,7 @@ const CompanyDetails = ({ companyId }) => {
     Manufacturing: FactoryIcon
   };
 
+  // when companyId changes, fetch new company's details.
   useEffect(() => {
     const token = localStorage.getItem('token'); 
   
@@ -47,6 +51,7 @@ const CompanyDetails = ({ companyId }) => {
     }
   }, [companyId]);
 
+  // styling of company details component. 
   return (
     <div>
       <Box sx={{

@@ -1,3 +1,5 @@
+/* handles logic and styling of popup dialog box for adding investments */
+
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -31,7 +33,7 @@ export default function InvestDialog({ companyDetail }) {
     }
     setSnackbarOpen(false);
   };
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

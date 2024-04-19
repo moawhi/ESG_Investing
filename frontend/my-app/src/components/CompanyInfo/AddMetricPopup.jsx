@@ -1,3 +1,4 @@
+/* handles logic and styling of popup dialog box for adding metrics */
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, List, ListItem, Checkbox, FormControlLabel, Box } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
@@ -8,11 +9,13 @@ const AddMetricPopup = ({ open, setOpenMetricPopup, frameworkId, onAddMetrics })
   const [selectedMetrics, setSelectedMetrics] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
 
+  // upon closing the popup, resets error message 
   const handleClose = () => {
     setOpenMetricPopup(false);
     setErrorMessage("");
   };
 
+  // when framework id or open state changes, fetches unincluded metrics
   useEffect(() => {
     const token = localStorage.getItem('token');
     const fetchAdditionalMetrics = async () => {
@@ -40,10 +43,13 @@ const AddMetricPopup = ({ open, setOpenMetricPopup, frameworkId, onAddMetrics })
     }
   }, [frameworkId, open]);
 
+  // when different framework is selected, reset selected metrics
   useEffect(() => {
     setSelectedMetrics({});
   }, [frameworkId]);
 
+  // puts checked metrics in selectedMetrics dict
+  // if more than 5 are selected, display error message and prevent selecting of 6th metric
   const handleToggle = metricId  => {
     const currentlySelectedCount = Object.values(selectedMetrics).filter(val => val).length;
     const isSelected = selectedMetrics[metricId];
@@ -60,12 +66,14 @@ const AddMetricPopup = ({ open, setOpenMetricPopup, frameworkId, onAddMetrics })
     }
   };
 
+  // upon submission, return ids of selected metrics and close popup
   const handleSubmission = () => {
     const selectedMetricIds = additionalMetrics.filter((_, id) => selectedMetrics[id]).map(metric => metric.metric_id);
     onAddMetrics(selectedMetricIds);
     handleClose();
   };
 
+  // styling of add metrics popup dialog
   return (
     <div>
       <Dialog open={open} onClose={handleClose}

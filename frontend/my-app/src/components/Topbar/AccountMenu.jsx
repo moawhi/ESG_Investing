@@ -1,3 +1,5 @@
+/* handles logic and styling of account dropdown menu */
+
 import React from 'react';
 import { Typography, Box, Avatar, Menu, MenuItem, ListItemIcon, IconButton, Divider, Tooltip } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -19,12 +21,14 @@ const AccountMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  
   const handleNavigate = (path) => {
     navigate(path);
     handleClose();
   };
 
+  // handles logging out of user account. 
+  // removes token from localStorage, ending the session.
   const handleLogout = async () => {
   const token = localStorage.getItem('token');
     try {
@@ -44,6 +48,7 @@ const AccountMenu = () => {
     }
   };
 
+  // styling of account menu
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', margin: '4px' }}>

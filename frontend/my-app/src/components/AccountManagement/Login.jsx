@@ -1,3 +1,4 @@
+/* handles logic and styling of login page */
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -23,6 +24,9 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
+// gets email and password and verifies user can log in
+// upon successful log in, navigates to dashboard and receives token for this session
+// otherwise displays error and doesn't log in
 export default function Login() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -64,6 +68,7 @@ export default function Login() {
     }
   };
 
+  // styling for login page
   return (
     <ThemeProvider theme={defaultTheme}>
     <Grid container component="main" sx={{ height: '100vh' }}>
