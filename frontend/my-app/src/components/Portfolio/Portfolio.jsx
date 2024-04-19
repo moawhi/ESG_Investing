@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Box, Typography, Grid, Card, CardContent, CircularProgress, Button, Tooltip, SvgIcon } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-import Topbar from '../Topbar';
+import Topbar from '../Topbar/Topbar';
 import CompanyCard from '../CompanyCard';
 import EditDialog from './EditDialog';
 import DeleteDialog from './DeleteDialog';

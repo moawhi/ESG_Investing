@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, List, ListItem, ListItemText, Divider, Stack, Grid } from '@mui/material';
-import Topbar from './Topbar';
-import { fetchCompanyDetails, fetchPortfolioData } from './helper';
+import Topbar from '../Topbar/Topbar';
+import { fetchCompanyDetails, fetchPortfolioData } from '../helper';
 
-import CompanyCard from './CompanyCard';
+import CompanyCard from '../CompanyCard';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -132,9 +132,9 @@ const Dashboard = () => {
                   <Typography variant="h6" sx={{ p: 1, fontWeight: '600' }}>Select a Company</Typography>
                 </Stack>
                 {!selectedIndustry && (
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60%' }}>
-                    <Typography color="error">
-                      Please select an industry
+                  <Box sx={{ ml: 1, mt: 2 }}>
+                    <Typography>
+                      Please select an industry first.
                     </Typography>
                   </Box>
                 )}
