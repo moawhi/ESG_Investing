@@ -1,3 +1,8 @@
+/**
+ * Funciton geting company details
+ * @param {*} companies 
+ * @returns array of companyDetails object (company_id, company_name, industry_ranking)
+ */
 export const fetchCompanyDetails = async (companies) => {
 	const token = localStorage.getItem('token');
 	const companyDetails = await Promise.all(
@@ -31,6 +36,10 @@ export const fetchCompanyDetails = async (companies) => {
 	return companyDetails;
 };
 
+/**
+ * Function to fetch portfolio data
+ * @returns array of object including company details and its ESG rating
+ */
 export const fetchPortfolioData = async () => {
 	const token = localStorage.getItem('token');
 	try {
@@ -54,6 +63,10 @@ export const fetchPortfolioData = async () => {
 	}
 };
 
+/**
+ * Function getting the weighted average ESG Score and total amount of investment
+ * @returns portfolio's weighted ESG score and total amount
+ */
 export const fetchWeightedAvgESGScore = async () => {
 	const token = localStorage.getItem('token');
 

@@ -1,6 +1,11 @@
 import React from 'react';
 import ApexCharts from 'react-apexcharts';
 
+/**
+ * Bar chart component, showing ESG scores and rating.
+ * @param {companyDetails, weightedAvgESGScore}
+ * @returns 
+ */
 const ESGScoresChart = ({ companyDetails, weightedAvgESGScore }) => {
   const options = {
     chart: {

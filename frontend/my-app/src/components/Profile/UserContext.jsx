@@ -2,6 +2,10 @@ import React, { createContext, useContext, useState } from 'react';
 
 const UserContext = createContext();
 
+/**
+ * Saving user infor in a useContext hook so it can be reused in other component
+ * @returns
+ */
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {

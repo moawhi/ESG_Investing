@@ -18,7 +18,7 @@ const Portfolio = () => {
   const [rerenderFlag, setRerenderFlag] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const token = localStorage.getItem('token');
+
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
   const navigate = useNavigate();

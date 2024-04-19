@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Snackbar, Alert } from '@mui/material';
 
+/**
+ * Update dialog component, this to alert user update password
+ * @param {open, handleClose}
+ * @returns Popup dialog component to enter new password and notify the result
+ */
 export default function UpdatePasswordDialog({ open, handleClose }) {
   const [password, setPassword] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);

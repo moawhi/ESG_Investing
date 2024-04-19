@@ -3,6 +3,10 @@ import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@
 import { useUser } from './UserContext';
 import UpdatePasswordDialog from './UpdatePasswordDialog';
 
+/**
+ * 
+ * @returns Showing user default avatar and button to update password
+ */
 export default function ImgMediaCard() {
     const { user } = useUser();
     const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);

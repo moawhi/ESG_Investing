@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Grid, TextField, Button, Snackbar, Alert } from '@mui/material';
 import { useUser } from './UserContext';
 
+/**
+ * 
+ * @returns Form component to display current user infor and update details
+ */
 const GeneralInformation = () => {
   const { user, updateUser } = useUser();
   const [firstName, setFirstName] = useState(user.firstName);
@@ -21,6 +25,8 @@ const GeneralInformation = () => {
     }
   }, [firstName, lastName, email, user]);
 
+
+  // Fetch to update new user details
   const handleSubmit = async (event) => {
     event.preventDefault();
     const token = localStorage.getItem('token');

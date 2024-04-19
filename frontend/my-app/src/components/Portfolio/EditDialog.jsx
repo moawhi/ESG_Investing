@@ -11,6 +11,11 @@ import Alert from '@mui/material/Alert';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
+/**
+ * Edit dialog component, this to alert user once updating a company's detail
+ * @param {companyDetail, onCompanyUpdated}
+ * @returns Edit dialog component
+ */
 export default function EditDialog({ companyDetail, onCompanyUpdated }) {
   const [open, setOpen] = React.useState(false);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -37,6 +42,7 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
     setSnackbarOpen(false);
   };
 
+  // fetch to update new investment detail
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
