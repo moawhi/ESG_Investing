@@ -1,13 +1,13 @@
 """
 Portfolio functions
+Filename: portfolio.py
 
 Functions:
-portfolio_save_company
-portfolio_delete_company
-portfolio_list
-portfolio_edit_investment_amount
-portfolio_edit_comment
-portfolio_calculate_esg_score
+    - portfolio_save_company
+    - portfolio_delete_company
+    - portfolio_list
+    - portfolio_edit
+    - portfolio_calculate_esg_score
 """
 
 import mysql.connector

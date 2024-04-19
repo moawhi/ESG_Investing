@@ -5,7 +5,7 @@ import { Box, Typography, List, ListItem, ListItemText, Divider, Stack, Grid } f
 import Topbar from '../Topbar/Topbar';
 import { fetchCompanyDetails } from '../helper';
 
-import CompanyCard from '../CompanyCard';
+import CompanyCard from './CompanyCard';
 
 
 /**

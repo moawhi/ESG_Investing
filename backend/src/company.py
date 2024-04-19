@@ -1,5 +1,13 @@
 """
 Company functions
+Filename: company.py
+
+Functions:
+    - company_industry_company_list
+    - get_company_details
+    - company_calculate_esg_score
+    - check_total_framework_metric_weight
+    - check_total_indicator_weight
 """
 
 import mysql.connector
@@ -13,7 +21,14 @@ DECIMAL_PLACES = 2
 def company_industry_company_list(token):
     """
     Gets all industries and for each industry lists the companies within that
-    industry
+    industry.
+
+    Parameters:
+        token (JSON object): the user's token
+
+    Returns:
+        dict: contains the list of industries and the companies in each industry if successful,
+        otherwise returns a message of the corresponding error if unsuccessful
     """
 
     if not verify_token(token):
@@ -64,6 +79,12 @@ def company_industry_company_list(token):
 def get_company_details(company_id):
     """
     Fetches details of a specific company, including its ESG score, ranking within its industry, and other details.
+
+    Paramenters:
+        company_id (int): the company's ID
+
+    Returns:
+        dict: 
     """
     db = mysql.connector.connect(user="esg", password="esg", host="127.0.0.1", database="esg_management")
     try:
@@ -93,6 +114,14 @@ def company_calculate_esg_score(token, esg_data):
     is calculated, and all the weighted scores for the indicator are averaged.
     The final ESG score is the sum of all the averaged weighted scores, i.e.
     the final ESG score is the average of all ESG scores for selected years.
+
+    Parameters:
+        token (JSON object): the user's token
+        esg_data (dict): the ESG data for the currently selected company and framework
+
+    Returns:
+        dict: the ESG score of the company if successful, otherwise returns a message 
+        with the corresponding error message if unsuccessful
     """
     if not verify_token(token):
         return {

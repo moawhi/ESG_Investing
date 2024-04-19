@@ -74,7 +74,7 @@ def get_user_id_from_token(token):
 
 def prompt_for_missing_field(user_inputs):
     """
-    Returns a message to fill in a fields if any fields are empty
+    Returns a message to fill in all fields if any fields are empty
     """
     for field in user_inputs.keys():
         if not user_inputs[field]:
