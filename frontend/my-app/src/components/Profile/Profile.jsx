@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserProvider } from './UserContext';
-import Topbar from './Topbar';
+import Topbar from '../Topbar/Topbar';
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import ImgMediaCard from './ImgMediaCard';
 import GeneralInformation from './GeneralInformation';
