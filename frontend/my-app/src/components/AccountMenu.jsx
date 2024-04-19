@@ -3,7 +3,6 @@ import { Typography, Box, Avatar, Menu, MenuItem, ListItemIcon, IconButton, Divi
 import LogoutIcon from '@mui/icons-material/Logout';
 import PieChartOutlineIcon from '@mui/icons-material/PieChartOutline';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import ListRounded from '@mui/icons-material/ListRounded';
 import { useNavigate } from 'react-router-dom';
 
 const AccountMenu = () => {

@@ -42,8 +42,8 @@ const PageList = () => {
         <Route path="/" element={<Login token={token} setToken={setToken} />} />
         <Route path="/register" element={<Register token={token} setToken={setToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token} setToken={setToken} />} />
-        <Route path="/profile" element={<Profile token={token} setToken={setToken} />} />
-        <Route path="/portfolio" element={<Portfolio token={token} setToken={setToken} />} />
+        <Route path="/profile" element={<RequireAuth><Profile token={token} setToken={setToken} /></RequireAuth>} />
+        <Route path="/portfolio" element={<RequireAuth><Portfolio token={token} setToken={setToken} /></RequireAuth>} />
       </Routes>
     </>
   );
