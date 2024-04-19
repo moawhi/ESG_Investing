@@ -8,29 +8,20 @@ import Profile from './components/Profile/Profile';
 import CompanyInfo from './components/CompanyInfo/CompanyInfo';
 import Portfolio from './components/Portfolio/Portfolio';
 
-const isAuthenticated = () => {
-  const token = localStorage.getItem('token');
-  return !!token;
-};
-
-const RequireAuth = ({ children }) => {
-  return isAuthenticated() ? children : <Navigate to="/login" replace />;
-};
-
-const NoAuth = ({ children }) => {
-  return !isAuthenticated() ? children : <Navigate to="/dashboard" replace />;
-};
-
 const PageList = () => {
-  const [token, setToken] = React.useState(null);
-
-  React.useEffect(() => {
-    const checktoken = localStorage.getItem('token');
-    if (checktoken) {
-      setToken(checktoken);
-    }
-  }, []);
-
+  const isAuthenticated = () => {
+    const token = localStorage.getItem('token');
+    return !!token;
+  };
+  
+  const RequireAuth = ({ children }) => {
+    return isAuthenticated() ? children : <Navigate to="/login" replace />;
+  };
+  
+  const NoAuth = ({ children }) => {
+    return !isAuthenticated() ? children : <Navigate to="/dashboard" replace />;
+  };
+  
   return (
     <>
       <Routes>
