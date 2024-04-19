@@ -88,8 +88,15 @@ export default function DeleteDialog({ companyDetail, onCompanyDeleted }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleDelete} variant="contained">Delete</Button>
+          <Button onClick={handleClose} sx={{ color: "#8eb08b" }}>Cancel</Button>
+          <Button sx={{
+            backgroundColor: "#ff6347",
+            fontWeight: 'bold',
+            '&:hover': {
+              backgroundColor: "#e05237",
+            }
+          }}
+            onClick={handleDelete} variant="contained">Delete</Button>
         </DialogActions>
       </Dialog>
       <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleSnackbarClose}>

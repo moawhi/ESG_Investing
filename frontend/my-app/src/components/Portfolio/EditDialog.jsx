@@ -20,6 +20,8 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
   const [comment, setComment] = React.useState(companyDetail.comment);
   const [isSaveDisabled, setIsSaveDisabled] = React.useState(true); // Initially, save button is disabled
 
+  const buttonColor = "#8eb08b";
+
   const token = localStorage.getItem('token');
 
   const handleClickOpen = () => {
@@ -46,8 +48,8 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
       const response = await fetch('http://localhost:12345/portfolio/edit', {
         method: 'PUT',
         headers: {
-					'Content-Type': 'application/json',
-					Authorisation: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
         },
         body: JSON.stringify({
           company_id: companyDetail.company_id,
@@ -88,7 +90,7 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
         onClick={handleClickOpen}
         variant="contained"
         sx={{
-          backgroundColor: "#8eb08b",
+          backgroundColor: buttonColor,
           fontWeight: 'bold',
           '&:hover': {
             backgroundColor: "#779c73",
@@ -119,9 +121,7 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
             type="number"
             fullWidth
             variant="standard"
-            inputProps={{
-              min: 0
-            }}
+            color="success"
             defaultValue={companyDetail.investment_amount}
             onChange={(e) => setInvestmentAmount(e.target.value)}
           />
@@ -133,13 +133,20 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
             type="text"
             fullWidth
             variant="standard"
+            color="success"
             defaultValue={companyDetail.comment}
             onChange={(e) => setComment(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit" disabled={isSaveDisabled} variant={isSaveDisabled ? "outlined" : "contained"} >Save</Button>
+          <Button onClick={handleClose} sx={{ color: buttonColor }}>Cancel</Button>
+          <Button sx={{
+            backgroundColor: buttonColor,
+            fontWeight: 'bold',
+            '&:hover': {
+              backgroundColor: "#779c73",
+            }
+          }} type="submit" disabled={isSaveDisabled} variant={isSaveDisabled ? "outlined" : "contained"} >Save</Button>
         </DialogActions>
       </Dialog>
       <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleSnackbarClose}>

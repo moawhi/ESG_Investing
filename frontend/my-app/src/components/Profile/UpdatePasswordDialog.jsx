@@ -48,12 +48,20 @@ export default function UpdatePasswordDialog({ open, handleClose }) {
             fullWidth
             variant="outlined"
             value={password}
+            color="success"
             onChange={(e) => setPassword(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={updatePassword}>Update</Button>
+          <Button sx={{ color: "#8eb08b" }} onClick={handleClose}>Cancel</Button>
+          <Button sx={{
+            backgroundColor: "#8eb08b",
+            fontWeight: 'bold',
+            '&:hover': {
+              backgroundColor: "#779c73",
+            }
+          }} onClick={updatePassword}
+          variant='contained'>Update</Button>
         </DialogActions>
       </Dialog>
       <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
