@@ -32,13 +32,11 @@ export default function Register() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    // Collect the form data
     const first_name = data.get('firstName');
     const last_name = data.get('lastName');
     const email_address = data.get('email');
     const password = data.get('password');
 
-    // Construct the POST request for registration
     try {
       const response = await fetch('http://localhost:12345/register', {
         method: 'POST',

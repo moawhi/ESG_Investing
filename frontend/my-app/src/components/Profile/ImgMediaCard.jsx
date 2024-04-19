@@ -28,7 +28,7 @@ export default function ImgMediaCard() {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" onClick={handleOpenPasswordDialog}>Update Password</Button>
+                <Button sx={{ color: "#8eb08b" }} size="small" onClick={handleOpenPasswordDialog}>Update Password</Button>
             </CardActions>
             <UpdatePasswordDialog open={isPasswordDialogOpen} handleClose={handleClosePasswordDialog} />
         </Card>

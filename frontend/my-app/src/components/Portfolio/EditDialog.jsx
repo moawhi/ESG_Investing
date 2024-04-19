@@ -46,8 +46,8 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
       const response = await fetch('http://localhost:12345/portfolio/edit', {
         method: 'PUT',
         headers: {
-					'Content-Type': 'application/json',
-					Authorisation: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          Authorisation: 'Bearer ' + token,
         },
         body: JSON.stringify({
           company_id: companyDetail.company_id,
@@ -119,6 +119,7 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
             type="number"
             fullWidth
             variant="standard"
+            color='success'
             inputProps={{
               min: 0
             }}
@@ -134,12 +135,19 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
             fullWidth
             variant="standard"
             defaultValue={companyDetail.comment}
+            color='success'
             onChange={(e) => setComment(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit" disabled={isSaveDisabled} variant={isSaveDisabled ? "outlined" : "contained"} >Save</Button>
+          <Button onClick={handleClose} sx={{ color: "#8eb08b" }}>Cancel</Button>
+          <Button sx={{
+            backgroundColor: "#8eb08b",
+            fontWeight: 'bold',
+            '&:hover': {
+              backgroundColor: "#779c73",
+            }
+          }} type="submit" disabled={isSaveDisabled} variant={isSaveDisabled ? "outlined" : "contained"} >Save</Button>
         </DialogActions>
       </Dialog>
       <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleSnackbarClose}>
