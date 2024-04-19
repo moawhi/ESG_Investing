@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "apexcharts": "^3.48.0",
-    "react-apexcharts": "^1.4.1",
-    "react-query": "^3.39.3"
-  }
-}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {Box, Grid } from '@mui/material';
-import Topbar from './Topbar';
+import Topbar from '../Topbar/Topbar';
 import CompanyDetails from './CompanyDetails';
 import FrameworkSelection from './FrameworkSelection';
 import MetricAccordion from './MetricAccordion';
