@@ -1,0 +1,41 @@
+Week 1
+In our first week, our team picked Project 13, which centers on developing an ESG (Environmental, Social, and Governance) management system tailored for the FinTech industry. With an aim for achieving a distinction, we commenced our journey. Establishing effective communication channels, we set up a Discord server to facilitate interaction. Furthermore, we charted our course for regular weekly meetings, scheduling them for Saturday afternoons to ensure ongoing collaboration and progress.
+
+
+Week 2
+Progressing into our second week, we initiated the groundwork for our project by drafting the proposal. With the collective expertise within our team, we assigned members to various sections of the proposal during our Wednesday lab session. Personally, I assumed responsibility for Section 3b, namely, System Architecture Design.
+
+
+Week 3
+We reached a milestone by finalizing and submitting our proposal. With the groundwork laid, we started on our first sprint, commencing activities on Friday of Week 3. Transitioning into the implementation phase, my focus shifted towards designing the database schema and implementing SQL scripts for table creation. Additionally, I started the exploration of relevant Python libraries for interfacing with our MySQL database. 
+
+
+Week 4
+This week, I finalized the initial phase of database schema design and successfully integrated Python libraries for efficient MySQL database management. Additionally, we conducted a team-building session to strengthen collaboration and cohesion. 
+
+
+Week 5
+This week, my main focus was on implementing the SQL script to populate data into our database. Regular progress reviews kept us on track towards our goal of developing a comprehensive ESG management system for the FinTech industry.
+
+
+Week 6
+This week, after team discussions, I focused on modifying the SQL script for data population. Collaboratively refining our approach, we streamlined processes and improved efficiency. With rigorous testing, we ensured the integrity of our database. 
+
+
+Week 7
+This week, I achieved a milestone by developing 105 comprehensive ESG indicators, designed to assess the sustainability practices within the FinTech industry. Additionally, I integrated data from three companies.
+
+
+Week 8
+Building on our progress, I constructed two robust frameworks tailored to analyze and report on the ESG performance of companies in the FinTech sector. These frameworks are instrumental in operationalizing our indicators, facilitating a systematic approach to ESG evaluation and reporting.
+
+Week 9
+Focused on enhancing the database schema for scalability and efficiency. Added more sample data to bolster testing and development efforts. These steps are important for maintaining the integrity and functionality of our ESG management system.
+
+Week 10
+Focused on drafting the system architecture and overview sections of our report. Clarifying our project's structure and objectives for stakeholders.
+
+
+
+
+

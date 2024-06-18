@@ -47,3 +47,72 @@ Sprint 1 User Stories:
 - As a user, I want the ability to filter and select ESG metrics based on their relevance to my investment philosophy, so that I can focus on metrics that matter most to me.
 - As a user, I want to have more than three default metrics under each ESG pillar within my selected framework, so that I can ensure a broad and comprehensive analysis.
 - As a portfolio manager, I want to integrate selected ESG frameworks and metrics into my portfolio analysis, so that I can evaluate investments based on sustainability performance.
+
+# Week 3
+
+Edit the background section, added some reference for the reseach of similar platforms.
+
+Format the whole proposal document following proposal marking criteria and help on with storyboard in term of formatting.
+
+Email project client seeking clarification on Financial concepts and feedbacks on proposal.
+
+# Week 4
+
+Got response from project client, added team to the page for project discussion.
+
+Implemented frontend of Log in and register page. Wait on backend to finalise.
+
+# Week 5
+
+Implement register button using the api provided from backend.
+
+Recorded Retrospective A and sent over to scum master.
+
+Attemped to made a logo and customizied background.
+
+# Week 6
+
+Attended weekly meeting and discuss on dashboard page.
+
+Wait on backend to finalise metric selection and data.
+
+# Week 7
+
+Attended weekly meeting
+
+Change account menu.
+
+Complete Profile page, frontend component.
+
+# Week 8
+
+Attended weekly meeting
+
+Record Retrospective B and sent to Scum master
+
+Redesign and implement dashboard UI
+
+Design portfolio UI
+
+# Week 9
+
+Finish and test Adding company to a portfolio
+
+Show all company in the portfolio
+
+Attemped implementing edit and delete companies from portfolio but got errors, might be due to 
+complexity of Portfolio component structure.
+
+Requested backend team to include more infor in the portfolio/list route to display on chart
+
+# Week 10
+
+Reorganise Portfolio, move Edit and Delete to a separate component
+
+Hooked in Edit and Delete api successfully
+
+Added on pie chart to show investment composition
+
+Added bar chart for company comparison
+
+Complete Profile page, added funcitonality to update password, and user information
