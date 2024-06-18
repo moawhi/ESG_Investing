@@ -12,6 +12,9 @@
 ## Overview
 This project aims to create an ESG Management System where investors can easily and efficiently evaluate the ESG performances of companies by viewing frameworks and metrics and managing a portfolio of their investments.
 
+![image](https://github.com/moawhi/ESG_Investing/assets/54211192/3f2168b2-c7a8-472e-afc5-63aedd03aee6)
+![image](https://github.com/moawhi/ESG_Investing/assets/54211192/af331d18-0b88-464d-aed1-cc819210eba6)
+
 ## Getting Started
 To use the software, `git clone` this repository and follow the [Installation and Setup Guide](#Installation-and-Setup-Guide).
 
