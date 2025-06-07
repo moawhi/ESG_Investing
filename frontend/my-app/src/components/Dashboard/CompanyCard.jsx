@@ -44,15 +44,19 @@ const CompanyCard = ({
           display: 'flex',
           flexDirection: 'column',
           overflow: 'auto',
-          height: '200px',
+          // height: '200px', // Replaced by auto height and minHeight
+          height: 'auto',
+          minHeight: '200px',
           width: '100%',
-          border: selected ? '3px solid #779c73' : '2px solid #e0e0e0',
-          borderRadius: '12px',
+          border: selected ? '3px solid #28a745' : '1px solid #DEE2E6', // New green accent and standard light gray border
+          borderRadius: '12px', // Style Guide standard
+          boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)', // Style Guide shadow
           ':hover': {
-            bgcolor: 'action.hover',
+            bgcolor: 'rgba(0, 0, 0, 0.02)', // Slight hover background
+            boxShadow: '0 0.25rem 0.5rem rgba(0, 0, 0, 0.1)', // More pronounced shadow on hover
             cursor: 'pointer',
           },
-          transition: 'border-color 0.3s',
+          transition: 'border-color 0.3s, box-shadow 0.3s', // Added boxShadow to transition
         }}
         onClick={handleClick}
       >
@@ -61,11 +65,11 @@ const CompanyCard = ({
         }}>
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs={12} md={4}>
-              {industryIcons[companyDetails.industry] ? React.createElement(industryIcons[companyDetails.industry], { sx: { verticalAlign: 'middle', mr: 2, color: '#779c73', fontSize: '4rem' } }) : null}
+              {industryIcons[companyDetails.industry] ? React.createElement(industryIcons[companyDetails.industry], { sx: { verticalAlign: 'middle', mr: 2, color: '#28a745', fontSize: '4rem' } }) : null}
             </Grid>
             <Grid item xs={12} md={8}>
-              <Typography sx={{ fontWeight: 'bold', fontSize: '1rem' }}>{companyDetails.name}</Typography>
-              {companyDetails.company_name && (<Typography sx={{ fontWeight: 'bold', fontSize: '1rem' }}>{companyDetails.company_name}</Typography>
+              <Typography sx={{ fontWeight: 'bold', fontSize: '1rem', color: '#212529' }}>{companyDetails.name}</Typography>
+              {companyDetails.company_name && (<Typography sx={{ fontWeight: 'bold', fontSize: '1rem', color: '#212529' }}>{companyDetails.company_name}</Typography>
               )}
             </Grid>
           </Grid>
@@ -79,33 +83,33 @@ const CompanyCard = ({
         }}>
           {!investmentAmount && (
             <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="h4" component="span" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="h4" component="span" sx={{ fontWeight: 'bold', color: '#212529' }}>
                 {companyDetails.esg_rating}
               </Typography>
-              <Typography variant="subtitle1" sx={{ display: 'block' }}>
+              <Typography variant="subtitle1" sx={{ display: 'block', color: '#6C757D' }}>
                 ESG Rating
               </Typography>
             </Box>
           )}
           {!investmentAmount && (
             <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="h4" component="span" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="h4" component="span" sx={{ fontWeight: 'bold', color: '#212529' }}>
                 {companyDetails.industry_ranking}
               </Typography>
-              <Typography variant="subtitle1" sx={{ display: 'block' }}>
+              <Typography variant="subtitle1" sx={{ display: 'block', color: '#6C757D' }}>
                 Industry Ranking
               </Typography>
             </Box>
           )}
           {investmentAmount && (
             <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="h5" component="span" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="h5" component="span" sx={{ fontWeight: 'bold', color: '#212529' }}>
                 ${investmentAmount.toLocaleString()}
               </Typography>
             </Box>
           )}
           {impactStatement && (
-            <Typography sx={{ fontSize: '1rem', mt: 1 }}>{impactStatement}</Typography>
+            <Typography sx={{ fontSize: '1rem', mt: 1, color: '#212529' }}>{impactStatement}</Typography> // Assuming primary text color for impact statement
           )}
         </Box>
       </Card>

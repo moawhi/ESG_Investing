@@ -13,10 +13,26 @@ function Topbar() {
   // places logo, platform name and account icon in topbar
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" elevation={0} sx={{ backgroundColor: '#b5d8b1', maxHeight: '60px' }}>
+      <AppBar
+        position="static"
+        elevation={0}
+        sx={{
+          backgroundColor: '#FFFFFF', // White background
+          borderBottom: '1px solid #DEE2E6', // Light Gray Border
+        }}
+      >
         <Toolbar>
           <Logo />
-          <Typography variant='h5' sx={{ ml: 1, color: '#779c73', fontWeight: 'bold' }}>HF ESG Management</Typography>
+          <Typography
+            variant='h5'
+            sx={{
+              ml: 1,
+              color: '#212529', // Primary Text Color
+              fontWeight: 'bold'
+            }}
+          >
+            HF ESG Management
+          </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <AccountMenu />
         </Toolbar>

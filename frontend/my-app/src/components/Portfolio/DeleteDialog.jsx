@@ -75,10 +75,13 @@ export default function DeleteDialog({ companyDetail, onCompanyDeleted }) {
         onClick={handleClickOpen}
         variant="contained"
         sx={{
-          backgroundColor: "#ff6347",
-          fontWeight: 'bold',
+          backgroundColor: '#dc3545', // Danger color
+          color: '#FFFFFF',
+          borderRadius: '8px',
+          padding: '0.375rem 0.75rem', // Slightly smaller for dialog actions
+          fontWeight: 'bold', // Kept bold as it was there
           '&:hover': {
-            backgroundColor: "#e05237",
+            backgroundColor: '#c82333'
           }
         }}>
         Delete
@@ -86,23 +89,48 @@ export default function DeleteDialog({ companyDetail, onCompanyDeleted }) {
       <Dialog
         open={open}
         onClose={handleClose}
+        PaperProps={{ // Dialog Paper styling
+          sx: {
+            borderRadius: '12px',
+            boxShadow: '0 0.25rem 0.75rem rgba(0, 0, 0, 0.1)'
+          }
+        }}
       >
-        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Delete {companyDetail.company_name}</DialogTitle>
+        {/* DialogTitle should inherit global typography */}
+        <DialogTitle>Delete {companyDetail.company_name}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Are you sure you want to delete this company from your portfolio? This action cannot be undone.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} sx={{ color: "#8eb08b" }}>Cancel</Button>
-          <Button sx={{
-            backgroundColor: "#ff6347",
-            fontWeight: 'bold',
-            '&:hover': {
-              backgroundColor: "#e05237",
-            }
-          }}
-            onClick={handleDelete} variant="contained">Delete</Button>
+        <DialogActions sx={{ pb: 2, pr: 2}}> {/* Added padding to actions */}
+          <Button
+            onClick={handleClose}
+            sx={{
+              color: '#6C757D', // Secondary/text button style
+              '&:hover': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)'
+              }
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDelete}
+            variant="contained"
+            sx={{
+              backgroundColor: '#dc3545', // Danger color
+              color: '#FFFFFF',
+              borderRadius: '8px',
+              padding: '0.375rem 0.75rem',
+              fontWeight: 'bold', // Kept bold
+              '&:hover': {
+                backgroundColor: '#c82333',
+              }
+            }}
+          >
+            Delete
+          </Button>
         </DialogActions>
       </Dialog>
       <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleSnackbarClose}>

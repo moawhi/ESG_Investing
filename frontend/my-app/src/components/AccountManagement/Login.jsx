@@ -7,13 +7,13 @@ import { Paper, Box, Grid, Avatar, Button, CssBaseline, TextField, Typography} f
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+// import { createTheme, ThemeProvider } from '@mui/material/styles'; // Removed ThemeProvider
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="">
+      <Link style={{ color: '#007BFF', textDecoration: 'none' }} href=""> {/* Applied link styling directly for Copyright, as MUI Link component might override global 'a' */}
         HighFive
       </Link>{' '}
       {new Date().getFullYear()}
@@ -22,7 +22,7 @@ function Copyright(props) {
   );
 }
 
-const defaultTheme = createTheme();
+// const defaultTheme = createTheme(); // Removed ThemeProvider
 
 // gets email and password and verifies user can log in
 // upon successful log in, navigates to dashboard and receives token for this session
@@ -70,7 +70,7 @@ export default function Login() {
 
   // styling for login page
   return (
-    <ThemeProvider theme={defaultTheme}>
+    // <ThemeProvider theme={defaultTheme}> // Removed ThemeProvider
     <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
       <Grid
@@ -81,13 +81,26 @@ export default function Login() {
         sx={{
           backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
           backgroundRepeat: 'no-repeat',
-          backgroundColor: (t) =>
-            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+          // backgroundColor: (t) => // Default background from index.css will apply
+          //   t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       />
-      <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
+      <Grid
+        item
+        xs={12}
+        sm={8}
+        md={4}
+        component={Paper}
+        // elevation={6} // Using boxShadow instead
+        // square // Removing square for rounded corners
+        sx={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: '12px',
+          boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)',
+        }}
+      >
         <Box
             sx={{
               display: 'flex',
@@ -105,7 +118,7 @@ export default function Login() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, backgroundColor: '#9ec28c' }}>
+            <Avatar sx={{ m: 1, backgroundColor: '#28a745' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -121,6 +134,7 @@ export default function Login() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
               />
               <TextField
                 margin="normal"
@@ -131,20 +145,29 @@ export default function Login() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: "#9ec28c", 
-                '&:hover': {
-                  backgroundColor: "#8aab79",
-                }}}
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  backgroundColor: "#28a745",
+                  borderRadius: '8px',
+                  padding: '0.5rem 1rem',
+                  color: '#FFFFFF',
+                  '&:hover': {
+                    backgroundColor: "#218838",
+                  }
+                }}
               >
                 Sign In
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
+                  {/* Link from react-router-dom should pick up global 'a' styles */}
                   <Link to="/register" variant="body2">
                     {"Don't have an account? Sign up"}
                   </Link>
@@ -158,11 +181,14 @@ export default function Login() {
                   p: 2,
                   display: "flex",
                   alignItems: "center",
-                  backgroundColor: "#ffdede",
-                  borderRadius: "10px",
+                  backgroundColor: '#f8d7da',
+                  color: '#721c24',
+                  borderRadius: '8px',
+                  border: '1px solid #f5c6cb',
                   width: "100%"
                 }} 
-              > <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
+              >
+                <ErrorOutlineIcon sx={{ mr: 1, color: "#721c24" }} />
                 <Typography variant="body2">{errorMessage}</Typography>
               </Box>
             )}
@@ -173,6 +199,6 @@ export default function Login() {
         </Box>
       </Grid>
     </Grid>
-  </ThemeProvider>
+    // </ThemeProvider> // Removed ThemeProvider
   );
 }

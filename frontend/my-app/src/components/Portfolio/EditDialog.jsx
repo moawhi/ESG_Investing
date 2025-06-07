@@ -94,10 +94,12 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
         onClick={handleClickOpen}
         variant="contained"
         sx={{
-          backgroundColor: "#8eb08b",
-          fontWeight: 'bold',
+          backgroundColor: '#28a745', // Primary Green Accent
+          color: '#FFFFFF',
+          borderRadius: '8px',
+          padding: '0.375rem 0.75rem', // Slightly smaller for dialog actions
           '&:hover': {
-            backgroundColor: "#779c73",
+            backgroundColor: '#218838'
           }
         }}>
         Edit
@@ -108,11 +110,16 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
         PaperProps={{
           component: 'form',
           onSubmit: handleSubmit,
+          sx: { // Dialog Paper styling
+            borderRadius: '12px',
+            boxShadow: '0 0.25rem 0.75rem rgba(0, 0, 0, 0.1)'
+          }
         }}
       >
-        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Edit Investment for {companyDetail.company_name}</DialogTitle>
+        {/* DialogTitle should inherit global typography (e.g. h6 if variant="h6" or just by its nature) */}
+        <DialogTitle>Edit Investment for {companyDetail.company_name}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText sx={{mb: 2}}> {/* Added margin bottom to content text */}
             To update this company in your Portfolio, please edit your investing amount or comment.
           </DialogContentText>
           <TextField
@@ -124,13 +131,14 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
             label="Investing Amount"
             type="number"
             fullWidth
-            variant="standard"
-            color='success'
+            variant="outlined" // Changed variant
+            // color='success' // Removed color prop
             inputProps={{
               min: 0
             }}
             defaultValue={companyDetail.investment_amount}
             onChange={(e) => setInvestmentAmount(e.target.value)}
+            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' }, mb: 2 }} // Added borderRadius and margin
           />
           <TextField
             margin="dense"
@@ -139,21 +147,42 @@ export default function EditDialog({ companyDetail, onCompanyUpdated }) {
             label="Comment (Optional)"
             type="text"
             fullWidth
-            variant="standard"
+            variant="outlined" // Changed variant
             defaultValue={companyDetail.comment}
-            color='success'
+            // color='success' // Removed color prop
             onChange={(e) => setComment(e.target.value)}
+            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' }, mb: 2 }} // Added borderRadius and margin
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} sx={{ color: "#8eb08b" }}>Cancel</Button>
-          <Button sx={{
-            backgroundColor: "#8eb08b",
-            fontWeight: 'bold',
-            '&:hover': {
-              backgroundColor: "#779c73",
-            }
-          }} type="submit" disabled={isSaveDisabled} variant={isSaveDisabled ? "outlined" : "contained"} >Save</Button>
+        <DialogActions sx={{ pb: 2, pr: 2}}> {/* Added padding to actions */}
+          <Button
+            onClick={handleClose}
+            sx={{
+              color: '#6C757D', // Secondary/text button style
+              '&:hover': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)'
+              }
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={isSaveDisabled}
+            variant="contained" // Keep contained for primary action
+            sx={{
+              backgroundColor: '#28a745',
+              color: '#FFFFFF',
+              borderRadius: '8px',
+              padding: '0.375rem 0.75rem',
+              '&:hover': {
+                backgroundColor: '#218838',
+              },
+              // MUI handles disabled styling for contained buttons well
+            }}
+          >
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
       <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleSnackbarClose}>

@@ -91,7 +91,7 @@ const Portfolio = () => {
       <div>
         <Topbar />
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-          <CircularProgress sx={{ color: "#8eb08b" }} />
+          <CircularProgress sx={{ color: "#28a745" }} />
         </Box>
       </div>
     );
@@ -102,7 +102,8 @@ const Portfolio = () => {
       <div>
         <Topbar />
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
-          <Typography color="error">
+          {/* Ensure Typography color is appropriate, Link will use global styles */}
+          <Typography sx={{ color: '#6C757D' }}>
             Please <Link to="/dashboard">add a company</Link> to your portfolio
           </Typography>
         </Box>
@@ -130,13 +131,17 @@ const Portfolio = () => {
           <Box>
             {!selectionMode && (
               <Box>
-                <Button variant="contained"
+                <Button
+                  variant="contained"
                   onClick={handleAddCompanyClick}
                   sx={{
                     marginRight: 1,
-                    backgroundColor: '#779c73',
+                    backgroundColor: '#28a745', // Primary Green Accent
+                    color: '#FFFFFF',
+                    borderRadius: '8px',
+                    padding: '0.5rem 1rem',
                     '&:hover': {
-                      backgroundColor: '#667c62'
+                      backgroundColor: '#218838'
                     }
                   }}>
                   Add Company
@@ -145,12 +150,13 @@ const Portfolio = () => {
                   variant="outlined"
                   onClick={handleToggleSelectionMode}
                   sx={{
-                    color: "#779c73",
-                    borderColor: '#779c73',
-                    borderWidth: '1px',
+                    color: '#28a745', // Primary Green Accent
+                    borderColor: '#28a745',
+                    borderRadius: '8px',
+                    padding: '0.5rem 1rem',
                     '&:hover': {
-                      backgroundColor: '#667c62',
-                      borderColor: '#667c62'
+                      backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                      borderColor: '#218838'
                     }
                   }}>
                   {selectionMode ? 'Exit Edit/Delete' : 'Edit/Delete'}
@@ -158,18 +164,21 @@ const Portfolio = () => {
               </Box>
             )}
             {selectionMode && !selectedCompany && (
-              <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
-                <div color="error">Please select a company to edit/delete</div>
+              <Box sx={{ display: "flex", flexDirection: "row", alignItems: 'center', gap: 1 }}>
+                <Typography sx={{color: 'red' }}> {/* Using Typography for consistency */}
+                  Please select a company to edit/delete
+                </Typography>
                 <Button
                   variant="outlined"
                   onClick={handleToggleSelectionMode}
                   sx={{
-                    color: "#779c73",
-                    borderColor: '#779c73',
-                    borderWidth: '1px',
+                    color: '#28a745', // Primary Green Accent
+                    borderColor: '#28a745',
+                    borderRadius: '8px',
+                    padding: '0.5rem 1rem',
                     '&:hover': {
-                      backgroundColor: '#667c62',
-                      borderColor: '#667c62'
+                      backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                      borderColor: '#218838'
                     }
                   }}>
                   Exit Edit/Delete
@@ -183,6 +192,7 @@ const Portfolio = () => {
                   flexDirection: 'row',
                   gap: 2,
                 }}>
+                {/* EditDialog and DeleteDialog components will have their opener buttons styled internally */}
                 <EditDialog
                   companyDetail={selectedCompany}
                   onCompanyUpdated={handleCompanyUpdate}
@@ -195,12 +205,13 @@ const Portfolio = () => {
                   variant="outlined"
                   onClick={handleToggleSelectionMode}
                   sx={{
-                    color: "#779c73",
-                    borderColor: '#779c73',
-                    borderWidth: '1px',
+                    color: '#28a745', // Primary Green Accent
+                    borderColor: '#28a745',
+                    borderRadius: '8px',
+                    padding: '0.5rem 1rem',
                     '&:hover': {
-                      backgroundColor: '#667c62',
-                      borderColor: '#667c62'
+                      backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                      borderColor: '#218838'
                     }
                   }}>
                   Exit Edit/Delete
@@ -212,12 +223,23 @@ const Portfolio = () => {
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <Card sx={{ mb: 3 }}>
+            <Card sx={{
+              mb: 3,
+              borderRadius: '12px',
+              bgcolor: '#FFFFFF',
+              boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)'
+            }}>
               <CardContent>
                 <InvestmentPieChart key={portfolioDetails.map(item => item.investment_amount)} portfolioDetails={portfolioDetails} totalInvestment={totalInvestment}/>
               </CardContent>
             </Card>
-            <Card sx={{ mb: 3, position: 'relative' }}>
+            <Card sx={{
+              mb: 3,
+              position: 'relative',
+              borderRadius: '12px',
+              bgcolor: '#FFFFFF',
+              boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)'
+            }}>
               <CardContent>
                 <Box sx={{
                   display: 'flex',
@@ -226,18 +248,18 @@ const Portfolio = () => {
                   padding: 2,
                 }}>
                   <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="h6">Average ESG Score</Typography>
+                    <Typography variant="h6" sx={{ color: '#212529' }}>Average ESG Score</Typography>
                   </Box>
                   <Box sx={{
                     textAlign: 'center',
                     mt: 2
                   }}>
-                    <Typography variant="h4" component="span" sx={{ fontWeight: 'bold' }}>{weightedAvgESGScore}</Typography>
+                    <Typography variant="h4" component="span" sx={{ fontWeight: 'bold', color: '#212529' }}>{weightedAvgESGScore}</Typography>
                   </Box>
                 </Box>
 
                 <Tooltip title="The Average ESG Score is calculated by weighting each company's ESG score by its proportion of the total investment amount.">
-                  <SvgIcon sx={{ position: 'absolute', top: 8, right: 8, color: "#8eb08b" }}>
+                  <SvgIcon sx={{ position: 'absolute', top: 8, right: 8, color: '#6C757D' }}> {/* Secondary text color */}
                     <InfoOutlinedIcon />
                   </SvgIcon>
                 </Tooltip>
@@ -246,7 +268,12 @@ const Portfolio = () => {
           </Grid>
 
           <Grid item xs={12} md={8}>
-            <Card sx={{ mb: 3 }}>
+            <Card sx={{
+              mb: 3,
+              borderRadius: '12px',
+              bgcolor: '#FFFFFF',
+              boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)'
+            }}>
               <ESGScoresChart companyDetails={portfolioDetails} weightedAvgESGScore={weightedAvgESGScore} />
             </Card>
             <Grid container spacing={4}>

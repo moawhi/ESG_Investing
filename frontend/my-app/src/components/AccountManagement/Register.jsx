@@ -7,13 +7,14 @@ import { Paper, Box, Grid, Avatar, Button, CssBaseline, TextField, Typography} f
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+// import { createTheme, ThemeProvider } from '@mui/material/styles'; // Removed ThemeProvider
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      {/* Applied link styling directly for Copyright, as MUI Link component might override global 'a' */}
+      <Link style={{ color: '#007BFF', textDecoration: 'none' }} href="https://mui.com/">
         HighFive
       </Link>{' '}
       {new Date().getFullYear()}
@@ -22,7 +23,7 @@ function Copyright(props) {
   );
 }
 
-const defaultTheme = createTheme();
+// const defaultTheme = createTheme(); // Removed ThemeProvider
 
 // upon successful register navigates user to dashboard and receives token for this session
 // otherwise displays error and doesn't register account
@@ -73,7 +74,7 @@ export default function Register() {
 
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    // <ThemeProvider theme={defaultTheme}> // Removed ThemeProvider
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -84,13 +85,26 @@ export default function Register() {
           sx={{
             backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
             backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            // backgroundColor: (t) => // Default background from index.css will apply
+            //   t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         />
-        <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={12}
+          sm={8}
+          md={4}
+          component={Paper}
+          // elevation={6} // Using boxShadow instead
+          // square // Removing square for rounded corners
+          sx={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '12px',
+            boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)',
+          }}
+        >
           <Box
             sx={{
               display: 'flex',
@@ -108,7 +122,7 @@ export default function Register() {
                 alignItems: 'center',
               }}
             >
-              <Avatar sx={{ m: 1, backgroundColor: "#9ec28c" }}>
+              <Avatar sx={{ m: 1, backgroundColor: "#28a745" }}>
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
@@ -125,6 +139,7 @@ export default function Register() {
                       id="firstName"
                       label="First Name"
                       autoFocus
+                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -135,6 +150,7 @@ export default function Register() {
                       label="Last Name"
                       name="lastName"
                       autoComplete="family-name"
+                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -145,6 +161,7 @@ export default function Register() {
                       label="Email Address"
                       name="email"
                       autoComplete="email"
+                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -156,16 +173,17 @@ export default function Register() {
                       type="password"
                       id="password"
                       autoComplete="new-password"
+                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography sx={{ fontSize: '0.8rem', color: 'grey' }}>
+                    <Typography sx={{ fontSize: '0.8rem', color: '#6C757D' }}>
                       Password Requirements:
                     </Typography>
-                    <Box sx={{ paddingLeft: 1, typography: 'body2', fontSize: '0.8rem', color: 'gray' }}>
-                    <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
+                    <Box sx={{ paddingLeft: 1, typography: 'body2', fontSize: '0.8rem', color: '#6C757D' }}>
+                    <ul style={{ listStyleType: 'disc', paddingLeft: '20px', margin: 0 }}>
                       <li>at least 1 upper case letter.</li>
-                      <li>at least 1 lower case letter.</li>
+                      <li>at least 1 lower case letter.
                       <li>at least 1 number.</li>
                       <li>at least 1 special character.</li>
                       <li>at least 8 characters.</li>
@@ -177,15 +195,23 @@ export default function Register() {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2, backgroundColor: "#9ec28c", 
-                  '&:hover': {
-                    backgroundColor: "#8aab79",
-                  }}}
+                  sx={{
+                    mt: 3,
+                    mb: 2,
+                    backgroundColor: "#28a745",
+                    borderRadius: '8px',
+                    padding: '0.5rem 1rem',
+                    color: '#FFFFFF',
+                    '&:hover': {
+                      backgroundColor: "#218838",
+                    }
+                  }}
                 >
                   Sign Up
                 </Button>
                 <Grid container justifyContent="flex-end">
                   <Grid item>
+                    {/* Link from react-router-dom should pick up global 'a' styles */}
                     <Link to="/login" variant="body2">
                       {"Already have an account? Sign in"}
                     </Link>
@@ -194,16 +220,19 @@ export default function Register() {
               </Box>
               {errorMessage && (
                 <Box 
-                sx={{
-                  mt: 2,
-                  p: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  backgroundColor: "#ffdede",
-                  borderRadius: "10px",
-                  width: "100%"
-                }} 
-                > <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
+                  sx={{
+                    mt: 2,
+                    p: 2,
+                    display: "flex",
+                    alignItems: "center",
+                    backgroundColor: '#f8d7da',
+                    color: '#721c24',
+                    borderRadius: '8px',
+                    border: '1px solid #f5c6cb',
+                    width: "100%"
+                  }}
+                >
+                  <ErrorOutlineIcon sx={{ mr: 1, color: "#721c24" }} />
                   <Typography variant="body2">{errorMessage}</Typography>
                 </Box>
               )}
@@ -214,6 +243,6 @@ export default function Register() {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    // </ThemeProvider> // Removed ThemeProvider
   );
 }

@@ -120,9 +120,10 @@ const Dashboard = () => {
                 <Typography variant="h6" sx={{ p: 1, fontWeight: '600' }}> Select an Industry </Typography>
                 <Box sx={{
                   height: '90%',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  bgcolor: 'background.paper',
+                  borderRadius: '12px', // Style Guide standard
+                  overflow: 'hidden', // Keep for border-radius
+                  bgcolor: '#FFFFFF', // Explicitly white
+                  boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)', // Style Guide shadow
                 }}>
                   {isLoadingIndustries ? (
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -133,7 +134,7 @@ const Dashboard = () => {
                       {industries.map((industry) => (
                         <ListItem button key={industry.type} onClick={() => handleSelectIndustry(industry.type)} sx={{
                           ':hover': {
-                            bgcolor: 'action.hover',
+                            bgcolor: 'rgba(0, 0, 0, 0.04)', // Standard MUI light hover
                             cursor: 'pointer'
                           },
                         }}>
@@ -160,7 +161,7 @@ const Dashboard = () => {
                   </Box>
                 ) : !selectedIndustry ? (
                   <Box sx={{ ml: 1, mt: 2 }}>
-                    <Typography>
+                    <Typography sx={{ color: '#6C757D' }}> {/* Secondary text color */}
                       Please select an industry first.
                     </Typography>
                   </Box>
@@ -182,7 +183,7 @@ const Dashboard = () => {
                     )}
                     {companyDetails && companyDetails.length === 0 && selectedIndustry && !isLoadingCompanies && (
                        <Box sx={{ ml: 1, mt: 2 }}>
-                       <Typography>
+                       <Typography sx={{ color: '#6C757D' }}> {/* Secondary text color */}
                          No companies found for this industry.
                        </Typography>
                      </Box>
