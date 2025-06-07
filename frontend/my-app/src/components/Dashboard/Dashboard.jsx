@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, List, ListItem, ListItemText, Divider, Stack, Grid } from '@mui/material';
+import { Box, Typography, List, ListItem, ListItemText, Divider, Stack, Grid, CircularProgress } from '@mui/material';
 import Topbar from '../Topbar/Topbar';
 import { fetchCompanyDetails } from '../helper';
 
@@ -19,6 +19,8 @@ const Dashboard = () => {
   const [selectedIndustry, setSelectedIndustry] = useState(null);
   const [companies, setCompanies] = useState([]);
   const [companyDetails, setCompanyDetails] = useState([]);
+  const [isLoadingIndustries, setIsLoadingIndustries] = useState(true);
+  const [isLoadingCompanies, setIsLoadingCompanies] = useState(false);
 
   const token = localStorage.getItem('token');
   const name = localStorage.getItem('firstName');
@@ -43,6 +45,8 @@ const Dashboard = () => {
         }
       } catch (error) {
         console.error('Error fetching industries and companies', error);
+      } finally {
+        setIsLoadingIndustries(false);
       }
     };
     fetchIndustriesAndCompanies();
@@ -51,19 +55,27 @@ const Dashboard = () => {
   const fetchDataDetails = async () => {
     const details = await fetchCompanyDetails(companies);
     setCompanyDetails(details);
+    setIsLoadingCompanies(false);
   }
 
   useEffect(() => {
-    fetchDataDetails();
+    if (companies.length > 0) {
+      fetchDataDetails();
+    } else {
+      // if there are no companies for the selected industry, dont show loader
+      setIsLoadingCompanies(false);
+    }
   }, [companies]);
 
   // function to handle selecting industry
   const handleSelectIndustry = (industry) => {
+    setCompanyDetails([]); // Clear previous company details
+    setIsLoadingCompanies(true);
     setSelectedIndustry(industry);
     // get companies based on selected industry
     const industryCompanies = industries.find(i => i.type === industry)?.companies || [];
     setCompanies(industryCompanies);
-    fetchDataDetails();
+    // fetchDataDetails(); // This call is removed as useEffect[companies] handles it.
   };
 
   const handleSelectCompany = (company) => {
@@ -112,18 +124,24 @@ const Dashboard = () => {
                   overflow: 'hidden',
                   bgcolor: 'background.paper',
                 }}>
-                  <List>
-                    {industries.map((industry) => (
-                      <ListItem button key={industry.type} onClick={() => handleSelectIndustry(industry.type)} sx={{
-                        ':hover': {
-                          bgcolor: 'action.hover',
-                          cursor: 'pointer'
-                        },
-                      }}>
-                        <ListItemText primary={industry.type} />
-                      </ListItem>
-                    ))}
-                  </List>
+                  {isLoadingIndustries ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                      <CircularProgress />
+                    </Box>
+                  ) : (
+                    <List>
+                      {industries.map((industry) => (
+                        <ListItem button key={industry.type} onClick={() => handleSelectIndustry(industry.type)} sx={{
+                          ':hover': {
+                            bgcolor: 'action.hover',
+                            cursor: 'pointer'
+                          },
+                        }}>
+                          <ListItemText primary={industry.type} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  )}
                 </Box>
               </Box>
               <Divider orientation="vertical" flexItem />
@@ -136,29 +154,41 @@ const Dashboard = () => {
                 <Stack>
                   <Typography variant="h6" sx={{ p: 1, fontWeight: '600' }}>Select a Company</Typography>
                 </Stack>
-                {!selectedIndustry && (
+                {isLoadingCompanies ? (
+                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                    <CircularProgress />
+                  </Box>
+                ) : !selectedIndustry ? (
                   <Box sx={{ ml: 1, mt: 2 }}>
                     <Typography>
                       Please select an industry first.
                     </Typography>
                   </Box>
+                ) : (
+                  <Grid container spacing={2}>
+                    {companyDetails && companyDetails.length > 0 && selectedIndustry && (
+                      companyDetails.map((companyDetail) => (
+                        <Grid item xs={12} md={4} key={companyDetail.company_id}>
+                          <Box
+                            sx={{
+                              padding: 1,
+                            }}
+                            onClick={() => handleSelectCompany(companyDetail.company_id)}
+                          >
+                            <CompanyCard companyDetails={companyDetail} />
+                          </Box>
+                        </Grid>
+                      ))
+                    )}
+                    {companyDetails && companyDetails.length === 0 && selectedIndustry && !isLoadingCompanies && (
+                       <Box sx={{ ml: 1, mt: 2 }}>
+                       <Typography>
+                         No companies found for this industry.
+                       </Typography>
+                     </Box>
+                    )}
+                  </Grid>
                 )}
-                <Grid container spacing={2}>
-                  {companyDetails && selectedIndustry && (
-                    companyDetails.map((companyDetail) => (
-                      <Grid item xs={12} md={4} key={companyDetail.company_id}>
-                        <Box
-                          sx={{
-                            padding: 1,
-                          }}
-                          onClick={() => handleSelectCompany(companyDetail.company_id)}
-                        >
-                          <CompanyCard companyDetails={companyDetail} />
-                        </Box>
-                      </Grid>
-                    ))
-                  )}
-                </Grid>
               </Box>
             </Box>
           </Box>
