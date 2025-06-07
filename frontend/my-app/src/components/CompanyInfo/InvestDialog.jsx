@@ -76,10 +76,13 @@ export default function InvestDialog({ companyDetail }) {
         onClick={handleClickOpen}
         variant="contained"
         sx={{
-          backgroundColor: "#8eb08b",
-          fontWeight: 'bold',
+          backgroundColor: '#28a745', // Primary Green Accent
+          color: '#FFFFFF',
+          borderRadius: '8px',
+          fontWeight: 'bold', // Kept bold as per instruction
+          padding: '0.5rem 1rem',
           '&:hover': {
-            backgroundColor: "#779c73",
+            backgroundColor: '#218838'
           }
         }}>
         Add to Portfolio
@@ -90,11 +93,15 @@ export default function InvestDialog({ companyDetail }) {
         PaperProps={{
           component: 'form',
           onSubmit: handleSubmit,
+          sx: { // Merged sx with existing PaperProps
+            borderRadius: '12px',
+            boxShadow: '0 0.25rem 0.75rem rgba(0, 0, 0, 0.1)'
+          }
         }}
       >
-        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Add {companyDetail.name} to my Portfolio</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
+        <DialogTitle variant="h6">Add {companyDetail.name} to my Portfolio</DialogTitle> {/* Use variant */}
+        <DialogContent sx={{pt: {xs: 1, sm: '20px !important'}}}> {/* Ensure adequate top padding */}
+          <DialogContentText variant="body1" sx={{ color: '#6C757D', mb:2 }}> {/* Ensure styling and margin */}
             To save this company to your Portfolio, please enter your investing amount and an optional comment. We
             will update immediately.
           </DialogContentText>
@@ -107,10 +114,11 @@ export default function InvestDialog({ companyDetail }) {
             label="Investing Amount"
             type="number"
             fullWidth
-            variant="standard"
+            variant="outlined" // Changed to outlined
             inputProps={{
               min: 0
             }}
+            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' }, mb: 2 }} // Added borderRadius and margin
           />
           <TextField
             margin="dense"
@@ -119,12 +127,34 @@ export default function InvestDialog({ companyDetail }) {
             label="Comment (Optional)"
             type="text"
             fullWidth
-            variant="standard"
+            variant="outlined" // Changed to outlined
+            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' }, mb: 2 }} // Added borderRadius and margin
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Add</Button>
+        <DialogActions sx={{p:2}}> {/* Added padding to DialogActions */}
+          <Button
+            onClick={handleClose}
+            sx={{
+              color: '#6C757D',
+              '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' }
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              backgroundColor: '#28a745',
+              color: '#FFFFFF',
+              borderRadius: '8px',
+              '&:hover': {
+                backgroundColor: '#218838'
+              },
+            }}
+          >
+            Add
+          </Button>
         </DialogActions>
       </Dialog>
       <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleSnackbarClose}>

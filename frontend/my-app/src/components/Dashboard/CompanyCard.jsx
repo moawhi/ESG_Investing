@@ -48,20 +48,21 @@ const CompanyCard = ({
           height: 'auto',
           minHeight: '200px',
           width: '100%',
-          border: selected ? '3px solid #28a745' : '1px solid #DEE2E6', // New green accent and standard light gray border
+          border: selected ? '2px solid #28a745' : 'none', // Removed default border, reduced selected border
           borderRadius: '12px', // Style Guide standard
           boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)', // Style Guide shadow
           ':hover': {
-            bgcolor: 'rgba(0, 0, 0, 0.02)', // Slight hover background
-            boxShadow: '0 0.25rem 0.5rem rgba(0, 0, 0, 0.1)', // More pronounced shadow on hover
+            bgcolor: 'rgba(0, 0, 0, 0.02)',
+            boxShadow: '0 0.25rem 0.5rem rgba(0, 0, 0, 0.1)',
+            border: selected ? '2px solid #28a745' : '2px solid #E0E0E0', // Subtle border on hover for non-selected
             cursor: 'pointer',
           },
-          transition: 'border-color 0.3s, box-shadow 0.3s', // Added boxShadow to transition
+          transition: 'border 0.3s, box-shadow 0.3s', // Updated transition to include border
         }}
         onClick={handleClick}
       >
         <Box sx={{
-          padding: 1.5,
+          padding: 2, // Updated padding
         }}>
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs={12} md={4}>
@@ -79,11 +80,11 @@ const CompanyCard = ({
           flexDirection: investmentAmount ? 'column' : 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: 1.5,
+          padding: 2, // Updated padding
         }}>
           {!investmentAmount && (
             <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="h4" component="span" sx={{ fontWeight: 'bold', color: '#212529' }}>
+              <Typography variant="h5" component="span" sx={{ fontWeight: 'bold', color: '#212529' }}> {/* Changed to h5 */}
                 {companyDetails.esg_rating}
               </Typography>
               <Typography variant="subtitle1" sx={{ display: 'block', color: '#6C757D' }}>
@@ -93,7 +94,7 @@ const CompanyCard = ({
           )}
           {!investmentAmount && (
             <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="h4" component="span" sx={{ fontWeight: 'bold', color: '#212529' }}>
+              <Typography variant="h5" component="span" sx={{ fontWeight: 'bold', color: '#212529' }}> {/* Changed to h5 */}
                 {companyDetails.industry_ranking}
               </Typography>
               <Typography variant="subtitle1" sx={{ display: 'block', color: '#6C757D' }}>

@@ -45,9 +45,8 @@ const FrameworkSelection = ({ companyId, onSelectFramework }) => {
 
   // styling of framework selection component
   return (
-    <Box       
-      sx = {{ pt: 4, pl: 4, pr: 4 }}>
-      <Typography sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+    <Box sx={{ padding: 3 }}> {/* Updated padding */}
+      <Typography variant="h4" sx={{ color: '#212529' }}> {/* Use variant and ensure color */}
         Select a Framework
       </Typography>
       <Box
@@ -68,14 +67,17 @@ const FrameworkSelection = ({ companyId, onSelectFramework }) => {
               key={framework.framework_id}
               value={framework.framework_id.toString()}
               control={<Radio 
-              sx= {{color: "#779c73",
-              '&.Mui-checked': {
-                color: "#779c73",
-              },}}/>}
+                sx={{
+                  color: '#6C757D', // Secondary text color for unchecked
+                  '&.Mui-checked': {
+                    color: '#28a745', // Primary green accent for checked
+                  },
+                }}
+              />}
               label={
                 <Box sx={{ mb: 2 }}>
-                  <Typography variant="body1" sx={{ fontSize: '1.2rem', mb: 0.5 }}>{framework.name}</Typography>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography variant="h6">{framework.name}</Typography> {/* Changed to h6 */}
+                  <Typography variant="body2" color="textSecondary"> {/* Kept as is, textSecondary is good */}
                     {framework.info}
                   </Typography>
                 </Box>

@@ -229,47 +229,57 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
   // styling for metric accordion
   return (
     <div>
-      <Grid container sx={{ pt: 4, pl: 1, mb: 1, alignItems: 'center' }}>
+      <Grid container sx={{ padding: 3, pb: 1, alignItems: 'center' }}> {/* Adjusted padding */}
         <Grid item xs={3.6}>
-          <Typography sx={{ fontSize: '1.5rem', fontWeight:'bold' }}>Metrics and Indicators</Typography>
+          <Typography variant="h4" sx={{ color: '#212529' }}>Metrics and Indicators</Typography> {/* Use variant and ensure color */}
         </Grid>
         <Grid item xs={3.15}>
           {metricDetails.length > 0 && (
             <Tooltip placement="right" title={"Add or remove additional metrics"}>
               <IconButton onClick={handleClickMetricOpen}>
-                <AddIcon sx={{color:"#779c73"}}/>
+                <AddIcon sx={{color:"#28a745"}}/> {/* Updated AddIcon color */}
               </IconButton>
             </Tooltip>
           )}
         </Grid>
         <Grid item xs={2.25}>
           <Tooltip placement="left" title={"Click on weights to change weighting"}>
-            <Typography sx={{ fontWeight: 'bold' }}>Weight</Typography>
+            <Typography sx={{ fontWeight: 'bold', color: '#212529' }}>Weight</Typography> {/* Ensure color */}
           </Tooltip>
         </Grid>
         <Grid item xs={1}>
           <Tooltip placement="left" title={"Indicator scores for 2022"}>
-            <Typography sx={{ fontWeight: 'bold' }}>2022</Typography>
+            <Typography sx={{ fontWeight: 'bold', color: '#212529' }}>2022</Typography> {/* Ensure color */}
           </Tooltip>
         </Grid>
         <Grid item xs={2}>
           <Tooltip placement="right" title={"Indicator scores for 2023"}>
-            <Typography sx={{ fontWeight: 'bold' }}>2023</Typography>
+            <Typography sx={{ fontWeight: 'bold', color: '#212529' }}>2023</Typography> {/* Ensure color */}
           </Tooltip>
         </Grid>
       </Grid>
       <Box sx={{ display: 'flex', 
       flexDirection: 'column', 
-      maxHeight: 'calc(100vh - 145px)', 
+      maxHeight: 'calc(100vh - 145px)', // Keep this calculation if it works for the layout
       overflowY: 'auto', 
-      scrollbarWidth: 'none',
-      borderTop: '1px solid #c7c7c7'
+      scrollbarWidth: 'none', // Keep for cleaner look
+      // borderTop: '1px solid #c7c7c7' // Removed borderTop
       }}>
         {metricDetails.length > 0 ? (
           <>
-          <Box sx={{ flex: '1' }}>
+          <Box sx={{ flex: '1', pl:3, pr:3, pt:1 }}> {/* Added horizontal padding to match header */}
             {metricDetails.map((metric, accordionIndex) => (
-              <Accordion key={accordionIndex} sx={{ border: '1px solid #e0e0e0' }}>
+              <Accordion
+                key={accordionIndex}
+                // defaultExpanded // Consider if accordions should be open by default
+                sx={{
+                  // border: '1px solid #e0e0e0', // Removed border
+                  boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)', // Standard card shadow
+                  borderRadius: '8px', // Rounded corners
+                  mb: 1, // Margin bottom for separation
+                  '&:before': { display: 'none' } // Remove default top border/divider of Accordion
+                }}
+              >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Grid container alignItems="center">
                 <Grid item xs={0.75}>
@@ -277,13 +287,14 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
                       control={
                       <Checkbox
                         checked={checkedAccordions[accordionIndex]?.checked || false}
-                      // Stops accordion from toggling when checkbox is clicked
                         onClick={(event) => event.stopPropagation()}
                         onChange={(event) => handleAccordionCheckChange(accordionIndex, event.target.checked)}
-                        sx={{color: "#779c73",
-                        '&.Mui-checked': {
-                          color: "#779c73",
-                        }}}
+                        sx={{
+                          color: '#6C757D', // Unchecked color
+                          '&.Mui-checked': {
+                            color: '#28a745', // Checked color
+                          },
+                        }}
                       />
                       }
                     />
@@ -297,24 +308,29 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
                       </React.Fragment>
                       }
                     >
-                      <HelpIcon sx= {{color: "#86ad82", fontSize: "1.7rem" }}/>
+                      <HelpIcon sx={{color: "#6C757D", fontSize: "1.25rem" }}/> {/* Updated HelpIcon style */}
                     </Tooltip>
                   </Grid>
                   <Grid item xs={5.65}>
-                    <Typography variant="h6">{metric.framework_metric_name}</Typography>
+                    <Typography variant="h6" sx={{ color: '#212529' }}>{metric.framework_metric_name}</Typography> {/* Ensure color */}
                   </Grid> 
                   <Grid item xs={1}>
                     <Button 
                       variant="contained" 
                       onClick={(event) => handleClickWeightOpen('metric', accordionIndex, null, event)}
                       sx={{ 
-                      bgcolor: "#86ad82",
-                      borderRadius: "16px",
-                      fontWeight: "bold",
-                      '&:hover': {
-                        backgroundColor: "#779c73",
-                      }}}>
-                      {weights[accordionIndex]?.metricWeight}</Button>
+                        bgcolor: '#E9ECEF', // Light gray
+                        color: '#212529',   // Primary text
+                        borderRadius: '8px', // Updated radius
+                        fontWeight: 'normal', // Normal weight
+                        padding: '0.25rem 0.5rem', // Adjusted padding
+                        textTransform: 'none', // Prevent uppercase
+                        '&:hover': {
+                          bgcolor: '#CED4DA', // Darker gray on hover
+                        }
+                      }}>
+                      {weights[accordionIndex]?.metricWeight}
+                    </Button>
                   </Grid>
                   </Grid>
               </AccordionSummary>
@@ -325,12 +341,14 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
                       <FormControlLabel
                         control={
                           <Checkbox
-                          checked={checkedAccordions[accordionIndex]?.indicators[indicatorIndex] || false}
-                          onChange={(event) => handleIndicatorCheckChange(accordionIndex, indicatorIndex, event.target.checked)}
-                          sx={{color: "#98c493",
-                          '&.Mui-checked': {
-                            color: "#98c493",
-                          }}}
+                            checked={checkedAccordions[accordionIndex]?.indicators[indicatorIndex] || false}
+                            onChange={(event) => handleIndicatorCheckChange(accordionIndex, indicatorIndex, event.target.checked)}
+                            sx={{
+                              color: '#6C757D', // Unchecked color
+                              '&.Mui-checked': {
+                                color: '#28a745', // Checked color
+                              },
+                            }}
                           />
                         }
                       />
@@ -345,30 +363,35 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
                       </React.Fragment>
                       }
                     >
-                      <HelpIcon sx= {{color: "#a2cf9d"}}/>
+                      <HelpIcon sx={{color: "#6C757D", fontSize: "1.25rem" }}/> {/* Updated HelpIcon style */}
                     </Tooltip>
                     </Grid> 
                     <Grid item xs={5.4}>
-                      <Typography>{indicator.indicator_name}</Typography>
+                      <Typography sx={{ color: '#212529' }}>{indicator.indicator_name}</Typography> {/* Ensure color */}
                     </Grid>
                     <Grid item xs={2.4} sx={{ borderRight: '1px solid #e0e0e0' }}>
                       <Button 
                         onClick={(event) => handleClickWeightOpen('indicator', accordionIndex, indicatorIndex, event)}
                         variant="contained" 
                         sx={{ 
-                        bgcolor: "#98c493",
-                        borderRadius: "16px",
-                        '&:hover': {
-                          backgroundColor: "#8dbd88",
-                        }}}>
+                          bgcolor: '#E9ECEF', // Light gray
+                          color: '#212529',   // Primary text
+                          borderRadius: '8px', // Updated radius
+                          fontWeight: 'normal', // Normal weight
+                          padding: '0.25rem 0.5rem', // Adjusted padding
+                          textTransform: 'none', // Prevent uppercase
+                          '&:hover': {
+                            bgcolor: '#CED4DA', // Darker gray on hover
+                          }
+                        }}>
                         {weights[accordionIndex]?.indicatorWeights[indicatorIndex]}
                       </Button>
                     </Grid>
                     <Grid item xs={1} sx={{ borderRight: '1px solid #e0e0e0' }}>
-                      <Typography>{indicator.indicator_score_2022}</Typography>
+                      <Typography sx={{ color: '#212529' }}>{indicator.indicator_score_2022}</Typography> {/* Ensure color */}
                     </Grid>
                     <Grid item xs={1} justifyContent="center" alignItems="center">
-                      <Typography>{indicator.indicator_score_2023}</Typography>
+                      <Typography sx={{ color: '#212529' }}>{indicator.indicator_score_2023}</Typography> {/* Ensure color */}
                     </Grid>
                   </Grid>
                 ))}
@@ -376,44 +399,57 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
               </Accordion>
               ))}
           </Box>
+          {/* Sticky Footer */}
           <Box sx={{ 
             position: 'sticky', 
             bottom: 0, 
-            padding: 2,
+            padding: 2, // Ensure padding is appropriate
             bgcolor: 'white',
-            borderTop: '1.5px solid #c7c7c7'
+            borderTop: '1px solid #DEE2E6', // Standard divider color
+            zIndex: 1 // Ensure it's above scrolling content
             }}>
-            <Grid container spacing={2}>
-              <Grid item xs={7.5}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={12} sm={7.5}> {/* Adjusted grid for responsiveness */}
                 <Button 
-                variant="contained" 
-                sx={{ 
-                  mr: 2,
-                  backgroundColor: "#8eb08b",
-                  '&:hover': {
-                    backgroundColor: "#779c73",
-                  }}}
-                onClick={handleMetricsSelection}>
+                  variant="contained"
+                  sx={{
+                    mr: { xs: 0, sm: 2 }, // Margin right, responsive
+                    mb: { xs: 1, sm: 0 }, // Margin bottom for stacked buttons on xs screens
+                    width: { xs: '100%', sm: 'auto' }, // Full width on xs
+                    backgroundColor: '#28a745',
+                    color: '#FFFFFF',
+                    borderRadius: '8px',
+                    padding: '0.5rem 1rem',
+                    '&:hover': {
+                      backgroundColor: '#218838',
+                    }
+                  }}
+                  onClick={handleMetricsSelection}>
                   Calculate ESG Score
                 </Button>
                 <Button 
                   variant="contained" 
                   sx={{ 
-                    backgroundColor: "#8eb08b",
+                    width: { xs: '100%', sm: 'auto' }, // Full width on xs
+                    backgroundColor: '#28a745',
+                    color: '#FFFFFF',
+                    borderRadius: '8px',
+                    padding: '0.5rem 1rem',
                     '&:hover': {
-                      backgroundColor: "#779c73",
-                    }}}
+                      backgroundColor: '#218838',
+                    }
+                  }}
                   onClick={balanceMetricWeights}>
                   Balance Metric Weights
                 </Button>
               </Grid>
-              <Grid item xs={4.5}>
-                  <Box display="flex" alignItems="center">
+              <Grid item xs={12} sm={4.5}> {/* Adjusted grid for responsiveness */}
+                  <Box display="flex" alignItems="center" justifyContent={{xs: 'flex-start', sm: 'flex-end'}}>
                     <Tooltip title={"weighted score = indicator ESG score * framework metric weight * indicator weight. All the weighted scores for the indicator are averaged. The final ESG score is the sum of all averaged weighted scores."}>
-                      <HelpIcon sx= {{ mr: 1, fontSize: "1.7rem" }}/>
+                      <HelpIcon sx={{ mr: 1, fontSize: "1.25rem", color: '#6C757D' }}/> {/* Updated HelpIcon */}
                     </Tooltip>
-                    <Typography variant="h6">Adjusted ESG Score:</Typography>
-                    <Typography variant="h6" sx={{ fontWeight: "bold", ml: 1 }}>{esgScore}</Typography>
+                    <Typography variant="h6" sx={{ color: '#212529' }}>Adjusted ESG Score:</Typography>
+                    <Typography variant="h6" sx={{ fontWeight: "bold", ml: 1, color: '#212529' }}>{esgScore}</Typography>
                   </Box>
               </Grid>
             </Grid>
@@ -422,13 +458,16 @@ const MetricAccordion = ({ companyId, selectedFrameworkId }) => {
                 sx={{
                   mt: 2,
                   p: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  backgroundColor: "#ffdede",
-                  borderRadius: "10px",
-                  width: "95%"
+                  display: 'flex',
+                  alignItems: 'center',
+                  backgroundColor: '#f8d7da', // Error background
+                  color: '#721c24', // Error text color
+                  borderRadius: '8px', // Rounded corners
+                  border: '1px solid #f5c6cb', // Error border
+                  // width: "95%" // Consider full width or adjust as needed
                 }} 
-              > <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
+              >
+                <ErrorOutlineIcon sx={{ mr: 1, color: '#721c24' }} /> {/* Error icon color */}
                 <Typography variant="body2">{errorMessage}.</Typography>
               </Box>
             )}

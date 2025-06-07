@@ -76,37 +76,45 @@ const AddMetricPopup = ({ open, setOpenMetricPopup, frameworkId, onAddMetrics })
   // styling of add metrics popup dialog
   return (
     <div>
-      <Dialog open={open} onClose={handleClose}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',  
-        justifyContent: 'center',
-        '& .MuiDialog-container': {
-        height: '60%'
-    }
-      }}>
-        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Choose metrics to add:</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            borderRadius: '12px',
+            boxShadow: '0 0.25rem 0.75rem rgba(0, 0, 0, 0.1)',
+            // Removed height constraint from here, let content define it or control via sx on Dialog if really needed
+          }
+        }}
+        // sx={{ // Removed this sx block that was constraining height unnecessarily from Dialog
+        //   display: 'flex',
+        //   alignItems: 'center',
+        //   justifyContent: 'center',
+        // }}
+      >
+        <DialogTitle variant="h6">Choose metrics to add:</DialogTitle> {/* Use variant */}
+        <DialogContent sx={{pt: 1}}> {/* Adjusted padding top */}
         {additionalMetrics.length > 0 ? (
             <List>
               {additionalMetrics.map((metric, id) => (
-                <ListItem key={metric.metric_id}>
+                <ListItem key={metric.metric_id} sx={{pl:0, pr:0}}> {/* Adjusted ListItem padding */}
                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={!!selectedMetrics[id]}
                         onChange={() => handleToggle(id)}
                         name={`checkbox-${id}`}
-                        sx={{color: "#779c73",
+                        sx={{
+                          color: '#6C757D', // Unchecked color
                           '&.Mui-checked': {
-                          color: "#779c73",
-                        }}}
+                            color: '#28a745', // Checked color
+                          },
+                        }}
                       />
                     }
                     label={
-                      <React.Fragment>
-                        <Typography variant="h6">{metric.metric_name}</Typography>
-                      </React.Fragment>
+                      // Removed React.Fragment as Typography alone is fine
+                      <Typography variant="body1">{metric.metric_name}</Typography> // Changed to body1
                     }
                   />
                 </ListItem>
@@ -117,31 +125,41 @@ const AddMetricPopup = ({ open, setOpenMetricPopup, frameworkId, onAddMetrics })
           )}
         </DialogContent>
         {errorMessage && (
-            <Box 
-              sx={{
-                mt: 1,
-                ml: 3,
-                p: 1,
-                display: "flex",
-                alignItems: "center",
-                backgroundColor: "#ffdede",
-                borderRadius: "10px",
-                width: "85%"
-              }} 
-            > <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
-              <Typography variant="body2">{errorMessage}</Typography>
-            </Box>
+          <Box
+            sx={{
+              p: 1, // Adjusted padding
+              ml: 2, // Margin left for alignment with DialogContent padding
+              mr: 2, // Margin right for alignment
+              display: "flex",
+              alignItems: "center",
+              backgroundColor: '#f8d7da', // Error background
+              color: '#721c24', // Error text color
+              borderRadius: '8px', // Rounded corners
+              border: '1px solid #f5c6cb', // Error border
+              // width: "auto" // Let content define width or use 100% if spanning full Dialog width minus padding
+            }}
+          >
+            <ErrorOutlineIcon sx={{ mr: 1, color: '#721c24' }} /> {/* Error icon color */}
+            <Typography variant="body2">{errorMessage}</Typography>
+          </Box>
         )}
-        <DialogActions>
+        <DialogActions sx={{ p:2 }}> {/* Added padding to DialogActions */}
           <Button 
-          onClick={handleSubmission}
-          sx={{
-            mr: 1,
-            mb: 1,
-            color: '#779c73', 
-            '&:hover': {
-              backgroundColor: "#daf0d8",
-          }}}>Add Metrics</Button>
+            onClick={handleSubmission}
+            variant="contained" // Make it a contained button for primary action
+            sx={{
+              backgroundColor: '#28a745',
+              color: '#FFFFFF',
+              borderRadius: '8px',
+              '&:hover': {
+                backgroundColor: '#218838'
+              },
+              // mr: 1, // Kept margin if needed for spacing with other buttons
+              // mb: 1  // Kept margin if needed
+            }}
+          >
+            Add Metrics
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

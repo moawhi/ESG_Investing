@@ -31,9 +31,18 @@ const ChangeWeightPopup = ({ open, setOpenWeightPopup, handleSubmitNewWeight }) 
   // styling of change weight popup dialog
   return (
     <div>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Please enter a new weight:</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            borderRadius: '12px',
+            boxShadow: '0 0.25rem 0.75rem rgba(0, 0, 0, 0.1)'
+          }
+        }}
+      >
+        <DialogTitle variant="h6">Please enter a new weight:</DialogTitle> {/* Use variant */}
+        <DialogContent sx={{pt: {xs: 1, sm: '20px !important'}}}> {/* Ensure adequate top padding */}
           <TextField
             autoFocus
             margin="dense"
@@ -41,40 +50,48 @@ const ChangeWeightPopup = ({ open, setOpenWeightPopup, handleSubmitNewWeight }) 
             label="New Weight"
             type="number"
             fullWidth
-            variant="standard"
+            variant="outlined" // Changed to outlined
             inputProps={{
               step: 0.05,
               min: 0,  
               max: 1  
             }}
             onChange={(e) => setWeightInput(e.target.value)}
+            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }} // Added borderRadius
           />
           {errorMessage && (
             <Box 
               sx={{
-                mt: 1,
+                mt: 2, // Added margin top for spacing
                 p: 1,
                 display: "flex",
                 alignItems: "center",
-                backgroundColor: "#ffdede",
-                borderRadius: "10px",
-                width: "90%"
+                backgroundColor: '#f8d7da', // Error background
+                color: '#721c24', // Error text color
+                borderRadius: '8px', // Rounded corners
+                border: '1px solid #f5c6cb', // Error border
               }} 
-            > <ErrorOutlineIcon sx={{ mr: 1, color: "red" }} />
+            >
+              <ErrorOutlineIcon sx={{ mr: 1, color: '#721c24' }} /> {/* Error icon color */}
               <Typography variant="body2">{errorMessage}</Typography>
             </Box>
           )}
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ p: 2 }}> {/* Added padding to DialogActions */}
           <Button 
-          onClick={handleSubmission}
-          sx={{
-            mr: 1,
-            mb: 1,
-            color: '#779c73', 
-            '&:hover': {
-              backgroundColor: "#daf0d8",
-          }}}>Submit</Button>
+            onClick={handleSubmission}
+            variant="contained" // Make it a contained button
+            sx={{
+              backgroundColor: '#28a745',
+              color: '#FFFFFF',
+              borderRadius: '8px',
+              '&:hover': {
+                backgroundColor: '#218838'
+              },
+            }}
+          >
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
